@@ -10,8 +10,9 @@
     "android": {
       "package": "com.personal.expensetracker",
       "permissions": [
-        "RECORD_AUDIO",
-        "CAMERA"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
@@ -22,7 +23,9 @@
       "expo-font"
     ],
     "extra": {
-      "eas": {},
+      "eas": {
+        "projectId": "17385998-e204-486e-ae6c-02c8e8001c33"
+      },
       "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app"
     }
   }
