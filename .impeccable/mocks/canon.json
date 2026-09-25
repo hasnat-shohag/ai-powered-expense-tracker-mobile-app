@@ -1,0 +1,8 @@
+{
+  "prompt": "Phone app screen, portrait 9:16 aspect ratio, flat-on view, no device frame, no browser chrome.\n\nThe category-standard personal finance tracker screen, executed impeccably well. Absolutely conventional in structure, unusually good in craft.\n\nGround: clean white #FFFFFF.\n\nAt the top, a small grey label \"September 2026\", then a very large month total in near-black #111827: \"৳ 24,850\", with a small green up-arrow and \"12% vs August\" beneath it.\n\nBelow the total, a small clean donut chart showing a category breakdown in four flat pastel tints, with a compact legend of four labelled dots beside it.\n\nThen a horizontal row of small rounded category chips with soft pastel tints: Food, Transport, Bills, Health.\n\nThen a grouped list of expense rows in soft white cards with 12 pixel rounded corners and very light soft shadows, generous padding between rows. Each row: a circular pastel category icon tile on the left, a merchant name in medium weight, a grey date beneath it, and the amount right-aligned in near-black. Six rows: \"Biryani House\", \"Rickshaw fare\", \"Shwapno\", \"bKash cash out\", \"Tea Stall\", \"Lazz Pharma\".\n\nOne filled blue #2563EB rounded pill button floating bottom-right.\n\nStandard system sans-serif throughout. Perfectly even spacing, generous margins, calm and correct. Flat lighting, no gradients, no glass, no ornament.\n",
+  "surface": "home",
+  "viewport": "412x915",
+  "direction": "a320ac95",
+  "register": "safer",
+  "approved": true
+}

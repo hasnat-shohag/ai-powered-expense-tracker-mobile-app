@@ -1,0 +1,15 @@
+{
+  "regions": [
+    { "id": "month-label",   "kind": "text",    "grid": "A0:C0", "box": [38, 44, 220, 42],    "snap": false, "note": "grey month label September 2026" },
+    { "id": "month-total",   "kind": "text",    "grid": "A0:E0", "box": [30, 86, 364, 96],    "note": "lead: month total taka 24,850 at ~42px near-black" },
+    { "id": "month-delta",   "kind": "text",    "grid": "A1:C1", "box": [38, 198, 244, 44],   "snap": false, "note": "green up-arrow 12% vs August" },
+    { "id": "summary-card",  "kind": "chrome",  "grid": "A1:J2", "box": [30, 280, 764, 268],  "note": "rounded grey summary card containing donut and legend" },
+    { "id": "category-donut","kind": "control", "grid": "A1:C2", "box": [58, 300, 204, 204],  "note": "data-driven donut chart, four category segments" },
+    { "id": "legend",        "kind": "text",    "grid": "D1:J2", "box": [300, 304, 486, 214], "snap": false, "note": "four-row labelled legend Food 10,400 / Transport 6,000 / Groceries 4,700 / Health 3,750 with colour dots and amounts" },
+    { "id": "category-chips","kind": "control", "grid": "A3:J3", "box": [30, 580, 764, 66],   "snap": false, "note": "pastel filter chips All / Food / Transport / Bills / Health" },
+    { "id": "recent-header", "kind": "text",    "grid": "A3:D3", "box": [38, 684, 300, 42],   "snap": false, "note": "section label Recent" },
+    { "id": "recent-count",  "kind": "text",    "grid": "G3:J3", "box": [560, 688, 232, 36],  "snap": false, "note": "grey count 6 expenses" },
+    { "id": "expense-list",  "kind": "control", "grid": "A4:J8", "box": [30, 742, 764, 790],  "container": true, "note": "data-driven recent ledger: six rows of circular category tile, merchant, grey time-category-method subline, right-aligned amount, in a soft white card" },
+    { "id": "add-button",    "kind": "control", "grid": "E9:J9", "box": [474, 1670, 309, 103],"note": "floating filled blue Add expense pill" }
+  ]
+}

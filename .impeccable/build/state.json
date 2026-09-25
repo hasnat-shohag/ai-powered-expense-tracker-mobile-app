@@ -1,0 +1,213 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-25T05:37:00.476Z",
+  "comp": ".impeccable/mocks/canon.png",
+  "direction": "a320ac95",
+  "breakpoint": "824x1830",
+  "artifact": null,
+  "phase": "hero",
+  "phases": {
+    "comps": {
+      "status": "closed",
+      "openedAt": "2026-09-25T05:37:00.476Z",
+      "closedAt": "2026-09-25T06:27:36.019Z",
+      "attempts": 3,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "3 comps, 1 approved",
+        "approved": ".impeccable/mocks/canon.png",
+        "at": "2026-09-25T06:27:36.019Z"
+      },
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-25T06:27:36.026Z",
+      "closedAt": "2026-09-25T06:42:13.178Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "11 regions, 0 plates, 6 text regions measured",
+        "at": "2026-09-25T06:42:13.178Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "closed",
+      "openedAt": "2026-09-25T06:42:13.178Z",
+      "closedAt": "2026-09-25T06:42:22.402Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no plates owed",
+        "at": "2026-09-25T06:42:22.402Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "open",
+      "openedAt": "2026-09-25T06:42:22.402Z",
+      "closedAt": null,
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "region add-button is missing (detail 0%, structure 39%): the comp shows material the build does not"
+        ],
+        "summary": "hero 86% (match)",
+        "score": 0.8567,
+        "verdict": "match",
+        "report": ".impeccable/review/diff/hero/report.json",
+        "sideBySide": "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/hero/side-by-side.png",
+        "worst": [
+          "add-button missing 51%",
+          "month-total drift 62%",
+          "month-label drift 68%"
+        ],
+        "worstIds": [
+          "add-button",
+          "month-total",
+          "month-label"
+        ],
+        "worstCrops": [
+          {
+            "id": "add-button",
+            "verdict": "missing",
+            "score": {
+              "overall": 0.5064,
+              "structure": 0.3863,
+              "color": 0.9501,
+              "colorIntersection": 0.8781,
+              "paletteMatch": 0.9889,
+              "detail": 0,
+              "detailRaw": 0.0705,
+              "detailAdded": 0.3021,
+              "bands": 0
+            },
+            "file": ".impeccable/review/diff/hero/regions/add-button.png"
+          },
+          {
+            "id": "month-total",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6159,
+              "structure": 0.5099,
+              "color": 0.9811,
+              "colorIntersection": 0.969,
+              "paletteMatch": 0.9875,
+              "detail": 0.4857,
+              "detailRaw": 0.5534,
+              "detailAdded": 0.1354,
+              "bands": 0.4278
+            },
+            "file": ".impeccable/review/diff/hero/regions/month-total.png"
+          },
+          {
+            "id": "month-label",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6756,
+              "structure": 0.6088,
+              "color": 0.9874,
+              "colorIntersection": 0.9787,
+              "paletteMatch": 0.9921,
+              "detail": 0.4286,
+              "detailRaw": 0.5171,
+              "detailAdded": 0.1771,
+              "bands": 0.6
+            },
+            "file": ".impeccable/review/diff/hero/regions/month-label.png"
+          }
+        ],
+        "regionVerdicts": {
+          "month-label": "drift",
+          "month-total": "drift",
+          "month-delta": "match",
+          "summary-card": "match",
+          "category-donut": "match",
+          "legend": "match",
+          "category-chips": "match",
+          "recent-header": "match",
+          "recent-count": "match",
+          "expense-list": "drift",
+          "add-button": "missing"
+        },
+        "at": "2026-09-25T06:55:44.676Z"
+      },
+      "forced": null,
+      "readingsSeen": {},
+      "records": 3,
+      "history": [
+        {
+          "at": "2026-09-25T06:48:34.796Z",
+          "score": 0.8558,
+          "worstIds": [
+            "add-button",
+            "month-total",
+            "month-label"
+          ],
+          "regionVerdicts": {
+            "month-label": "drift",
+            "month-total": "drift",
+            "month-delta": "match",
+            "summary-card": "match",
+            "category-donut": "match",
+            "legend": "match",
+            "category-chips": "match",
+            "recent-header": "match",
+            "recent-count": "match",
+            "expense-list": "drift",
+            "add-button": "missing"
+          },
+          "artifactHash": null
+        }
+      ]
+    },
+    "sections": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "plates": {}
+}
