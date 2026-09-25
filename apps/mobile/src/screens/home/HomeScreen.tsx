@@ -60,7 +60,15 @@ function toSlices(
  * and triggers a background sync on mount, on network regain, and on
  * pull-to-refresh.
  */
-export function HomeScreen({ onAddExpense }: { onAddExpense: () => void }) {
+export function HomeScreen({
+  onAddExpense,
+  onEditExpense,
+  reloadToken = 0,
+}: {
+  onAddExpense: () => void;
+  onEditExpense?: (e: Expense) => void;
+  reloadToken?: number;
+}) {
   const insets = useSafeAreaInsets();
   const month: MonthKey = currentMonthKey();
   const prev = previousMonth(month);
@@ -88,6 +96,11 @@ export function HomeScreen({ onAddExpense }: { onAddExpense: () => void }) {
     const stop = startNetworkSyncTrigger();
     return stop;
   }, [load]);
+
+  // Reload when returning from capture/draft/edit (token bumped by the shell).
+  useEffect(() => {
+    if (reloadToken > 0) void load();
+  }, [reloadToken, load]);
 
   useEffect(() => {
     AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion);
@@ -176,7 +189,7 @@ export function HomeScreen({ onAddExpense }: { onAddExpense: () => void }) {
               </Text>
             </View>
             {recent.length > 0 ? (
-              <RecentCard expenses={recent} />
+              <RecentCard expenses={recent} onPressRow={onEditExpense} />
             ) : (
               <Text style={styles.noneInFilter}>No {selected} expenses.</Text>
             )}

@@ -7,7 +7,7 @@
     "start": "expo start",
     "android": "expo run:android",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "echo \"RNTL suite lands in Phase 12\" && exit 0",
+    "test": "vitest run",
     "lint": "echo \"no lint\" && exit 0",
     "build": "echo \"EAS build in Phase 13\" && exit 0"
   },
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@types/react": "~18.3.12",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   }
 }

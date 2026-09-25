@@ -101,3 +101,53 @@ export function ArrowUpIcon({ size = 12, color, strokeWidth = 2.6 }: IconProps) 
     </Svg>
   );
 }
+
+/** Back chevron for screen top bars. */
+export function ChevronLeftIcon({ size = 22, color, strokeWidth = 2 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M15 6l-6 6 6 6" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
+/** Camera glyph for the receipt-photo capture affordance. */
+export function CameraIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M4 8h3l1.5-2h7L17 8h3v11H4z" stroke={color} strokeWidth={strokeWidth} {...base} />
+      <Circle cx="12" cy="13" r="3.2" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
+/** Image / library glyph. */
+export function ImageIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Rect x="4" y="5" width="16" height="14" rx="2.5" stroke={color} strokeWidth={strokeWidth} {...base} />
+      <Circle cx="9" cy="10" r="1.6" stroke={color} strokeWidth={strokeWidth} {...base} />
+      <Path d="M5 17l4.5-4 3 2.5L16 12l3 3.5" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
+/** Microphone glyph for voice capture. */
+export function MicIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Rect x="9" y="3" width="6" height="11" rx="3" stroke={color} strokeWidth={strokeWidth} {...base} />
+      <Path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
+/** Small trash glyph for the delete affordance. */
+export function TrashIcon({ size = 18, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+

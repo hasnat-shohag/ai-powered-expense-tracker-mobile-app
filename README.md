@@ -212,7 +212,7 @@ table below; the phase list itself is the plan of record.
 | 9 | Mobile: drain + draft review | **Done** — drain pending through `/parse`, editable draft, save writes rows + clears captures |
 | 10 | Mobile: sync engine | **Done** — push outbox + pull-by-cursor in one pass, debounced + network-regain triggers |
 | 11 | Mobile: CRUD + analytics | **Done** — month total, per-category breakdown, list/edit/soft-delete; Home screen built per `DESIGN.md` (count-up, donut sweep, chips, FAB) |
-| 12 | Polish + tests | **In progress** — states (loading/empty/filter) + reduce-motion done; RNTL/Maestro suites pending |
+| 12 | Polish + tests | **Done (on-device suites deferred)** — capture (text/voice/image) → drain → editable draft → save, edit/delete existing rows, all wired through a 4-screen shell; loading/empty/filter/offline states; reduce-motion. Node logic tests (Vitest) green. RNTL + Maestro need a device/emulator (CI, Phase 13). |
 | 13 | Ship | Not started |
 
 1. **Scaffold** — pnpm + Turborepo workspace; `apps/mobile` (Expo), `apps/api` (Vercel), `packages/shared`. Shared TypeScript config, lint.

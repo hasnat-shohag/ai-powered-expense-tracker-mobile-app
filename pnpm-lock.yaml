@@ -115,6 +115,9 @@ importers:
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@edge-runtime/vm@3.2.0)(@types/node@22.20.4)(lightningcss@1.27.0)(supports-color@8.1.1)(terser@5.51.2)(tsx@4.21.0)
 
   packages/shared:
     dependencies:
