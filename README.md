@@ -206,13 +206,13 @@ table below; the phase list itself is the plan of record.
 | 3 | Backend: DB + auth | **Done** |
 | 4 | Backend: `/parse` | **Done** |
 | 5 | Backend: `/sync` | **Done** |
-| 6 | Design (`/impeccable`) | **In progress** — direction not yet locked |
-| 7 | Mobile: local core | Not started |
-| 8 | Mobile: capture | Not started |
-| 9 | Mobile: drain + draft review | Not started |
-| 10 | Mobile: sync engine | Not started |
-| 11 | Mobile: CRUD + analytics | Not started |
-| 12 | Polish + tests | Not started |
+| 6 | Design (`/impeccable`) | **Done** — Home direction locked (canon "The Summary"), build shipped, `DESIGN.md` written |
+| 7 | Mobile: local core | **Done** — SQLite mirror + migrations, pending/outbox queues, uuidv7, offline-first queries |
+| 8 | Mobile: capture | **Done** — text, voice (on-device `bn-BD` STT), image (resize + JPEG, persisted) → pending queue |
+| 9 | Mobile: drain + draft review | **Done** — drain pending through `/parse`, editable draft, save writes rows + clears captures |
+| 10 | Mobile: sync engine | **Done** — push outbox + pull-by-cursor in one pass, debounced + network-regain triggers |
+| 11 | Mobile: CRUD + analytics | **Done** — month total, per-category breakdown, list/edit/soft-delete; Home screen built per `DESIGN.md` (count-up, donut sweep, chips, FAB) |
+| 12 | Polish + tests | **In progress** — states (loading/empty/filter) + reduce-motion done; RNTL/Maestro suites pending |
 | 13 | Ship | Not started |
 
 1. **Scaffold** — pnpm + Turborepo workspace; `apps/mobile` (Expo), `apps/api` (Vercel), `packages/shared`. Shared TypeScript config, lint.

@@ -1,0 +1,472 @@
+{
+  "tool": "comp-diff",
+  "version": 1,
+  "createdAt": "2026-09-25T07:09:54.120Z",
+  "label": "desktop",
+  "comp": ".impeccable/mocks/canon.png",
+  "build": ".impeccable/review/desktop.png",
+  "spec": ".impeccable/build/spec.json",
+  "compSize": "824x1830",
+  "buildSize": "3296x7320",
+  "align": "top",
+  "overall": 0.9605,
+  "verdict": "match",
+  "scores": {
+    "overall": 0.9605,
+    "structure": 0.9731,
+    "color": 0.9913,
+    "colorIntersection": 0.9785,
+    "paletteMatch": 0.9983,
+    "detail": 0.9017,
+    "detailRaw": 0.9017,
+    "detailAdded": 0,
+    "bands": 0.9778
+  },
+  "palette": {
+    "comp": [
+      {
+        "hex": "#f8f8f8",
+        "coverage": 0.9557
+      },
+      {
+        "hex": "#2868e8",
+        "coverage": 0.0187
+      },
+      {
+        "hex": "#181828",
+        "coverage": 0.0135
+      },
+      {
+        "hex": "#f8e8c8",
+        "coverage": 0.0059
+      },
+      {
+        "hex": "#b87818",
+        "coverage": 0.0035
+      },
+      {
+        "hex": "#687888",
+        "coverage": 0.0027
+      }
+    ],
+    "build": [
+      {
+        "hex": "#f8f8f8",
+        "coverage": 0.9528
+      },
+      {
+        "hex": "#2868e8",
+        "coverage": 0.0189
+      },
+      {
+        "hex": "#181828",
+        "coverage": 0.0143
+      },
+      {
+        "hex": "#f8e8c8",
+        "coverage": 0.0056
+      },
+      {
+        "hex": "#747e8e",
+        "coverage": 0.0048
+      },
+      {
+        "hex": "#b87818",
+        "coverage": 0.0035
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "month-label",
+      "x": 0,
+      "y": 0,
+      "w": 0.3,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.9302,
+        "structure": 0.9022,
+        "color": 0.9854,
+        "colorIntersection": 0.9737,
+        "paletteMatch": 0.9917,
+        "detail": 0.8847,
+        "detailRaw": 0.8847,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 39,
+          "y": 57,
+          "w": 208,
+          "h": 122
+        },
+        "build": {
+          "x": 39,
+          "y": 54,
+          "w": 208,
+          "h": 123
+        }
+      }
+    },
+    {
+      "id": "month-total",
+      "x": 0.1311,
+      "y": 0.0525,
+      "w": 0.3204,
+      "h": 0.0475,
+      "kind": "text",
+      "score": {
+        "overall": 0.8833,
+        "structure": 0.8157,
+        "color": 0.9886,
+        "colorIntersection": 0.983,
+        "paletteMatch": 0.9917,
+        "detail": 0.8778,
+        "detailRaw": 0.8882,
+        "detailAdded": 0.0208,
+        "bands": 0.9667
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 6,
+          "y": 7,
+          "w": 247,
+          "h": 76
+        },
+        "build": {
+          "x": 6,
+          "y": 5,
+          "w": 247,
+          "h": 76
+        }
+      }
+    },
+    {
+      "id": "month-delta",
+      "x": 0,
+      "y": 0.1,
+      "w": 0.3,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.9796,
+        "structure": 0.9857,
+        "color": 0.9881,
+        "colorIntersection": 0.9757,
+        "paletteMatch": 0.9947,
+        "detail": 0.9318,
+        "detailRaw": 0.9318,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 44,
+          "y": 33,
+          "w": 196,
+          "h": 150
+        },
+        "build": {
+          "x": 44,
+          "y": 33,
+          "w": 196,
+          "h": 150
+        }
+      }
+    },
+    {
+      "id": "summary-card",
+      "x": 0,
+      "y": 0.1,
+      "w": 1,
+      "h": 0.2,
+      "kind": "chrome",
+      "score": {
+        "overall": 0.9875,
+        "structure": 0.9975,
+        "color": 0.9906,
+        "colorIntersection": 0.9762,
+        "paletteMatch": 0.9983,
+        "detail": 0.9631,
+        "detailRaw": 0.9631,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 44,
+          "y": 33,
+          "w": 705,
+          "h": 283
+        },
+        "build": {
+          "x": 44,
+          "y": 33,
+          "w": 705,
+          "h": 284
+        }
+      }
+    },
+    {
+      "id": "category-donut",
+      "x": 0.0874,
+      "y": 0.1754,
+      "w": 0.2124,
+      "h": 0.0984,
+      "kind": "control",
+      "score": {
+        "overall": 0.9917,
+        "structure": 0.9969,
+        "color": 0.9918,
+        "colorIntersection": 0.9861,
+        "paletteMatch": 0.9949,
+        "detail": 0.9796,
+        "detailRaw": 0.9796,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 11,
+          "y": 8,
+          "w": 164,
+          "h": 166
+        },
+        "build": {
+          "x": 11,
+          "y": 8,
+          "w": 164,
+          "h": 166
+        }
+      }
+    },
+    {
+      "id": "legend",
+      "x": 0.3,
+      "y": 0.1,
+      "w": 0.7,
+      "h": 0.2,
+      "kind": "text",
+      "score": {
+        "overall": 0.979,
+        "structure": 0.9961,
+        "color": 0.9858,
+        "colorIntersection": 0.9721,
+        "paletteMatch": 0.9932,
+        "detail": 0.9712,
+        "detailRaw": 0.9712,
+        "detailAdded": 0,
+        "bands": 0.8889
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 139,
+          "w": 502,
+          "h": 177
+        },
+        "build": {
+          "x": 0,
+          "y": 139,
+          "w": 502,
+          "h": 178
+        }
+      }
+    },
+    {
+      "id": "category-chips",
+      "x": 0,
+      "y": 0.3,
+      "w": 1,
+      "h": 0.1,
+      "kind": "control",
+      "score": {
+        "overall": 0.9838,
+        "structure": 0.9974,
+        "color": 0.9906,
+        "colorIntersection": 0.9793,
+        "paletteMatch": 0.9967,
+        "detail": 0.941,
+        "detailRaw": 0.9515,
+        "detailAdded": 0.0208,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 40,
+          "y": 30,
+          "w": 743,
+          "h": 141
+        },
+        "build": {
+          "x": 40,
+          "y": 30,
+          "w": 743,
+          "h": 142
+        }
+      }
+    },
+    {
+      "id": "recent-header",
+      "x": 0,
+      "y": 0.3,
+      "w": 0.4,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.9718,
+        "structure": 0.9858,
+        "color": 0.9885,
+        "colorIntersection": 0.9778,
+        "paletteMatch": 0.9943,
+        "detail": 0.9547,
+        "detailRaw": 0.9651,
+        "detailAdded": 0.0208,
+        "bands": 0.8857
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 40,
+          "y": 30,
+          "w": 288,
+          "h": 136
+        },
+        "build": {
+          "x": 40,
+          "y": 30,
+          "w": 288,
+          "h": 137
+        }
+      }
+    },
+    {
+      "id": "recent-count",
+      "x": 0.6,
+      "y": 0.3,
+      "w": 0.4,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.9711,
+        "structure": 0.9922,
+        "color": 0.989,
+        "colorIntersection": 0.9799,
+        "paletteMatch": 0.9939,
+        "detail": 0.9182,
+        "detailRaw": 0.9338,
+        "detailAdded": 0.0313,
+        "bands": 0.9
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 50,
+          "w": 289,
+          "h": 121
+        },
+        "build": {
+          "x": 0,
+          "y": 51,
+          "w": 289,
+          "h": 121
+        }
+      }
+    },
+    {
+      "id": "expense-list",
+      "x": 0.0947,
+      "y": 0.4885,
+      "w": 0.3714,
+      "h": 0.1213,
+      "kind": "control",
+      "score": {
+        "overall": 0.9738,
+        "structure": 0.9828,
+        "color": 0.9704,
+        "colorIntersection": 0.937,
+        "paletteMatch": 0.9883,
+        "detail": 0.9597,
+        "detailRaw": 0.9597,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 13,
+          "y": 17,
+          "w": 275,
+          "h": 189
+        },
+        "build": {
+          "x": 13,
+          "y": 17,
+          "w": 275,
+          "h": 190
+        }
+      }
+    },
+    {
+      "id": "add-button",
+      "x": 0.568,
+      "y": 0.9066,
+      "w": 0.3932,
+      "h": 0.0689,
+      "kind": "control",
+      "score": {
+        "overall": 0.7563,
+        "structure": 0.8433,
+        "color": 0.933,
+        "colorIntersection": 0.8759,
+        "paletteMatch": 0.9638,
+        "detail": 0.2516,
+        "detailRaw": 0.3557,
+        "detailAdded": 0.2083,
+        "bands": 0.2333
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 324,
+          "h": 126
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 324,
+          "h": 126
+        }
+      }
+    }
+  ],
+  "files": {
+    "sideBySide": "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/side-by-side.png",
+    "heatmap": "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/heatmap.png",
+    "regionFiles": [
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/month-label.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/month-total.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/month-delta.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/summary-card.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/category-donut.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/legend.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/category-chips.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/recent-header.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/recent-count.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/expense-list.png",
+      "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/regions/add-button.png"
+    ]
+  }
+}

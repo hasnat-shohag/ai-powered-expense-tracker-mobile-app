@@ -1,28 +1,36 @@
+import { useCallback } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useAppFonts } from "./src/theme/fonts";
+import { colors } from "./src/theme";
+import { HomeScreen } from "./src/screens/home/HomeScreen";
 
 /**
- * Placeholder shell. Real screens (Capture, Draft review, List, Edit) are built
- * in Phases 7–12, after the `/impeccable` design phase (Phase 6) sets the visual
- * direction, design system, and approved mockups.
+ * App shell: loads the bilingual fonts, then renders the Home screen. The local
+ * SQLite database migrates lazily on first query (see db/database.ts), so no
+ * explicit init step is needed here. The capture/draft flow (FAB target) lands
+ * in a later phase; for now the FAB acknowledges the tap.
  */
 export function App() {
+  const [fontsLoaded, fontError] = useAppFonts();
+
+  const onAddExpense = useCallback(() => {
+    Alert.alert("Add expense", "The capture flow arrives in a later phase.");
+  }, []);
+
+  if (!fontsLoaded && !fontError) {
+    return <View style={styles.splash} />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Expense Tracker</Text>
-      <Text style={styles.subtitle}>Scaffold ready — UI awaits the design phase.</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <StatusBar style="dark" />
+      <HomeScreen onAddExpense={onAddExpense} />
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: { fontSize: 22, fontWeight: "600" },
-  subtitle: { marginTop: 8, opacity: 0.6, textAlign: "center" },
+  splash: { flex: 1, backgroundColor: colors.ground },
 });

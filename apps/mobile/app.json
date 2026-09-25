@@ -9,14 +9,21 @@
     "newArchEnabled": true,
     "android": {
       "package": "com.personal.expensetracker",
-      "permissions": ["RECORD_AUDIO", "CAMERA"]
+      "permissions": [
+        "RECORD_AUDIO",
+        "CAMERA"
+      ]
     },
     "plugins": [
       "expo-sqlite",
-      "expo-speech-recognition"
+      "expo-speech-recognition",
+      "expo-secure-store",
+      "expo-image-picker",
+      "expo-font"
     ],
     "extra": {
-      "eas": {}
+      "eas": {},
+      "apiBaseUrl": "https://REPLACE-WITH-YOUR-VERCEL-DEPLOYMENT.vercel.app"
     }
   }
 }
