@@ -23,7 +23,7 @@
     ],
     "extra": {
       "eas": {},
-      "apiBaseUrl": "https://REPLACE-WITH-YOUR-VERCEL-DEPLOYMENT.vercel.app"
+      "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app"
     }
   }
 }
