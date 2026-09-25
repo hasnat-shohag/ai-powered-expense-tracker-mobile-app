@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.turbo/
+.vercel/
+*.tsbuildinfo
+
+# Expo
+.expo/
+apps/mobile/android/
+apps/mobile/ios/
+*.apk
+*.aab
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Drizzle
+apps/api/drizzle/
+!apps/api/drizzle/meta

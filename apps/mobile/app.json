@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Expense Tracker",
+    "slug": "expense-tracker",
+    "scheme": "expensetracker",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.personal.expensetracker",
+      "permissions": ["RECORD_AUDIO", "CAMERA"]
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-speech-recognition"
+    ],
+    "extra": {
+      "eas": {}
+    }
+  }
+}

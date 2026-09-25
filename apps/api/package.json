@@ -1,0 +1,29 @@
+{
+  "name": "@expense/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "echo \"no lint\" && exit 0",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@expense/shared": "workspace:*",
+    "@neondatabase/serverless": "^0.10.4",
+    "drizzle-orm": "^0.38.4",
+    "uuid": "^11.0.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.738.0",
+    "@vercel/node": "^5.0.2",
+    "drizzle-kit": "^0.30.2",
+    "vitest": "^3.0.5"
+  }
+}
