@@ -1,0 +1,19 @@
+Phone app screen, portrait 9:16 aspect ratio, full-bleed, flat-on view, no device frame, no browser chrome.
+
+A personal expense tracker's CAPTURE screen, rendered entirely as a Bangladeshi taka banknote intaglio engraving.
+
+The whole screen is one continuous engraving. Ground: warm cotton-rag paper colour #EFE3CE, covered edge to edge in fine engraved line work in burnt umber ink #2B1D12 — guilloche rosettes, lathe-work borders, and a tight hatched security-thread band running vertically down one side.
+
+Dominating the upper two thirds: ONE enormous engraved denomination numeral "250" with a small taka sign ৳ before it, set in a heavy condensed engraved serif with fine hatch shading, sitting inside a large guilloche rosette of concentric hatched rings in tint #8A6A3E that fans outward from the numeral.
+
+Directly beneath the numeral, one line of tiny engraved microtext reads "LUNCH · BIRYANI HOUSE · 25 SEP".
+
+Along the foot of the screen: three equal engraved seals in a row, each a small bordered plate in the same line work, labelled in small capitals "TYPE", "SPEAK", "PHOTOGRAPH".
+
+In the top corner, a tiny engraved serial number "000481".
+
+Exactly one small mark in vermilion #C8352A appears on the whole screen, and nothing else uses that colour.
+
+Palette is strictly: paper #EFE3CE, umber ink #2B1D12, guilloche tint #8A6A3E, taka green #14503C used only in the security thread, and the single vermilion #C8352A.
+
+No drop shadows. No rounded cards. No gradients. No glassmorphism. No photographic lighting. Only engraved line, hatch, rule, and plate. Crisp, dense, high-craft, like a banknote printed flat and photographed straight on.

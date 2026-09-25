@@ -1,0 +1,17 @@
+Phone app screen, portrait 9:16 aspect ratio, flat-on view, no device frame, no browser chrome.
+
+A personal expense tracker's EXPENSE LIST screen, drawn as an opened Bengali household ledger — a hisab boi / khata.
+
+Left edge: a broad band of deep red cloth binding #8E2B23, with visible woven texture and a stitched spine, running the full height, roughly one eighth of the screen width.
+
+The rest of the screen is aged cream ledger paper #EDE3D0, ruled with fine red #B03A2E rules and one blue-grey #1E2A3A margin rule. Four ruled columns with heads in both Bangla script and small English capitals: তারিখ DATE, বিবরণ PARTICULARS, টাকা AMOUNT, and a narrow tick column.
+
+Six entries fill the rows in fountain-pen blue-black ink #1E2A3A, in a slightly irregular hand: "রিকশা ভাড়া · Rickshaw fare", "দুপুরের খাবার · Lunch", "বাজার · Vegetables", "bKash cash out", "চা · Tea", "ফার্মেসি · Pharmacy". Amounts are right-aligned in a neat column of figures, each prefixed with ৳.
+
+At the foot of the page, closed off by a double red rule, the month's running total in heavier near-black ink #2A2118, set noticeably larger than any row: "মোট · TOTAL ৳ 24,850".
+
+A small red cloth thumb-index tab protrudes from the right edge.
+
+Red is the dominant ink here — the binding, every column rule, the margin, the heads and the total rule are all red; the paper is only the ground beneath it.
+
+Flat, even, paper-flat lighting. No drop shadows, no rounded cards, no gradients, no app chrome, no photographic desk scene.

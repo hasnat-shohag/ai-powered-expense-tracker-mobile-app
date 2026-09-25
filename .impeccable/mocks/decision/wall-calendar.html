@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Archivo+Narrow:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --news:#F7F6F0;
+    --grid:#D9D4C6;
+    --ink:#191A1C;
+    --dim:#7A7568;
+    --red:#B3271E;
+    --blue:#1E4E79;
+    --blank:#F0EEE7;
+    --sel:#FFF3EA;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:412px;height:915px;overflow:hidden}
+  body{background:var(--news);color:var(--ink);font-family:'Roboto Mono',monospace;position:relative}
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:30;
+    background:radial-gradient(rgba(25,26,28,.07) .7px, transparent .8px) 0 0/3px 3px;
+  }
+  .bn{font-family:'Noto Sans Bengali',sans-serif}
+
+  /* ---- masthead ---- */
+  .mast{
+    height:112px;padding:16px 22px 0;position:relative;
+    border-bottom:1.6px solid var(--ink);
+    background:
+      radial-gradient(rgba(25,26,28,.13) .8px, transparent .9px) 0 0/4px 4px,
+      linear-gradient(180deg, rgba(179,39,30,.05), rgba(179,39,30,0));
+  }
+  .mast .row{display:flex;align-items:flex-start;justify-content:space-between}
+  .mast h1{font-size:26px;font-weight:600;letter-spacing:.01em;line-height:1.15}
+  .mast .en{font-family:'Archivo Narrow',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+  .mtd{border:1.6px solid var(--red);padding:7px 11px 8px;text-align:right;min-width:126px}
+  .mtd .k{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+  .mtd .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
+  .mtd .v small{font-size:11px;font-weight:500;margin-right:2px}
+
+  /* ---- weekday rule ---- */
+  .wd{display:grid;grid-template-columns:repeat(7,1fr);padding:7px 0 6px;border-bottom:1.6px solid var(--ink)}
+  .wd div{text-align:center;font-size:10.5px;font-weight:500;color:var(--dim)}
+  .wd div.red{color:var(--red)}
+
+  /* ---- grid ---- */
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);margin:0 22px;border-left:1px solid var(--grid);border-top:1px solid var(--grid)}
+  .cell{
+    height:84px;border-right:1px solid var(--grid);border-bottom:1px solid var(--grid);
+    position:relative;padding:6px 7px;
+  }
+  .cell .d{font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums}
+  .cell .d.red{color:var(--red)}
+  .cell .amt{position:absolute;right:7px;bottom:6px;font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums}
+  .cell .amt small{font-size:8.5px;font-weight:400;margin-right:1px;color:var(--dim)}
+  .cell .none{position:absolute;right:8px;bottom:8px;font-size:10px;color:#BDB8AA}
+  .cell.blank{background:var(--blank)}
+  .cell.sel{background:var(--sel);box-shadow:inset 0 0 0 1.8px var(--red)}
+  .cell.sel .d{color:var(--red);font-weight:700}
+
+  /* ---- day panel ---- */
+  .day{margin:16px 22px 0;border-top:2px solid var(--ink);padding-top:11px}
+  .day .hd{display:flex;align-items:baseline;justify-content:space-between}
+  .day .hd .t{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+  .day .hd .t span.bn{text-transform:none;letter-spacing:0;font-size:12px;margin-left:5px}
+  .day .hd .s{font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .day .hd .s small{font-size:9px;font-weight:500;margin-right:1px}
+  .er{display:flex;align-items:flex-end;padding:9px 0 8px;border-bottom:1px dotted #C8C2B2}
+  .er .n{font-size:12px;font-weight:500}
+  .er .n em{display:block;font-style:normal;font-weight:400;font-size:8.5px;letter-spacing:.14em;color:var(--dim);margin-top:2px}
+  .er .lead{flex:1;border-bottom:1px dotted #CFC9BB;margin:0 8px 3px;min-width:12px}
+  .er .a{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums}
+
+  /* ---- category chips ---- */
+  .chips{display:flex;gap:7px;margin:12px 22px 0}
+  .chip{border:1px solid var(--grid);padding:5px 9px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  .chip b{color:var(--ink);font-weight:500;letter-spacing:0;font-variant-numeric:tabular-nums;margin-left:5px}
+  .chip .bn{margin-left:5px;color:var(--ink)}
+
+  /* ---- nav ---- */
+  .nav{
+    position:absolute;left:0;right:0;bottom:0;height:64px;background:var(--news);
+    border-top:1.6px solid var(--ink);display:grid;grid-template-columns:repeat(5,1fr);
+  }
+  .nav div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--dim)}
+  .nav svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5}
+  .nav span{font-size:7px;letter-spacing:.16em;text-transform:uppercase}
+  .nav .on{color:var(--red)}
+  .nav .on::after{content:"";position:absolute;bottom:0;width:42px;height:2.5px;background:var(--red)}
+</style>
+</head>
+<body>
+  <div class="mast">
+    <div class="row">
+      <div>
+        <h1 class="bn">সেপ্টেম্বর ২০২৬</h1>
+        <div class="en">September 2026 · Dhaka</div>
+      </div>
+      <div class="mtd">
+        <div class="k">Month to date</div>
+        <div class="v"><small class="bn">৳</small>7,225</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wd">
+    <div class="bn">রবি</div><div class="bn">সোম</div><div class="bn">মঙ্গল</div><div class="bn">বুধ</div><div class="bn">বৃহ</div><div class="bn red">শুক্র</div><div class="bn">শনি</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="day">
+    <div class="hd">
+      <div class="t">25 Sep 2026<span class="bn">শুক্রবার</span></div>
+      <div class="s"><small class="bn">৳</small>290</div>
+    </div>
+    <div class="er"><div class="n">Lunch · Biryani House<em>25 SEP · CASH</em></div><div class="lead"></div><div class="a">250</div></div>
+    <div class="er"><div class="n">Rickshaw fare<em>25 SEP · CASH</em></div><div class="lead"></div><div class="a">40</div></div>
+  </div>
+
+  <div class="chips">
+    <div class="chip">Food<b>3,120</b></div>
+    <div class="chip">Transport<b>1,265</b></div>
+    <div class="chip">Bills<b>1,000</b></div>
+    <div class="chip">Bazaar<b>1,840</b></div>
+  </div>
+
+  <div class="nav">
+    <div><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Capture</span></div>
+    <div class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 5V3M16 5V3"/></svg><span>Calendar</span></div>
+    <div><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Day</span></div>
+    <div><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Month</span></div>
+    <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Settings</span></div>
+  </div>
+
+<script>
+(function(){
+  // Sep 2026: 1 Sep is a Tuesday. Sunday-first grid, Fridays (4,11,18,25) in red.
+  var spend = {2:120,3:45,5:1820,6:60,7:30,9:500,10:250,12:640,13:80,14:25,16:310,17:45,18:100,20:45,21:60,22:145,23:340,24:2320,25:290};
+  var host = document.getElementById('grid');
+  var cells = 35, lead = 2; // Sun, Mon blank before Tue 1
+  for (var i = 0; i < cells; i++){
+    var day = i - lead + 1;
+    var c = document.createElement('div');
+    c.className = 'cell';
+    if (day < 1 || day > 30){
+      c.className = 'cell blank';
+    } else {
+      var fri = (day % 7) === 4;
+      var d = document.createElement('div');
+      d.className = 'd' + (fri ? ' red' : '');
+      d.textContent = day < 10 ? '0' + day : String(day);
+      c.appendChild(d);
+      if (spend[day]){
+        var a = document.createElement('div');
+        a.className = 'amt';
+        a.innerHTML = '<small>৳</small>' + spend[day].toLocaleString('en-US');
+        c.appendChild(a);
+      } else {
+        var n = document.createElement('div');
+        n.className = 'none';
+        n.textContent = '—';
+        c.appendChild(n);
+      }
+      if (day === 25) c.className = 'cell sel';
+    }
+    host.appendChild(c);
+  }
+})();
+</script>
+</body>
+</html>

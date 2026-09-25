@@ -196,7 +196,24 @@ EXPO_PUBLIC_API_URL=     # deployed Vercel backend URL
 
 ## Implementation Roadmap
 
-Execute in order. Each phase ends in a runnable/verifiable state.
+Execute in order. Each phase ends in a runnable/verifiable state. Status is tracked in the
+table below; the phase list itself is the plan of record.
+
+| # | Phase | Status |
+|---|-------|--------|
+| 1 | Scaffold | **Done** |
+| 2 | Shared schema | **Done** |
+| 3 | Backend: DB + auth | **Done** |
+| 4 | Backend: `/parse` | **Done** |
+| 5 | Backend: `/sync` | **Done** |
+| 6 | Design (`/impeccable`) | **In progress** — direction not yet locked |
+| 7 | Mobile: local core | Not started |
+| 8 | Mobile: capture | Not started |
+| 9 | Mobile: drain + draft review | Not started |
+| 10 | Mobile: sync engine | Not started |
+| 11 | Mobile: CRUD + analytics | Not started |
+| 12 | Polish + tests | Not started |
+| 13 | Ship | Not started |
 
 1. **Scaffold** — pnpm + Turborepo workspace; `apps/mobile` (Expo), `apps/api` (Vercel), `packages/shared`. Shared TypeScript config, lint.
 2. **Shared schema** — Zod expense schema + TS types + Drizzle table in `packages/shared`. This is the contract both sides import.
@@ -211,6 +228,44 @@ Execute in order. Each phase ends in a runnable/verifiable state.
 11. **Mobile: CRUD + analytics** — list, edit, soft-delete (offline-first), month total + per-category breakdown.
 12. **Polish + tests** — implement approved design, RNTL + Maestro suites, error/offline/empty states.
 13. **Ship** — EAS internal build, side-load APK.
+
+### Phase 6 state (design)
+
+Build path is **comp**: mockup images are the bar, then Phases 7–12 build to match. Platform is
+`android` (Material Design 3 governs structure, navigation, and components); mode is `Operate`.
+Design artifacts live in `.impeccable/` and are not committed yet.
+
+What exists:
+
+- `PRODUCT.md` — product schema, brand commitments, evidence limits, five product principles,
+  accessibility requirements.
+- `.impeccable/mocks/decision/` — comps at 412×915, hand-authored HTML screenshotted with headless
+  Chrome (`--headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2
+  --window-size=412,915 --virtual-time-budget=9000`). Renders are byte-deterministic.
+  First hand: `assigned.*`, `model-pick.*`, `challenger-jackfield.*`, `canon.*`.
+  Safer-register re-roll hand: `till-roll.*`, `pay-in-slip.*`, `wall-calendar.*`,
+  `canon-vs-competitors.*`.
+- `.impeccable/decision.json` — the live decision payload, served on a local page under key
+  `929c618d`.
+
+What is next in the design phase:
+
+1. ~~Rewrite `.impeccable/decision.json` for the safer round.~~ **Done** — three full cards (The
+   Till Roll, The Pay-in Slip, The Wall Calendar), each with an honest risk line, plus a `canonCard`
+   pointing at `canon-vs-competitors.png`. `reroll.registers`, `buildPath`, `canon`, and `steer` are
+   unchanged.
+2. **Serve and collect** — `impeccable serve-question --update --key 929c618d --payload
+   .impeccable/decision.json`, then `impeccable serve-question --wait --key 929c618d` (repeat while
+   it exits 3; another `reroll` answer means re-running `concept-seed --reroll <n+1>` with the newly
+   steered register, then rebuilding the payload). The direction seed is `concept-seed --from
+   a320ac95 --scope direction --mode operate`.
+3. Emit the one telemetry ping for the resolved round: `concept-seed --kind
+   <assigned|pick|challenger|canon> --from a320ac95 --scope direction --mode operate --register
+   safer`.
+4. Record the locked direction contract in the surface brief, load
+   `reference/craft-floor.md`, then build Phases 7–12 against the approved comps.
+5. After the built world exists: `impeccable-finish-reviewer`, then `impeccable-documenter` to
+   write `DESIGN.md` + sidecar.
 
 ## Prerequisites From You
 
