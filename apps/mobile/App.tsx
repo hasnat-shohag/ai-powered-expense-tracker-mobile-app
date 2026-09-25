@@ -1,28 +1,79 @@
+import { useCallback, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import type { Expense } from "@expense/shared";
+import { useAppFonts } from "./src/theme/fonts";
+import { colors } from "./src/theme";
+import { HomeScreen } from "./src/screens/home/HomeScreen";
+import { CaptureScreen } from "./src/screens/capture/CaptureScreen";
+import { DraftScreen } from "./src/screens/draft/DraftScreen";
+import { EditExpenseScreen } from "./src/screens/edit/EditExpenseScreen";
+import { SettingsScreen } from "./src/screens/settings/SettingsScreen";
+import type { Draft } from "./src/drain";
+
+/** The app is a small stack: Home is the root; capture/draft/edit push over it. */
+type Route =
+  | { name: "home" }
+  | { name: "capture" }
+  | { name: "draft"; draft: Draft }
+  | { name: "edit"; expense: Expense }
+  | { name: "settings" };
 
 /**
- * Placeholder shell. Real screens (Capture, Draft review, List, Edit) are built
- * in Phases 7–12, after the `/impeccable` design phase (Phase 6) sets the visual
- * direction, design system, and approved mockups.
+ * App shell: loads the bilingual fonts, then drives a tiny hand-rolled screen
+ * stack (no navigation dep — four screens, one level deep). Home reads local
+ * SQLite; returning from any child bumps a reload token so the ledger reflects
+ * the new/edited rows. The DB migrates lazily on first query (db/database.ts).
  */
 export function App() {
+  const [fontsLoaded, fontError] = useAppFonts();
+  const [route, setRoute] = useState<Route>({ name: "home" });
+  const [reloadToken, setReloadToken] = useState(0);
+
+  const goHome = useCallback(() => {
+    setReloadToken((n) => n + 1);
+    setRoute({ name: "home" });
+  }, []);
+
+  if (!fontsLoaded && !fontError) {
+    return <View style={styles.splash} />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Expense Tracker</Text>
-      <Text style={styles.subtitle}>Scaffold ready — UI awaits the design phase.</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <StatusBar style="dark" />
+      {route.name === "home" && (
+        <HomeScreen
+          reloadToken={reloadToken}
+          onAddExpense={() => setRoute({ name: "capture" })}
+          onEditExpense={(expense) => setRoute({ name: "edit", expense })}
+          onOpenSettings={() => setRoute({ name: "settings" })}
+        />
+      )}
+      {route.name === "capture" && (
+        <CaptureScreen
+          onClose={() => setRoute({ name: "home" })}
+          onDraftReady={(draft) => setRoute({ name: "draft", draft })}
+        />
+      )}
+      {route.name === "draft" && (
+        <DraftScreen
+          draft={route.draft}
+          onCancel={() => setRoute({ name: "home" })}
+          onSaved={goHome}
+        />
+      )}
+      {route.name === "edit" && (
+        <EditExpenseScreen expense={route.expense} onClose={goHome} />
+      )}
+      {route.name === "settings" && (
+        <SettingsScreen onClose={() => setRoute({ name: "home" })} />
+      )}
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: { fontSize: 22, fontWeight: "600" },
-  subtitle: { marginTop: 8, opacity: 0.6, textAlign: "center" },
+  splash: { flex: 1, backgroundColor: colors.ground },
 });

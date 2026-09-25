@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Archivo+Narrow:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --form:#FBFAF5;
+    --rule:#1E3A6E;
+    --hair:#93A6C6;
+    --ink:#12161C;
+    --dim:#6E7787;
+    --band:#E4EAF3;
+    --fill:#F1F4F9;
+    --stamp:#A32A20;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:412px;height:915px;overflow:hidden}
+  body{background:var(--form);color:var(--ink);font-family:'Roboto Mono',monospace;position:relative}
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:30;
+    background:repeating-linear-gradient(0deg, rgba(18,22,28,.028) 0 1px, transparent 1px 4px);
+  }
+  .bn{font-family:'Noto Sans Bengali',sans-serif;font-weight:500}
+
+  /* ---- bound stub ---- */
+  .stub{
+    height:48px;background:var(--band);border-bottom:1.5px dashed var(--rule);
+    display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+  }
+  .stub span{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rule)}
+  .stub .no{font-weight:700}
+
+  /* ---- header ---- */
+  .head{padding:20px 22px 0}
+  .head .row{display:flex;align-items:baseline;justify-content:space-between}
+  .head h1{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:31px;letter-spacing:.03em;text-transform:uppercase}
+  .head .bn{font-size:15px;color:var(--stamp);font-weight:500}
+  .head .sub{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+  .dbl{border-top:1.8px solid var(--rule);box-shadow:0 3px 0 -1.4px var(--rule);margin-top:11px}
+
+  /* ---- boxed form ---- */
+  .form{padding:24px 22px 0;display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}
+  .box{border:1px solid var(--rule);background:#FDFCF8;position:relative;padding:14px 10px 9px;min-height:52px}
+  .box.wide{grid-column:1 / span 2}
+  .box .lb{
+    position:absolute;top:-7px;left:8px;background:var(--form);padding:0 5px;
+    font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rule);
+  }
+  .box .v{font-size:12.5px;font-weight:500;letter-spacing:.03em}
+  .box .v.big{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:0}
+  .box .v.big small{font-size:13px;font-weight:500;margin-right:3px}
+  .box .v.words{font-size:10.5px;font-weight:400;letter-spacing:.04em;color:#2B3442}
+  .chks{display:flex;gap:12px;align-items:center;height:22px}
+  .chk{display:flex;align-items:center;gap:5px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  .sq{width:11px;height:11px;border:1.3px solid var(--rule);display:inline-block;position:relative}
+  .chk.on .sq::after{content:"";position:absolute;inset:2px;background:var(--rule)}
+  .chk.on{color:var(--rule);font-weight:500}
+
+  /* ---- entries sheet ---- */
+  .sheet{margin:22px 22px 0;border:1px solid var(--rule);position:relative}
+  .srow{display:grid;grid-template-columns:60px 1fr 64px 76px}
+  .srow > div{padding:12px 9px;border-left:1px solid var(--hair);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .srow > div:first-child{border-left:0}
+  .srow.hd > div{
+    background:var(--band);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--rule);
+    padding:7px 9px;border-bottom:1px solid var(--rule);
+  }
+  .srow + .srow > div{border-top:1px solid var(--hair)}
+  .srow .d{font-size:10px;color:var(--dim);letter-spacing:.04em}
+  .srow .p{font-size:11.5px;font-weight:500}
+  .srow .m{font-size:10px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+  .srow .a{text-align:right;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums}
+  .srow.tt > div{border-top:1.8px solid var(--rule);background:var(--fill);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--rule);padding:12px 9px}
+  .srow.tt .a{font-size:16px;font-weight:700;letter-spacing:0;color:var(--ink)}
+  .srow.tt .a small{font-size:11px;font-weight:500;margin-right:2px}
+
+  /* ---- rubber stamp ---- */
+  .stamp{
+    position:absolute;right:-6px;top:132px;width:134px;height:64px;border:2.2px solid var(--stamp);
+    border-radius:50%;transform:rotate(-9deg);opacity:.82;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  }
+  .stamp .a{font-size:13px;font-weight:700;letter-spacing:.2em;color:var(--stamp)}
+  .stamp .b{font-size:9px;letter-spacing:.14em;color:var(--stamp)}
+
+  /* ---- foot + nav ---- */
+  .foot{display:flex;justify-content:space-between;padding:14px 22px 0}
+  .foot span{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .nav{
+    position:absolute;left:0;right:0;bottom:0;height:64px;background:var(--band);
+    border-top:1.8px solid var(--rule);display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;
+  }
+  .nav div{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    border-left:1px solid var(--hair);
+    font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rule);
+  }
+  .nav div:first-child{border-left:0}
+  .nav svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6}
+  .nav .on{background:var(--rule);color:#fff;font-weight:500}
+</style>
+</head>
+<body>
+  <div class="stub">
+    <span class="no">Slip No. 000481</span>
+    <span>Personal · Dhaka</span>
+  </div>
+
+  <div class="head">
+    <div class="row">
+      <h1>Pay-in Slip</h1>
+      <span class="bn">জমার স্লিপ</span>
+    </div>
+    <div class="sub">One entry per line · sheet 09 · running</div>
+    <div class="dbl"></div>
+  </div>
+
+  <div class="form">
+    <div class="box">
+      <span class="lb">Date</span>
+      <div class="v">25 SEP 2026</div>
+    </div>
+    <div class="box">
+      <span class="lb">Method</span>
+      <div class="chks">
+        <span class="chk on"><i class="sq"></i>Cash</span>
+        <span class="chk"><i class="sq"></i>bKash</span>
+        <span class="chk"><i class="sq"></i>Card</span>
+      </div>
+    </div>
+    <div class="box wide">
+      <span class="lb">Particulars</span>
+      <div class="v">Lunch · Biryani House</div>
+    </div>
+    <div class="box">
+      <span class="lb">Amount in figures</span>
+      <div class="v big"><small class="bn">৳</small>250.00</div>
+    </div>
+    <div class="box">
+      <span class="lb">Amount in words</span>
+      <div class="v words">Two hundred fifty taka only</div>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <div class="srow hd"><div>Date</div><div>Particulars</div><div>Method</div><div style="text-align:right">Amount</div></div>
+    <div class="srow"><div class="d">25 SEP</div><div class="p">Lunch · Biryani House</div><div class="m">Cash</div><div class="a">250.00</div></div>
+    <div class="srow"><div class="d">25 SEP</div><div class="p">Rickshaw fare</div><div class="m">Cash</div><div class="a">40.00</div></div>
+    <div class="srow"><div class="d">24 SEP</div><div class="p">Vegetable bazaar</div><div class="m">Cash</div><div class="a">1,820.00</div></div>
+    <div class="srow"><div class="d">24 SEP</div><div class="p">bKash cash out</div><div class="m">Wallet</div><div class="a">500.00</div></div>
+    <div class="srow"><div class="d">23 SEP</div><div class="p">Tea stall</div><div class="m">Cash</div><div class="a">30.00</div></div>
+    <div class="srow"><div class="d">23 SEP</div><div class="p">Lazz Pharma</div><div class="m">Card</div><div class="a">310.00</div></div>
+    <div class="srow tt"><div>06 entries</div><div></div><div></div><div class="a"><small class="bn">৳</small>2,950.00</div></div>
+    <div class="stamp"><span class="a">PERSONAL</span><span class="b">26 SEP 2026</span></div>
+  </div>
+
+  <div class="foot">
+    <span>Sheet 09 · running</span>
+    <span>Page 6 of 6</span>
+  </div>
+
+  <div class="nav">
+    <div class="on"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New entry</div>
+    <div><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Sheet</div>
+    <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 5V3M16 5V3"/></svg>Month</div>
+    <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>Settings</div>
+  </div>
+</body>
+</html>

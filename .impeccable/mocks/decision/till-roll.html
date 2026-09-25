@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Archivo+Narrow:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bench:#DCD7CB;
+    --slot:#C6C0B2;
+    --paper:#FFFDF7;
+    --ink:#1C1B18;
+    --dim:#736E63;
+    --dot:#CBC5B6;
+    --red:#A3261B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:412px;height:915px;overflow:hidden}
+  body{background:var(--bench);color:var(--ink);font-family:'Roboto Mono',monospace;position:relative}
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:30;
+    background:radial-gradient(rgba(28,27,24,.055) .6px, transparent .75px) 0 0/4px 4px;
+  }
+  .bn{font-family:'Noto Sans Bengali',sans-serif;font-weight:500}
+
+  /* ---- printer head ---- */
+  .slotbar{
+    position:absolute;left:0;right:0;top:0;height:76px;background:var(--slot);
+    border-bottom:1px solid rgba(28,27,24,.25);
+    display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:8;
+  }
+  .brand{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:14px;letter-spacing:.26em;text-transform:uppercase}
+  .month{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-left:14px}
+  .menu{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .menu i{display:block;width:18px;height:1.6px;background:var(--ink)}
+  .menu i:nth-child(2){width:12px}
+  .slotline{position:absolute;left:38px;width:336px;top:76px;height:4px;background:#2A2825;z-index:9}
+
+  /* ---- tape ---- */
+  .tape{
+    position:absolute;left:38px;width:336px;top:80px;background:var(--paper);
+    padding:20px 20px 0;box-shadow:0 12px 26px rgba(28,27,24,.24);z-index:5;
+  }
+  .th{text-align:center;padding-bottom:11px}
+  .th .l1{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:17px;letter-spacing:.28em;text-transform:uppercase}
+  .th .l2{font-size:9px;letter-spacing:.15em;color:var(--dim);margin-top:5px}
+  .perf{border-top:1.5px dashed #B7B1A2}
+  .perf.thin{border-top:1px dashed #CFC9BB}
+  .cols{display:flex;justify-content:space-between;font-size:8.5px;letter-spacing:.2em;color:var(--dim);padding:7px 0}
+  .r{display:flex;align-items:flex-end;padding:6px 0}
+  .r .n{font-size:11.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .r .n em{display:block;font-style:normal;font-weight:400;font-size:8px;letter-spacing:.14em;color:var(--dim);margin-top:3px}
+  .r .lead{flex:1;min-width:10px;border-bottom:1px dotted var(--dot);margin:0 7px 4px}
+  .r .a{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rule{border-top:1.5px solid var(--ink);margin-top:7px}
+  .rule.dbl{border-top:1.5px solid var(--ink);box-shadow:0 3px 0 -1.5px var(--ink)}
+  .tot{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0 7px}
+  .tot .k{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:14px;letter-spacing:.22em}
+  .tot .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+  .tot .v small{font-size:12px;font-weight:500;margin-right:2px}
+  .meta{text-align:center;font-size:8px;letter-spacing:.18em;color:var(--dim);padding:9px 0 11px}
+  .bars{display:flex;align-items:flex-end;gap:2px;height:44px;padding:0 1px}
+  .bars i{flex:1;display:block;background:var(--ink)}
+  .bars i.zero{background:var(--dot);height:1px !important}
+  .bars i.now{background:var(--red)}
+  .barcap{text-align:center;font-size:7.5px;letter-spacing:.17em;color:var(--dim);padding:7px 0 12px}
+  .torn{display:block;width:376px;margin-left:-20px;height:10px}
+
+  /* ---- control deck ---- */
+  .deck{
+    position:absolute;left:0;right:0;bottom:0;height:106px;background:var(--slot);
+    border-top:1px solid rgba(28,27,24,.25);z-index:8;
+  }
+  .deck .cap{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);text-align:center;padding:12px 0 9px}
+  .keys{display:flex;gap:10px;padding:0 20px}
+  .key{
+    flex:1;height:56px;border:1.6px solid var(--ink);background:var(--paper);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  }
+  .key svg{width:19px;height:19px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:square}
+  .key span{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase}
+  .key.on{background:var(--ink)}
+  .key.on svg{stroke:var(--paper)}
+  .key.on span{color:var(--paper)}
+</style>
+</head>
+<body>
+  <div class="slotbar">
+    <div><span class="brand">Personal Ledger</span><span class="month">Sep 2026</span></div>
+    <div class="menu"><i></i><i></i><i></i></div>
+  </div>
+  <div class="slotline"></div>
+
+  <div class="tape">
+    <div class="th">
+      <div class="l1">Personal Ledger</div>
+      <div class="l2">26 SEP 2026 · 10:41 · DHAKA</div>
+    </div>
+    <div class="perf"></div>
+    <div class="cols"><span>ITEM</span><span>AMOUNT</span></div>
+    <div class="perf thin"></div>
+
+    <div class="r"><div class="n">Rickshaw fare<em>25 SEP · CASH</em></div><div class="lead"></div><div class="a">40.00</div></div>
+    <div class="r"><div class="n">Lunch · Biryani House<em>25 SEP · CASH</em></div><div class="lead"></div><div class="a">250.00</div></div>
+    <div class="r"><div class="n">Vegetable bazaar<em>KARWAN BAZAR · 24 SEP · CASH</em></div><div class="lead"></div><div class="a">1,820.00</div></div>
+    <div class="r"><div class="n">bKash cash out<em>24 SEP · WALLET</em></div><div class="lead"></div><div class="a">500.00</div></div>
+    <div class="r"><div class="n">Tea stall<em>23 SEP · CASH</em></div><div class="lead"></div><div class="a">30.00</div></div>
+    <div class="r"><div class="n">Lazz Pharma<em>23 SEP · CARD</em></div><div class="lead"></div><div class="a">310.00</div></div>
+    <div class="r"><div class="n">CNG fare<em>22 SEP · CASH</em></div><div class="lead"></div><div class="a">120.00</div></div>
+    <div class="r"><div class="n">Bus fare<em>22 SEP · CASH</em></div><div class="lead"></div><div class="a">25.00</div></div>
+    <div class="r"><div class="n">Mobile recharge · GP<em>22 SEP · WALLET</em></div><div class="lead"></div><div class="a">100.00</div></div>
+    <div class="r"><div class="n">Shwapno groceries<em>21 SEP · CARD</em></div><div class="lead"></div><div class="a">640.00</div></div>
+    <div class="r"><div class="n">Rickshaw fare<em>21 SEP · CASH</em></div><div class="lead"></div><div class="a">60.00</div></div>
+    <div class="r"><div class="n">Cha &amp; shingara<em>20 SEP · CASH</em></div><div class="lead"></div><div class="a">45.00</div></div>
+
+    <div class="rule dbl"></div>
+    <div class="tot"><span class="k">TOTAL</span><span class="v"><small class="bn">৳</small>3,940.00</span></div>
+    <div class="rule dbl"></div>
+    <div class="meta">12 ITEMS · 01–26 SEPTEMBER 2026</div>
+
+    <div class="bars" id="bars"></div>
+    <div class="barcap">DAILY OUTGO · PEAK <span class="bn">৳</span>2,110 · 24 SEP</div>
+    <svg class="torn" viewBox="0 0 376 10" preserveAspectRatio="none" aria-hidden="true"><polygon id="teeth" fill="#FFFDF7" points=""/></svg>
+  </div>
+
+  <div class="deck">
+    <div class="cap">New entry</div>
+    <div class="keys">
+      <div class="key on">
+        <svg viewBox="0 0 24 24"><path d="M4 18h16M6 18V8h12v10M9 8V5h6v3M10 12h4"/></svg><span>Type</span>
+      </div>
+      <div class="key">
+        <svg viewBox="0 0 24 24"><path d="M12 4v9M8.5 9.5a5 5 0 1 0 7 0"/><path d="M9 19h6"/></svg><span>Speak</span>
+      </div>
+      <div class="key">
+        <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13"/><circle cx="12" cy="13.5" r="3.4"/><path d="M8.5 7l1.3-2.4h4.4L15.5 7"/></svg><span>Photograph</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var daily = [0,120,45,0,1820,60,30,0,500,250,0,640,80,25,0,310,45,100,0,45,60,145,340,2320,290,0,0,0,0,0];
+  var peak = 2320, host = document.getElementById('bars');
+  daily.forEach(function(v, i){
+    var b = document.createElement('i');
+    var day = i + 1;
+    b.style.height = v ? Math.max(2, Math.round(v / peak * 44)) + 'px' : '1px';
+    if (!v) b.className = 'zero';
+    if (day === 26) b.className = 'now';
+    host.appendChild(b);
+  });
+  var pts = [], step = 376 / 26;
+  for (var i = 0; i <= 26; i++){
+    pts.push((i * step).toFixed(1) + ',0');
+    if (i < 26) pts.push((i * step + step / 2).toFixed(1) + ',10');
+  }
+  document.getElementById('teeth').setAttribute('points', pts.join(' '));
+})();
+</script>
+</body>
+</html>

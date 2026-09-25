@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --ink:#111827;
+    --muted:#6B7280;
+    --line:#E5E7EB;
+    --blue:#2563EB;
+    --green:#2F7A3E;
+    --c1:#B4741B; --c2:#2C5FA8; --c3:#2F7A3E; --c4:#8A3E8A;
+    --f1:#FDE7C7; --f2:#DCE9FB; --f3:#E3F2E1; --f4:#F3E1F3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:412px;height:915px;overflow:hidden}
+  body{background:var(--bg);color:var(--ink);font-family:'Roboto',system-ui,sans-serif}
+  .bn{font-family:'Noto Sans Bengali','Roboto',sans-serif}
+  .wrap{padding:22px 20px 0}
+
+  .topline{display:flex;align-items:center;justify-content:space-between}
+  .month{font-size:13px;color:var(--muted);font-weight:500}
+  .pending{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#8A5A12;
+    background:#FDF4E3;border-radius:999px;padding:5px 10px 5px 8px;font-weight:500}
+  .pending i{width:6px;height:6px;border-radius:50%;background:#B4741B;display:block}
+
+  .ask{margin-top:15px;display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);border-radius:16px;padding:15px 14px;
+    box-shadow:0 1px 2px rgba(17,24,39,.05)}
+  .ask .ghost{flex:1;min-width:0}
+  .ask .q{font-size:14.5px;color:#6B7280;font-weight:500}
+  .ask .sub{font-size:11px;color:#9AA1AC;margin-top:3px;white-space:nowrap}
+  .ask .key{width:34px;height:34px;border-radius:50%;background:#F3F4F6;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .ask .key.blue{background:var(--blue)}
+  .ask svg{width:17px;height:17px;fill:none;stroke:#4B5563;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .ask .key.blue svg{stroke:#fff}
+
+  .strip{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:14px 15px 13px}
+  .strip .l1{display:flex;align-items:baseline;gap:9px}
+  .strip .tot{font-size:27px;font-weight:700;letter-spacing:-.02em}
+  .strip .dlt{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--green);font-weight:500}
+  .strip .dlt svg{width:11px;height:11px;fill:none;stroke:var(--green);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+  .strip .dlt em{font-style:normal;color:var(--muted);font-weight:400}
+  .bar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin-top:12px;gap:2px}
+  .bar span{display:block}
+  .lg{display:flex;gap:10px;margin-top:9px;font-size:10.5px;color:var(--muted)}
+  .lg div{white-space:nowrap}
+  .lg b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+
+  .chips{display:flex;gap:8px;margin-top:17px;overflow:hidden}
+  .chip{font-size:12px;font-weight:500;padding:7px 13px;border-radius:999px;white-space:nowrap}
+  .chip.on{background:var(--ink);color:#fff}
+  .chip.off{background:#F3F4F6;color:#374151}
+
+  .day{display:flex;justify-content:space-between;align-items:baseline;margin:19px 0 7px}
+  .day h3{font-size:12.5px;font-weight:600;letter-spacing:.01em}
+  .day span{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  .row{display:flex;align-items:center;gap:12px;padding:11px 0}
+  .row + .row{border-top:1px solid #F3F4F6}
+  .tile{width:34px;height:34px;border-radius:50%;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center}
+  .tile svg{width:17px;height:17px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .t1{background:var(--f1)} .t1 svg{stroke:var(--c1)}
+  .t2{background:var(--f2)} .t2 svg{stroke:var(--c2)}
+  .t3{background:var(--f3)} .t3 svg{stroke:var(--c3)}
+  .t4{background:var(--f4)} .t4 svg{stroke:var(--c4)}
+  .row .mid{flex:1;min-width:0}
+  .row .m{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .row .a{font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
+
+  .nav{position:absolute;left:0;right:0;bottom:0;height:66px;background:#fff;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-around;padding:0 8px 6px}
+  .nav div{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--muted);font-weight:500}
+  .nav div.on{color:var(--blue)}
+  .nav div.on .pill{background:#DCE9FB}
+  .nav .pill{width:52px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+  .nav svg{width:19px;height:19px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;stroke:currentColor}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topline">
+      <div class="month">September 2026</div>
+      <div class="pending"><i></i>2 waiting to parse</div>
+    </div>
+
+    <div class="ask">
+      <div class="ghost">
+        <div class="q bn">কী কিনলেন?</div>
+        <div class="sub">Type, speak, or photograph a receipt</div>
+      </div>
+      <div class="key"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+      <div class="key blue"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
+    </div>
+
+    <div class="strip">
+      <div class="l1">
+        <div class="tot">৳ 24,850</div>
+        <div class="dlt">
+          <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          12% <em>vs August</em>
+        </div>
+      </div>
+      <div class="bar">
+        <span style="flex:42;background:#B4741B"></span>
+        <span style="flex:24;background:#2C5FA8"></span>
+        <span style="flex:19;background:#2F7A3E"></span>
+        <span style="flex:15;background:#8A3E8A"></span>
+      </div>
+      <div class="lg">
+        <div>Food <b>৳ 10,400</b></div>
+        <div>Transport <b>৳ 6,000</b></div>
+        <div>Groceries <b>৳ 4,700</b></div>
+        <div>Health <b>৳ 3,750</b></div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <div class="chip on">All</div>
+      <div class="chip off">Food</div>
+      <div class="chip off">Transport</div>
+      <div class="chip off">Bills</div>
+      <div class="chip off">Health</div>
+    </div>
+
+    <div class="day"><h3 class="bn">আজ · Today</h3><span>৳ 290</span></div>
+    <div class="row">
+      <div class="tile t1"><svg viewBox="0 0 24 24"><path d="M6 3v9a3 3 0 0 0 3 3h6"/><circle cx="17" cy="18" r="3"/><path d="M9 3v4"/></svg></div>
+      <div class="mid"><div class="m">Biryani House</div><div class="d">1:20 pm · Food · cash</div></div>
+      <div class="a">৳ 250</div>
+    </div>
+    <div class="row">
+      <div class="tile t2"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3.4"/><circle cx="18" cy="17" r="3.4"/><path d="M6 17l4-8h5l3 8M10 9h5"/></svg></div>
+      <div class="mid"><div class="m">Rickshaw fare</div><div class="d">9:05 am · Transport · cash</div></div>
+      <div class="a">৳ 40</div>
+    </div>
+
+    <div class="day"><h3 class="bn">গতকাল · Yesterday</h3><span>৳ 2,320</span></div>
+    <div class="row">
+      <div class="tile t3"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.4 11H5.4z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></div>
+      <div class="mid"><div class="m">Shwapno</div><div class="d">7:40 pm · Groceries · card</div></div>
+      <div class="a">৳ 1,820</div>
+    </div>
+    <div class="row">
+      <div class="tile t4"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></svg></div>
+      <div class="mid"><div class="m">bKash cash out</div><div class="d">2:15 pm · Wallet · bKash</div></div>
+      <div class="a">৳ 500</div>
+    </div>
+
+    <div class="day"><h3>23 September · Wednesday</h3><span>৳ 340</span></div>
+    <div class="row">
+      <div class="tile t1"><svg viewBox="0 0 24 24"><path d="M5 9h12v8H5z"/><path d="M17 11h2.4l-.7 4H17"/><path d="M8 6c0 1.4 2 2 2 3.4"/></svg></div>
+      <div class="mid"><div class="m">Tea Stall</div><div class="d">5:10 pm · Food · cash</div></div>
+      <div class="a">৳ 30</div>
+    </div>
+    <div class="row">
+      <div class="tile t4"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+      <div class="mid"><div class="m">Lazz Pharma</div><div class="d">11:30 am · Health · card</div></div>
+      <div class="a">৳ 310</div>
+    </div>
+
+    <div class="day"><h3>22 September · Tuesday</h3><span>৳ 1,150</span></div>
+    <div class="row">
+      <div class="tile t2"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3.4"/><circle cx="18" cy="17" r="3.4"/><path d="M6 17l4-8h5l3 8M10 9h5"/></svg></div>
+      <div class="mid"><div class="m">Pathao ride</div><div class="d">8:50 pm · Transport · bKash</div></div>
+      <div class="a">৳ 180</div>
+    </div>
+    <div class="row">
+      <div class="tile t3"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.4 11H5.4z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></div>
+      <div class="mid"><div class="m">Kacha Bazar</div><div class="d">9:15 am · Groceries · cash</div></div>
+      <div class="a">৳ 350</div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="on"><div class="pill"><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v9H4z"/></svg></div>Home</div>
+    <div><div class="pill"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M9 10h6M9 14h4"/></svg></div>Drafts</div>
+    <div><div class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>Settings</div>
+  </div>
+</body>
+</html>

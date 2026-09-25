@@ -38,3 +38,6 @@ Thumbs.db
 # Drizzle
 apps/api/drizzle/
 !apps/api/drizzle/meta
+
+# Impeccable local server state (pid/port/log for the decision page)
+.impeccable/questions/

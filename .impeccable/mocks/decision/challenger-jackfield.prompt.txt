@@ -1,0 +1,19 @@
+Phone app screen, portrait 9:16 aspect ratio, flat-on view, no device frame, no browser chrome.
+
+An expense list drawn as a machine-room jackfield normalling schedule, backlit on unlit black glass.
+
+Ground: unlit black glass #0A0A0A, absolutely flat, no reflections. Every mark on it is one signal amber #FFB000, plus dim amber #7A5200 for inactive elements and one row in white.
+
+Across the top, a fixed legend strip in small-capital condensed grotesque: "OVERVIEW" then four labelled figures — TOTAL 24,850 · ROWS 06 · OUT 02 · ALERTS 01.
+
+Below it, an endless numbered lane grid. Fourteen rows, each starting with a two-digit lane number in small amber capitals — 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14. Each row carries a short uppercase expense legend in the same condensed grotesque: "RICKSHAW FARE", "LUNCH BIRYANI HOUSE", "VEGETABLE BAZAAR", "BKASH CASH OUT", "TEA STALL", "PHARMACY", "MOBILE RECHARGE", "CNG FARE", "GROCERY", "ELECTRICITY BILL", "INTERNET", "BOOKS", "COFFEE", "TAXI". The amount sits right-aligned in amber figures, each prefixed with a taka sign.
+
+To the right of every amount, a single DRAWN LINK LINE whose stroke pattern alone carries the row's state: a continuous unbroken line for synced, a line with one neat diagonal cross-tick for edited, a line with a clean gap for pending, a doubled parallel line for the selected row, and a line ending in an open ring for deleted. Colour never carries state.
+
+One row in the middle is the dominant block: its legend knocked out dark from a solid amber plate, one per screen.
+
+Fine hairline gutters run down both left and right edges so nothing spans the full width.
+
+No shadows, no rounded corners, no gradients, no icons except a tiny five-item navigation bar of line glyphs at the very bottom in amber and dim amber.
+
+Strictly amber on black. Dense, technical, silkscreened, precise.

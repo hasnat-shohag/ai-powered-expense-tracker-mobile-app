@@ -1,0 +1,271 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-25T05:37:00.476Z",
+  "comp": ".impeccable/mocks/canon.png",
+  "direction": "a320ac95",
+  "breakpoint": "824x1830",
+  "artifact": null,
+  "phase": "review",
+  "phases": {
+    "comps": {
+      "status": "closed",
+      "openedAt": "2026-09-25T05:37:00.476Z",
+      "closedAt": "2026-09-25T06:27:36.019Z",
+      "attempts": 3,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "3 comps, 1 approved",
+        "approved": ".impeccable/mocks/canon.png",
+        "at": "2026-09-25T06:27:36.019Z"
+      },
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-25T06:27:36.026Z",
+      "closedAt": "2026-09-25T06:42:13.178Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "11 regions, 0 plates, 6 text regions measured",
+        "at": "2026-09-25T06:42:13.178Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "closed",
+      "openedAt": "2026-09-25T06:42:13.178Z",
+      "closedAt": "2026-09-25T06:42:22.402Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no plates owed",
+        "at": "2026-09-25T06:42:22.402Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "closed",
+      "openedAt": "2026-09-25T06:42:22.402Z",
+      "closedAt": "2026-09-25T07:01:36.534Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "hero 90% (match)",
+        "score": 0.899,
+        "verdict": "match",
+        "report": ".impeccable/review/diff/hero/report.json",
+        "sideBySide": "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/hero/side-by-side.png",
+        "worst": [
+          "month-total drift 54%",
+          "month-label drift 63%",
+          "add-button drift 70%"
+        ],
+        "worstIds": [
+          "month-total",
+          "month-label",
+          "add-button"
+        ],
+        "worstCrops": [
+          {
+            "id": "month-total",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.5431,
+              "structure": 0.4045,
+              "color": 0.9797,
+              "colorIntersection": 0.9559,
+              "paletteMatch": 0.9925,
+              "detail": 0.4803,
+              "detailRaw": 0.5428,
+              "detailAdded": 0.125,
+              "bands": 0.2389
+            },
+            "file": ".impeccable/review/diff/hero/regions/month-total.png"
+          },
+          {
+            "id": "month-label",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6348,
+              "structure": 0.5545,
+              "color": 0.9872,
+              "colorIntersection": 0.9787,
+              "paletteMatch": 0.9918,
+              "detail": 0.3624,
+              "detailRaw": 0.4405,
+              "detailAdded": 0.1563,
+              "bands": 0.5636
+            },
+            "file": ".impeccable/review/diff/hero/regions/month-label.png"
+          },
+          {
+            "id": "add-button",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.7042,
+              "structure": 0.7158,
+              "color": 0.978,
+              "colorIntersection": 0.9652,
+              "paletteMatch": 0.9849,
+              "detail": 0.1989,
+              "detailRaw": 0.3135,
+              "detailAdded": 0.2292,
+              "bands": 0.26
+            },
+            "file": ".impeccable/review/diff/hero/regions/add-button.png"
+          }
+        ],
+        "advisories": [
+          "(advisory, above the 72% bar; fix in the polish pass before responsive) 1 reading:",
+          "  text month-delta: ink is #b87818 in the build, #883888 in the comp; use the comp's colour"
+        ],
+        "regionVerdicts": {
+          "month-label": "drift",
+          "month-total": "drift",
+          "month-delta": "match",
+          "summary-card": "match",
+          "category-donut": "match",
+          "legend": "match",
+          "category-chips": "match",
+          "recent-header": "match",
+          "recent-count": "match",
+          "expense-list": "drift",
+          "add-button": "drift"
+        },
+        "at": "2026-09-25T07:01:36.534Z"
+      },
+      "forced": null,
+      "readingsSeen": {
+        "text month-delta: ink is #b87818 in the build, #883888 in the comp; use the comp's colour": 2
+      },
+      "records": 4,
+      "history": [
+        {
+          "at": "2026-09-25T06:48:34.796Z",
+          "score": 0.8558,
+          "worstIds": [
+            "add-button",
+            "month-total",
+            "month-label"
+          ],
+          "regionVerdicts": {
+            "month-label": "drift",
+            "month-total": "drift",
+            "month-delta": "match",
+            "summary-card": "match",
+            "category-donut": "match",
+            "legend": "match",
+            "category-chips": "match",
+            "recent-header": "match",
+            "recent-count": "match",
+            "expense-list": "drift",
+            "add-button": "missing"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-25T07:01:36.534Z",
+          "score": 0.899,
+          "worstIds": [
+            "month-total",
+            "month-label",
+            "add-button"
+          ],
+          "regionVerdicts": {
+            "month-label": "drift",
+            "month-total": "drift",
+            "month-delta": "match",
+            "summary-card": "match",
+            "category-donut": "match",
+            "legend": "match",
+            "category-chips": "match",
+            "recent-header": "match",
+            "recent-count": "match",
+            "expense-list": "drift",
+            "add-button": "drift"
+          },
+          "artifactHash": null
+        }
+      ]
+    },
+    "sections": {
+      "status": "closed",
+      "openedAt": "2026-09-25T07:01:36.534Z",
+      "closedAt": "2026-09-25T07:02:17.486Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-25T07:02:17.486Z"
+      },
+      "forced": null
+    },
+    "motion": {
+      "status": "closed",
+      "openedAt": "2026-09-25T07:02:17.486Z",
+      "closedAt": "2026-09-25T07:02:47.505Z",
+      "attempts": 1,
+      "notes": [
+        {
+          "at": "2026-09-25T07:02:38.300Z",
+          "text": "Motion (calm/correct thesis, Material 3 easing, implemented in RN Reanimated at product phase): (1) month total count-up 0->24,850 on mount, 450ms standard-decelerate, once. (2) donut segments sweep clockwise from 0, 600ms, staggered 60ms per segment. (3) recent rows fade+rise 8px, stagger 40ms, standard-decelerate. (4) chip select: pill background cross-fades ink<->grey 150ms, no layout shift. (5) FAB: M3 state-layer ripple on press, 4dp->8dp shadow lift, 100ms. No parallax, no decorative motion; reduce-motion disables count-up/sweep and shows final state."
+        }
+      ],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-25T07:02:47.505Z"
+      },
+      "forced": null
+    },
+    "responsive": {
+      "status": "closed",
+      "openedAt": "2026-09-25T07:02:47.505Z",
+      "closedAt": "2026-09-25T07:09:54.125Z",
+      "attempts": 3,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "desktop 96% (match)",
+        "score": 0.9605,
+        "sideBySide": "/home/vivasoft/expense-tracker-app/.impeccable/review/diff/desktop/side-by-side.png",
+        "at": "2026-09-25T07:09:54.125Z"
+      },
+      "forced": null
+    },
+    "review": {
+      "status": "closed",
+      "openedAt": "2026-09-25T07:09:54.125Z",
+      "closedAt": "2026-09-25T07:19:53.451Z",
+      "attempts": 0,
+      "notes": [
+        {
+          "at": "2026-09-25T07:19:46.049Z",
+          "text": "Finish-review fixes applied (reviewer disposition: fix): (1) Added Noto Sans Bengali to the font stack in hero.html and responsive.html (was Roboto only) so the taka sign U+09F3 and any Bangla render in-world per the brief's 'Roboto + Noto Sans Bengali' mandate. (2) Kept .wrap top padding at 17px and cited the reason inline: it sits below the Android status-bar / SafeAreaView top inset (~24dp); canon.html's 26px assumed a bare mock with no system bar, so the shipped RN app supplies the remainder via the inset. Kept the brief-mandated green delta #2F7A3E (did not chase the AI-mock purple). Recaptured hero-repro/desktop/mobile at DSF2 for provenance consistency."
+        }
+      ],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": {
+    "disposition": "ship",
+    "at": "2026-09-25T07:19:53.451Z",
+    "phaseAtFinish": "review"
+  },
+  "plates": {}
+}

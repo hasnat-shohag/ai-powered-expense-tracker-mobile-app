@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=Noto+Sans+Bengali:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --glass:#0A0A0A;
+    --amber:#FFB000;
+    --dim:#7A5200;
+    --dead:#3A2600;
+    --white:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:412px;height:915px;overflow:hidden}
+  body{
+    background:var(--glass);color:var(--amber);
+    font-family:'Oswald',sans-serif;font-weight:300;
+    position:relative;
+  }
+  /* edge gutters — nothing spans full width */
+  .gutter{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,176,0,.28);z-index:20}
+  .gutter.l{left:13px} .gutter.r{right:13px}
+
+  /* Oswald carries no Bengali currency sign — set it in a face that does */
+  .bn{font-family:'Noto Sans Bengali',sans-serif;font-weight:400}
+
+  .wrap{position:absolute;left:14px;right:14px;top:0;bottom:0;padding:0 12px}
+
+  /* ---- masthead ---- */
+  .mast{display:flex;align-items:center;justify-content:space-between;padding-top:20px}
+  .brand{font-size:15px;font-weight:600;letter-spacing:.30em;text-transform:uppercase}
+  .nav-ico{display:flex;gap:3px;flex-direction:column;align-items:flex-end}
+  .nav-ico i{display:block;width:17px;height:1.5px;background:var(--amber)}
+  .nav-ico i:nth-child(2){width:12px}
+  .nav-ico i:nth-child(3){width:17px}
+  .toprule{border-top:1px solid rgba(255,176,0,.45);margin-top:12px}
+
+  /* ---- overview strip ---- */
+  .ov{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;margin-top:11px}
+  .ov div{border-left:1px solid rgba(255,176,0,.32);padding-left:9px}
+  .ov div:first-child{border-left:0;padding-left:0}
+  .ov .k{font-size:7.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  .ov .v{font-size:19px;font-weight:500;letter-spacing:.02em;margin-top:2px;color:var(--amber)}
+  .ov .v small{font-size:11px;font-weight:400;opacity:.75;margin-right:1px}
+  .ovrule{border-top:1px solid rgba(255,176,0,.45);margin-top:10px}
+
+  /* ---- lane header ---- */
+  .lh{display:grid;grid-template-columns:26px 1fr 74px 56px;gap:0;margin-top:9px}
+  .lh div{font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding-bottom:6px}
+  .lh div:nth-child(3){text-align:right;padding-right:11px}
+  .lh div:nth-child(4){text-align:center}
+
+  /* ---- lanes ---- */
+  .lane{
+    display:grid;grid-template-columns:26px 1fr 74px 56px;
+    align-items:center;height:62px;
+    border-top:1px solid rgba(255,176,0,.22);
+  }
+  .lane .n{font-size:13px;font-weight:400;color:var(--amber);letter-spacing:.06em}
+  .lane .t{font-size:12.5px;font-weight:400;letter-spacing:.11em;text-transform:uppercase;color:var(--amber);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lane .t em{font-style:normal;display:block;font-size:8px;letter-spacing:.18em;color:var(--dim);margin-top:2px}
+  .lane .a{text-align:right;font-size:13px;font-weight:400;letter-spacing:.04em;color:var(--amber);font-variant-numeric:tabular-nums;padding-right:11px}
+  .lane .s{display:flex;align-items:center;justify-content:center}
+  .lane .s svg{overflow:visible}
+
+  /* the one dominant block, knocked out of a solid amber plate */
+  .lane.dom{background:var(--amber);margin:0 -12px;padding:0 12px;border-top-color:transparent}
+  .lane.dom .n,.lane.dom .t,.lane.dom .a{color:var(--glass);font-weight:500}
+  .lane.dom .t em{color:rgba(10,10,10,.62)}
+  .lane.dom .s svg *{stroke:var(--glass)}
+
+  /* ---- carried forward ---- */
+  .cf{margin-top:16px;border-top:2px solid rgba(255,176,0,.55);padding-top:10px;display:flex;align-items:baseline;justify-content:space-between}
+  .cf .l{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  .cf .v{font-size:22px;font-weight:500;letter-spacing:.02em;color:var(--amber);font-variant-numeric:tabular-nums}
+  .cf .v small{font-size:12px;font-weight:400;opacity:.8;margin-right:1px}
+  .cfnote{margin-top:6px;font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dead)}
+
+  /* ---- bottom bar ---- */
+  .bar{
+    position:absolute;left:0;right:0;bottom:0;height:62px;
+    border-top:1px solid rgba(255,176,0,.45);
+    background:var(--glass);
+    display:grid;grid-template-columns:repeat(5,1fr);align-items:center;
+    padding:0 20px;
+  }
+  .bar div{display:flex;flex-direction:column;align-items:center;gap:5px}
+  .bar svg{width:17px;height:17px;fill:none;stroke:var(--dim);stroke-width:1.4}
+  .bar span{font-size:6.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .bar .on svg{stroke:var(--amber)}
+  .bar .on span{color:var(--amber)}
+  .bar .on::after{content:"";position:absolute;bottom:0;width:38px;height:2px;background:var(--amber)}
+</style>
+</head>
+<body>
+  <div class="gutter l"></div>
+  <div class="gutter r"></div>
+
+  <div class="wrap" style="bottom:62px">
+    <div class="mast">
+      <div class="brand">Schedule</div>
+      <div class="nav-ico"><i></i><i></i><i></i></div>
+    </div>
+    <div class="toprule"></div>
+
+    <div class="ov">
+      <div><div class="k">Total</div><div class="v"><small class="bn">৳</small>24,850</div></div>
+      <div><div class="k">Rows</div><div class="v">10</div></div>
+      <div><div class="k">Out</div><div class="v">02</div></div>
+      <div><div class="k">Alerts</div><div class="v">01</div></div>
+    </div>
+    <div class="ovrule"></div>
+
+    <div class="lh">
+      <div>Ln</div><div>Item</div><div>Amount</div><div>State</div>
+    </div>
+
+    <div class="lane">
+      <div class="n">01</div>
+      <div class="t">Rickshaw fare<em>25 Sep · cash</em></div>
+      <div class="a">40</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/><circle cx="52" cy="4" r="2.6" fill="none" stroke="#FFB000" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane dom">
+      <div class="n">02</div>
+      <div class="t">Lunch · Biryani House<em>25 Sep · edited</em></div>
+      <div class="a">250</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#0A0A0A" stroke-width="1.6"/><line x1="24" y1="0" x2="30" y2="8" stroke="#0A0A0A" stroke-width="1.6"/><line x1="30" y1="4" x2="52" y2="4" stroke="#0A0A0A" stroke-width="1.6"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">03</div>
+      <div class="t">Vegetable bazaar<em>24 Sep · cash</em></div>
+      <div class="a">1,820</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/><circle cx="52" cy="4" r="2.6" fill="none" stroke="#FFB000" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">04</div>
+      <div class="t">bKash cash out<em>24 Sep · wallet</em></div>
+      <div class="a">500</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#FFB000" stroke-width="1.6"/><line x1="32" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">05</div>
+      <div class="t">Tea stall<em>23 Sep · cash</em></div>
+      <div class="a">30</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="1.6" x2="52" y2="1.6" stroke="#FFB000" stroke-width="1.4"/><line x1="0" y1="6.4" x2="52" y2="6.4" stroke="#FFB000" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">06</div>
+      <div class="t">Lazz Pharma<em>23 Sep · card · removed</em></div>
+      <div class="a">310</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="46" y2="4" stroke="#7A5200" stroke-width="1.6"/><circle cx="50" cy="4" r="2.8" fill="none" stroke="#7A5200" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane" style="border-top-color:transparent">
+      <div class="n" style="color:#3A2600">07</div>
+      <div class="t" style="color:#3A2600">Cng fare<em>22 Sep · cash</em></div>
+      <div class="a" style="color:#3A2600">120</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="52" y2="4" stroke="#3A2600" stroke-width="1.6"/><circle cx="52" cy="4" r="2.6" fill="none" stroke="#3A2600" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">08</div>
+      <div class="t">Bus fare<em>22 Sep · cash</em></div>
+      <div class="a">25</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke="#FFB000" stroke-width="1.6"/><line x1="42" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">09</div>
+      <div class="t">Mobile recharge<em>22 Sep · wallet</em></div>
+      <div class="a">100</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/><circle cx="52" cy="4" r="2.6" fill="none" stroke="#FFB000" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="n">10</div>
+      <div class="t">Shwapno groceries<em>21 Sep · card · edited</em></div>
+      <div class="a">640</div>
+      <div class="s">
+        <svg width="52" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#FFB000" stroke-width="1.6"/><line x1="24" y1="0" x2="30" y2="8" stroke="#FFB000" stroke-width="1.6"/><line x1="30" y1="4" x2="52" y2="4" stroke="#FFB000" stroke-width="1.6"/></svg>
+      </div>
+    </div>
+
+    <div class="cf">
+      <div class="l">Lane subtotal</div>
+      <div class="v"><small class="bn">৳</small>3,835</div>
+    </div>
+    <div class="cfnote">10 of 42 lanes · current sheet</div>
+  </div>
+
+  <div class="bar">
+    <div class="on">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Schedule</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24"><rect x="3" y="6" width="4" height="12"/><rect x="10" y="6" width="4" height="12"/><rect x="17" y="6" width="4" height="12"/></svg><span>Lanes</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg><span>Items</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 16.5v.5"/></svg><span>Alerts</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg><span>Settings</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "title": "Choose the visual world",
+  "question": "You asked for the familiar end of the spectrum, so the dealt hand is set aside. Three conventional worlds remain, plus the category standard executed impeccably. Which one?",
+  "options": [
+    {
+      "id": "till-roll",
+      "label": "The Till Roll",
+      "kicker": "SAFER REGISTER",
+      "lineage": "thermal point-of-sale receipt tape",
+      "thesis": "The month is a receipt still in the printer: monospaced item rows with dotted leaders, a double-ruled total, and a daily-outgo bar strip where today is the one red bar.",
+      "palette": ["#FFFDF7", "#1C1B18", "#DCD7CB", "#C6C0B2", "#A3261B"],
+      "materials": ["thermal receipt tape", "dotted leader rows", "tabular monospaced figures", "perforated tear edge"],
+      "viewport": "A tape running out of a printer slot across a bench-coloured ground: centred header, twelve item rows each with date and method beneath, double-ruled total, a 26-day outgo strip, torn foot, and a three-key control deck for Type, Speak, Photograph.",
+      "risk": "A receipt is a record, not a workspace. The tape reads beautifully, but draft review and the month view have to be invented outside its grammar, and long item names crowd the dotted leaders at 412px.",
+      "comp": ".impeccable/mocks/decision/till-roll.png"
+    },
+    {
+      "id": "pay-in-slip",
+      "label": "The Pay-in Slip",
+      "kicker": "SAFER REGISTER",
+      "lineage": "bank pay-in slip, bound in a pad",
+      "thesis": "Capture is the act of filling one slip: boxed labelled fields, amount in figures beside amount in words, and every filled slip joining a numbered sheet below.",
+      "palette": ["#FBFAF5", "#1E3A6E", "#12161C", "#E4EAF3", "#A32A20"],
+      "materials": ["boxed corner-labelled fields", "carbon-copy banding", "ruled entries sheet", "rubber stamp"],
+      "viewport": "A pad stub at the top, the slip header in navy with its Bangla name, a two-column grid of boxed fields for date, method, particulars, amount in figures and amount in words, then the current sheet's six entries with a stamped date, over a four-item bottom bar.",
+      "risk": "The most literal fit and the most officious. Boxed fields spend vertical space on borders rather than content, and the deposit-slip framing can read as bank paperwork rather than a personal ledger.",
+      "comp": ".impeccable/mocks/decision/pay-in-slip.png"
+    },
+    {
+      "id": "wall-calendar",
+      "label": "The Wall Calendar",
+      "kicker": "SAFER REGISTER",
+      "lineage": "Bengali newsprint wall calendar",
+      "thesis": "The month is the calendar itself: a ruled grid with each day's spend printed in its corner, Fridays in red, the selected day opened below in ruled Bangla style.",
+      "palette": ["#F7F6F0", "#191A1C", "#B3271E", "#D9D4C6", "#1E4E79"],
+      "materials": ["newsprint halftone", "ruled month grid", "Bangla weekday rule", "boxed month-to-date stamp"],
+      "viewport": "A Bengali masthead with a red month-to-date box, the Bangla weekday rule, a 35-cell month grid with per-day amounts, the selected day's entries opened beneath, category chips, and a five-item bottom bar.",
+      "risk": "The strongest month-at-a-glance of the three and the weakest capture surface: a grid occupying the top half leaves amount entry competing for what is left, and newsprint texture turns to mush below about 9px.",
+      "comp": ".impeccable/mocks/decision/wall-calendar.png"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "comp", "toggle": true },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard, executed impeccably",
+    "thesis": "What this category ships, done well: one month total, a green delta, a donut with legend, pastel category chips, soft list cards, one blue pill. Shown against Money Manager (Realbyte), Wallet (BudgetBakers) and Monefy as actually shipped, with a ledger of where the standard wins and where it costs the user.",
+    "palette": ["#FFFFFF", "#111827", "#2563EB", "#2F7A3E"],
+    "materials": ["flat cards", "rounded corners", "category chips", "donut chart", "schematic competitor redraws"],
+    "viewport": "The executed canon in a framed card at the top, the three competitor patterns as schematic redraws in a strip beneath, and a three-row comparison ledger below that.",
+    "risk": "Indistinguishable from the competition by design — but also the only option here that a first-time user needs no explanation to use.",
+    "comp": ".impeccable/mocks/decision/canon-vs-competitors.png"
+  },
+  "steer": true
+}

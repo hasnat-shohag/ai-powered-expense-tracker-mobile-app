@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scaffold reference: canon.png</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Padauk:wght@700&family=Yantramanav:wght@700&display=swap">
+  <link rel="stylesheet" href="layout.css">
+  <style>html,body{margin:0}body{background:#f8f8f8}.region{box-sizing:border-box}.region.text p{white-space:pre-wrap}</style>
+</head>
+<body>
+<!-- Reference only. Every region sits at its measured box inside a comp-aspect frame. Take the boxes (layout.css), keep your own semantic structure. -->
+<main class="comp-frame" style="max-width:824px">
+  <div class="r-month-label region text" data-region="month-label"><!-- grey month label September 2026 --><p style="font-size:var(--r-month-label-font);font-family:var(--r-month-label-family),sans-serif;font-weight:var(--r-month-label-weight);line-height:1.05;margin:0">month-label</p></div>
+  <div class="r-month-total region text" data-region="month-total"><!-- lead: month total taka 24,850 at ~42px near-black --><p style="font-size:var(--r-month-total-font);font-family:var(--r-month-total-family),sans-serif;font-weight:var(--r-month-total-weight);line-height:1.05;margin:0">month-total</p></div>
+  <div class="r-month-delta region text" data-region="month-delta"><!-- green up-arrow 12% vs August --><p style="line-height:1.05;margin:0">month-delta</p></div>
+  <div class="r-summary-card region chrome" data-region="summary-card"><!-- rounded grey summary card containing donut and legend --></div>
+  <div class="r-category-donut region control" data-region="category-donut"><!-- data-driven donut chart, four category segments: rebuild the control's chrome from the crop (comp-spec.mjs --crop category-donut); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-legend region text" data-region="legend"><!-- four-row labelled legend Food 10,400 / Transport 6,000 / Groceries 4,700 / Health 3,750 with colour dots and amounts --><p style="font-size:var(--r-legend-font);line-height:1.05;margin:0">legend</p></div>
+  <div class="r-category-chips region control" data-region="category-chips"><!-- pastel filter chips All / Food / Transport / Bills / Health: rebuild the control's chrome from the crop (comp-spec.mjs --crop category-chips); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-recent-header region text" data-region="recent-header"><!-- section label Recent --><p style="font-size:var(--r-recent-header-font);line-height:1.05;margin:0">recent-header</p></div>
+  <div class="r-recent-count region text" data-region="recent-count"><!-- grey count 6 expenses --><p style="font-size:var(--r-recent-count-font);line-height:1.05;margin:0">recent-count</p></div>
+  <div class="r-expense-list region control" data-region="expense-list"><!-- data-driven recent ledger: six rows of circular category tile, merchant, grey time-category-method subline, right-aligned amount, in a soft white card: rebuild the control's chrome from the crop (comp-spec.mjs --crop expense-list); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-add-button region control" data-region="add-button"><!-- floating filled blue Add expense pill: rebuild the control's chrome from the crop (comp-spec.mjs --crop add-button); its ink box, border, fill, radius, and label size are the comp's --></div>
+</main>
+</body>
+</html>

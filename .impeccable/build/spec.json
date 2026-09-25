@@ -1,0 +1,650 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-09-25T06:55:34.643Z",
+  "comp": ".impeccable/mocks/canon.png",
+  "warnings": [
+    "region expense-list: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)"
+  ],
+  "uncoveredInkCells": [],
+  "compSize": {
+    "width": 824,
+    "height": 1830
+  },
+  "aspect": 0.4503,
+  "orientation": "portrait",
+  "palette": [
+    {
+      "hex": "#f8f8f8",
+      "coverage": 0.9583
+    },
+    {
+      "hex": "#2868e8",
+      "coverage": 0.0188
+    },
+    {
+      "hex": "#181828",
+      "coverage": 0.0135
+    },
+    {
+      "hex": "#f8e8c8",
+      "coverage": 0.006
+    },
+    {
+      "hex": "#b87818",
+      "coverage": 0.0035
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0563,
+      "strength": 0.4046
+    },
+    {
+      "y": 0.088,
+      "strength": 0.3631
+    },
+    {
+      "y": 0.2148,
+      "strength": 0.2232
+    },
+    {
+      "y": 0.243,
+      "strength": 0.2394
+    },
+    {
+      "y": 0.2711,
+      "strength": 0.3067
+    },
+    {
+      "y": 0.3169,
+      "strength": 0.2691
+    },
+    {
+      "y": 0.338,
+      "strength": 0.2944
+    },
+    {
+      "y": 0.3908,
+      "strength": 0.2939
+    },
+    {
+      "y": 0.4296,
+      "strength": 0.2406
+    },
+    {
+      "y": 0.5106,
+      "strength": 0.2193
+    },
+    {
+      "y": 0.581,
+      "strength": 0.2323
+    },
+    {
+      "y": 0.6514,
+      "strength": 0.3327
+    },
+    {
+      "y": 0.7852,
+      "strength": 0.2169
+    },
+    {
+      "y": 0.912,
+      "strength": 0.4473
+    },
+    {
+      "y": 0.9683,
+      "strength": 0.3838
+    }
+  ],
+  "regions": [
+    {
+      "id": "month-label",
+      "kind": "text",
+      "note": "grey month label September 2026",
+      "grid": "A0:C0",
+      "snap": false,
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "px": {
+        "x": 0,
+        "y": 0,
+        "w": 247,
+        "h": 183
+      },
+      "aspect": 1.3497,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.8597
+        },
+        {
+          "hex": "#181828",
+          "coverage": 0.1035
+        },
+        {
+          "hex": "#687484",
+          "coverage": 0.0277
+        },
+        {
+          "hex": "#c4c4c4",
+          "coverage": 0.0061
+        },
+        {
+          "hex": "#f8ebcb",
+          "coverage": 0.003
+        }
+      ],
+      "detail": {
+        "energy": 19.0073
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "month-total",
+      "kind": "text",
+      "note": "lead: month total taka 24,850 at ~42px near-black",
+      "grid": "A0:E0",
+      "coverBox": {
+        "x": 0,
+        "y": 0,
+        "w": 0.5,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.1311,
+        "y": 0.0525,
+        "w": 0.3204,
+        "h": 0.0475
+      },
+      "px": {
+        "x": 108,
+        "y": 96,
+        "w": 264,
+        "h": 87
+      },
+      "aspect": 3.0345,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.6757
+        },
+        {
+          "hex": "#181828",
+          "coverage": 0.2946
+        },
+        {
+          "hex": "#c6c6c8",
+          "coverage": 0.0139
+        },
+        {
+          "hex": "#94989d",
+          "coverage": 0.0083
+        },
+        {
+          "hex": "#696979",
+          "coverage": 0.0075
+        }
+      ],
+      "detail": {
+        "energy": 35.9583
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "month-delta",
+      "kind": "text",
+      "note": "green up-arrow 12% vs August",
+      "grid": "A1:C1",
+      "snap": false,
+      "box": {
+        "x": 0,
+        "y": 0.1,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "px": {
+        "x": 0,
+        "y": 183,
+        "w": 247,
+        "h": 183
+      },
+      "aspect": 1.3497,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9218
+        },
+        {
+          "hex": "#883888",
+          "coverage": 0.0333
+        },
+        {
+          "hex": "#b87818",
+          "coverage": 0.0321
+        },
+        {
+          "hex": "#707888",
+          "coverage": 0.0083
+        },
+        {
+          "hex": "#287838",
+          "coverage": 0.0044
+        }
+      ],
+      "detail": {
+        "energy": 8.2774
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "summary-card",
+      "kind": "chrome",
+      "note": "rounded grey summary card containing donut and legend",
+      "grid": "A1:J2",
+      "box": {
+        "x": 0,
+        "y": 0.1,
+        "w": 1,
+        "h": 0.2
+      },
+      "px": {
+        "x": 0,
+        "y": 183,
+        "w": 824,
+        "h": 366
+      },
+      "aspect": 2.2514,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9565
+        },
+        {
+          "hex": "#b87818",
+          "coverage": 0.0166
+        },
+        {
+          "hex": "#2858a8",
+          "coverage": 0.0098
+        },
+        {
+          "hex": "#287838",
+          "coverage": 0.0087
+        },
+        {
+          "hex": "#191829",
+          "coverage": 0.0084
+        }
+      ],
+      "detail": {
+        "energy": 13.9544
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "category-donut",
+      "kind": "control",
+      "note": "data-driven donut chart, four category segments",
+      "grid": "A1:C2",
+      "coverBox": {
+        "x": 0,
+        "y": 0.1,
+        "w": 0.3,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.0874,
+        "y": 0.1754,
+        "w": 0.2124,
+        "h": 0.0984
+      },
+      "px": {
+        "x": 72,
+        "y": 321,
+        "w": 175,
+        "h": 180
+      },
+      "aspect": 0.9722,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.643
+        },
+        {
+          "hex": "#b87818",
+          "coverage": 0.1499
+        },
+        {
+          "hex": "#2858a8",
+          "coverage": 0.0849
+        },
+        {
+          "hex": "#287838",
+          "coverage": 0.0679
+        },
+        {
+          "hex": "#883888",
+          "coverage": 0.0543
+        }
+      ],
+      "detail": {
+        "energy": 7.0821
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "legend",
+      "kind": "text",
+      "note": "four-row labelled legend Food 10,400 / Transport 6,000 / Groceries 4,700 / Health 3,750 with colour dots and amounts",
+      "grid": "D1:J2",
+      "snap": false,
+      "box": {
+        "x": 0.3,
+        "y": 0.1,
+        "w": 0.7,
+        "h": 0.2
+      },
+      "px": {
+        "x": 247,
+        "y": 183,
+        "w": 577,
+        "h": 366
+      },
+      "aspect": 1.5765,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9843
+        },
+        {
+          "hex": "#191829",
+          "coverage": 0.0102
+        },
+        {
+          "hex": "#245cac",
+          "coverage": 0.0026
+        },
+        {
+          "hex": "#b87818",
+          "coverage": 0.0016
+        },
+        {
+          "hex": "#287838",
+          "coverage": 0.0013
+        }
+      ],
+      "detail": {
+        "energy": 12.5227
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "category-chips",
+      "kind": "control",
+      "note": "pastel filter chips All / Food / Transport / Bills / Health",
+      "grid": "A3:J3",
+      "snap": false,
+      "box": {
+        "x": 0,
+        "y": 0.3,
+        "w": 1,
+        "h": 0.1
+      },
+      "px": {
+        "x": 0,
+        "y": 549,
+        "w": 824,
+        "h": 183
+      },
+      "aspect": 4.5027,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9582
+        },
+        {
+          "hex": "#181828",
+          "coverage": 0.0295
+        },
+        {
+          "hex": "#3b485a",
+          "coverage": 0.0094
+        },
+        {
+          "hex": "#687888",
+          "coverage": 0.0021
+        },
+        {
+          "hex": "#e8c898",
+          "coverage": 0.0007
+        }
+      ],
+      "detail": {
+        "energy": 13.4714
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "recent-header",
+      "kind": "text",
+      "note": "section label Recent",
+      "grid": "A3:D3",
+      "snap": false,
+      "box": {
+        "x": 0,
+        "y": 0.3,
+        "w": 0.4,
+        "h": 0.1
+      },
+      "px": {
+        "x": 0,
+        "y": 549,
+        "w": 330,
+        "h": 183
+      },
+      "aspect": 1.8033,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9157
+        },
+        {
+          "hex": "#181828",
+          "coverage": 0.0752
+        },
+        {
+          "hex": "#3b4858",
+          "coverage": 0.0071
+        },
+        {
+          "hex": "#481828",
+          "coverage": 0.0011
+        },
+        {
+          "hex": "#f8c878",
+          "coverage": 0.0009
+        }
+      ],
+      "detail": {
+        "energy": 13.5419
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "recent-count",
+      "kind": "text",
+      "note": "grey count 6 expenses",
+      "grid": "G3:J3",
+      "snap": false,
+      "box": {
+        "x": 0.6,
+        "y": 0.3,
+        "w": 0.4,
+        "h": 0.1
+      },
+      "px": {
+        "x": 494,
+        "y": 549,
+        "w": 330,
+        "h": 183
+      },
+      "aspect": 1.8033,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9835
+        },
+        {
+          "hex": "#3a485b",
+          "coverage": 0.0073
+        },
+        {
+          "hex": "#6d7888",
+          "coverage": 0.0058
+        },
+        {
+          "hex": "#f2e2bc",
+          "coverage": 0.0024
+        },
+        {
+          "hex": "#3868a8",
+          "coverage": 0.0011
+        }
+      ],
+      "detail": {
+        "energy": 7.8549
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "expense-list",
+      "kind": "control",
+      "note": "data-driven recent ledger: six rows of circular category tile, merchant, grey time-category-method subline, right-aligned amount, in a soft white card",
+      "grid": "A4:J8",
+      "container": true,
+      "coverBox": {
+        "x": 0,
+        "y": 0.4,
+        "w": 1,
+        "h": 0.5
+      },
+      "box": {
+        "x": 0.0947,
+        "y": 0.4885,
+        "w": 0.3714,
+        "h": 0.1213
+      },
+      "px": {
+        "x": 78,
+        "y": 894,
+        "w": 306,
+        "h": 222
+      },
+      "aspect": 1.3784,
+      "palette": [
+        {
+          "hex": "#f5f7f7",
+          "coverage": 0.9492
+        },
+        {
+          "hex": "#181828",
+          "coverage": 0.0228
+        },
+        {
+          "hex": "#6e7a8a",
+          "coverage": 0.0199
+        },
+        {
+          "hex": "#2e62af",
+          "coverage": 0.0044
+        },
+        {
+          "hex": "#6da0d4",
+          "coverage": 0.0037
+        }
+      ],
+      "detail": {
+        "energy": 25.463
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "add-button",
+      "kind": "control",
+      "note": "floating filled blue Add expense pill",
+      "grid": "E9:J9",
+      "coverBox": {
+        "x": 0.4,
+        "y": 0.9,
+        "w": 0.6,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.568,
+        "y": 0.9066,
+        "w": 0.3932,
+        "h": 0.0689
+      },
+      "px": {
+        "x": 468,
+        "y": 1659,
+        "w": 324,
+        "h": 126
+      },
+      "aspect": 2.5714,
+      "palette": [
+        {
+          "hex": "#2868e8",
+          "coverage": 0.6943
+        },
+        {
+          "hex": "#f0f4f8",
+          "coverage": 0.2699
+        },
+        {
+          "hex": "#d6d6f8",
+          "coverage": 0.0256
+        },
+        {
+          "hex": "#6980ea",
+          "coverage": 0.0054
+        },
+        {
+          "hex": "#5b92f6",
+          "coverage": 0.0049
+        }
+      ],
+      "detail": {
+        "energy": 18.1683
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    }
+  ]
+}
