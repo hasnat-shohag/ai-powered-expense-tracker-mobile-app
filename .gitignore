@@ -41,3 +41,5 @@ apps/api/drizzle/
 
 # Impeccable local server state (pid/port/log for the decision page)
 .impeccable/questions/
+.vercel
+.env*
