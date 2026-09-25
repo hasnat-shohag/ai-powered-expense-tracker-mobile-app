@@ -63,6 +63,34 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return (await res.json()) as T;
 }
 
+/**
+ * GET /api/health — verify the backend URL + bearer token before relying on
+ * them. Returns on 200, throws AuthError on 401 and ApiError otherwise (status
+ * 0 = offline/unreachable). Used by the Settings screen's "Test connection".
+ */
+export async function checkHealth(): Promise<{ ok: boolean; db: string }> {
+  if (!isApiConfigured()) {
+    throw new ApiError("Backend URL is not configured.", 0);
+  }
+  const token = await getToken();
+  if (!token) throw new AuthError("No API token set.");
+
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}/api/health`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch {
+    throw new ApiError("Network request failed — you may be offline.", 0);
+  }
+
+  if (res.status === 401) throw new AuthError();
+  if (!res.ok) {
+    throw new ApiError(`Backend is unhealthy (${res.status}).`, res.status);
+  }
+  return (await res.json()) as { ok: boolean; db: string };
+}
+
 /** POST /api/parse — send pending captures, get grouped draft expenses back. */
 export async function parseCaptures(req: ParseRequest): Promise<ParseResponse> {
   const body = parseRequestSchema.parse(req);

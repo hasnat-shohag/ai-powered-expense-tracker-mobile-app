@@ -9,7 +9,10 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "lint": "echo \"no lint\" && exit 0",
-    "build": "echo \"EAS build in Phase 13\" && exit 0"
+    "build": "echo \"EAS build in Phase 13\" && exit 0",
+    "eas:login": "npx --yes eas-cli login",
+    "apk:preview": "npx --yes eas-cli build --profile preview --platform android",
+    "apk:production": "npx --yes eas-cli build --profile production --platform android"
   },
   "dependencies": {
     "@expense/shared": "workspace:*",

@@ -48,7 +48,7 @@ Data flow: capture → `pending_captures` → drain through `/parse` → editabl
 
 ## Status
 
-Phases 1–12 done (backend + design + full RN capture/draft/edit UI; `pnpm typecheck`, `pnpm test`, `pnpm build` green). Phase 13 (EAS internal APK + on-device RNTL/Maestro suites) is next. Design was produced via the `/impeccable` skill; artifacts live in `.impeccable/` and the design system is documented in `DESIGN.md`. Neon URL, LLM base/key/model, and R2 creds must be supplied before deploy/run.
+Phases 1–12 done (backend + design + full RN capture/draft/edit UI; `pnpm typecheck`, `pnpm test`, `pnpm build` green). Phase 13 is **ship-ready**: a Settings screen (gear on Home) enters the bearer token into SecureStore and tests the backend via `/api/health` (`checkHealth` in `src/api/client.ts`); `apps/mobile/eas.json` defines internal-APK build profiles (`pnpm --filter @expense/mobile apk:preview`); Maestro e2e flows are scaffolded in `apps/mobile/.maestro/` (device/CI only); `SHIP.md` is the deploy runbook. Remaining Phase 13 work needs a device/CI and user creds: run the EAS build, install the APK, and run the on-device RNTL/Maestro suites. Design was produced via the `/impeccable` skill; artifacts live in `.impeccable/` and the design system is documented in `DESIGN.md`. Neon URL, LLM base/key/model, and R2 creds must be supplied before deploy/run.
 
 ## Custom Rule
 - dont read or write .env file insted use .env.example file

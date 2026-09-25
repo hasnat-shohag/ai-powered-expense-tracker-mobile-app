@@ -213,7 +213,7 @@ table below; the phase list itself is the plan of record.
 | 10 | Mobile: sync engine | **Done** — push outbox + pull-by-cursor in one pass, debounced + network-regain triggers |
 | 11 | Mobile: CRUD + analytics | **Done** — month total, per-category breakdown, list/edit/soft-delete; Home screen built per `DESIGN.md` (count-up, donut sweep, chips, FAB) |
 | 12 | Polish + tests | **Done (on-device suites deferred)** — capture (text/voice/image) → drain → editable draft → save, edit/delete existing rows, all wired through a 4-screen shell; loading/empty/filter/offline states; reduce-motion. Node logic tests (Vitest) green. RNTL + Maestro need a device/emulator (CI, Phase 13). |
-| 13 | Ship | Not started |
+| 13 | Ship | **Ready** — token-entry Settings screen + connection test wired; `eas.json` (internal APK) + Maestro flows scaffolded; `SHIP.md` deploy runbook. Awaiting user creds to run the EAS build. |
 
 1. **Scaffold** — pnpm + Turborepo workspace; `apps/mobile` (Expo), `apps/api` (Vercel), `packages/shared`. Shared TypeScript config, lint.
 2. **Shared schema** — Zod expense schema + TS types + Drizzle table in `packages/shared`. This is the contract both sides import.
@@ -227,7 +227,7 @@ table below; the phase list itself is the plan of record.
 10. **Mobile: sync engine** — push/pull, triggers (foreground, network-regain, debounced, pull-to-refresh), conflict handling.
 11. **Mobile: CRUD + analytics** — list, edit, soft-delete (offline-first), month total + per-category breakdown.
 12. **Polish + tests** — implement approved design, RNTL + Maestro suites, error/offline/empty states.
-13. **Ship** — EAS internal build, side-load APK.
+13. **Ship** — EAS internal build, side-load APK. See `SHIP.md` for the full runbook.
 
 ### Phase 6 state (design)
 

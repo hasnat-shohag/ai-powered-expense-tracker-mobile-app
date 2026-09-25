@@ -151,3 +151,18 @@ export function TrashIcon({ size = 18, color, strokeWidth = 1.8 }: IconProps) {
   );
 }
 
+/** Gear glyph for the Settings affordance. */
+export function GearIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Circle cx="12" cy="12" r="3" stroke={color} strokeWidth={strokeWidth} {...base} />
+      <Path
+        d="M12 2.5l1.4 2.6 2.9-.6 .3 2.9 2.6 1.4-1.5 2.5 1.5 2.5-2.6 1.4-.3 2.9-2.9-.6L12 21.5l-1.4-2.6-2.9.6-.3-2.9-2.6-1.4 1.5-2.5-1.5-2.5 2.6-1.4 .3-2.9 2.9.6z"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        {...base}
+      />
+    </Svg>
+  );
+}
+

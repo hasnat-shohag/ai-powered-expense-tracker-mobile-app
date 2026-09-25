@@ -9,6 +9,7 @@ import { HomeScreen } from "./src/screens/home/HomeScreen";
 import { CaptureScreen } from "./src/screens/capture/CaptureScreen";
 import { DraftScreen } from "./src/screens/draft/DraftScreen";
 import { EditExpenseScreen } from "./src/screens/edit/EditExpenseScreen";
+import { SettingsScreen } from "./src/screens/settings/SettingsScreen";
 import type { Draft } from "./src/drain";
 
 /** The app is a small stack: Home is the root; capture/draft/edit push over it. */
@@ -16,7 +17,8 @@ type Route =
   | { name: "home" }
   | { name: "capture" }
   | { name: "draft"; draft: Draft }
-  | { name: "edit"; expense: Expense };
+  | { name: "edit"; expense: Expense }
+  | { name: "settings" };
 
 /**
  * App shell: loads the bilingual fonts, then drives a tiny hand-rolled screen
@@ -46,6 +48,7 @@ export function App() {
           reloadToken={reloadToken}
           onAddExpense={() => setRoute({ name: "capture" })}
           onEditExpense={(expense) => setRoute({ name: "edit", expense })}
+          onOpenSettings={() => setRoute({ name: "settings" })}
         />
       )}
       {route.name === "capture" && (
@@ -63,6 +66,9 @@ export function App() {
       )}
       {route.name === "edit" && (
         <EditExpenseScreen expense={route.expense} onClose={goHome} />
+      )}
+      {route.name === "settings" && (
+        <SettingsScreen onClose={() => setRoute({ name: "home" })} />
       )}
     </SafeAreaProvider>
   );

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   AccessibilityInfo,
   ActivityIndicator,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -26,6 +27,7 @@ import { SummaryCard, type CategorySlice } from "./SummaryCard";
 import { CategoryChips } from "./CategoryChips";
 import { RecentCard } from "./RecentCard";
 import { Fab } from "./Fab";
+import { GearIcon } from "../../ui/icons";
 
 const RECENT_LIMIT = 6;
 const ALL = "All";
@@ -63,10 +65,12 @@ function toSlices(
 export function HomeScreen({
   onAddExpense,
   onEditExpense,
+  onOpenSettings,
   reloadToken = 0,
 }: {
   onAddExpense: () => void;
   onEditExpense?: (e: Expense) => void;
+  onOpenSettings?: () => void;
   reloadToken?: number;
 }) {
   const insets = useSafeAreaInsets();
@@ -197,6 +201,19 @@ export function HomeScreen({
         )}
       </ScrollView>
 
+      {onOpenSettings && (
+        <Pressable
+          onPress={onOpenSettings}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="Settings"
+          android_ripple={{ color: colors.line, borderless: true }}
+          style={[styles.gear, { top: insets.top + 14 }]}
+        >
+          <GearIcon color={colors.muted} />
+        </Pressable>
+      )}
+
       <Fab onPress={onAddExpense} />
     </View>
   );
@@ -205,6 +222,7 @@ export function HomeScreen({
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ground },
   center: { alignItems: "center", justifyContent: "center" },
+  gear: { position: "absolute", right: space.inset },
   wrap: { paddingHorizontal: space.inset },
   listhead: {
     flexDirection: "row",
