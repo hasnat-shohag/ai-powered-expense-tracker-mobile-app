@@ -105,7 +105,10 @@ async function chat(
       "content-type": "application/json",
       authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({ model, messages, temperature: 0 }),
+    // NOTE: temperature is intentionally omitted. Some models (e.g. OpenAI
+    // reasoning models) only accept the default temperature and reject an
+    // explicit 0 with HTTP 400 ("does not support 0 with this model").
+    body: JSON.stringify({ model, messages }),
   });
   if (!res.ok) {
     throw new Error(`LLM HTTP ${res.status}: ${await res.text()}`);
