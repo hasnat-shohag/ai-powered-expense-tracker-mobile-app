@@ -2,5 +2,9 @@ packages:
   - "apps/*"
   - "packages/*"
 
-onlyBuiltDependencies:
-  - esbuild
+# Flat node_modules so Expo/Metro can resolve packages (expo-asset, @babel/runtime,
+# ...) from the project root during the EAS bundle. Expo's documented setup for pnpm.
+nodeLinker: hoisted
+
+allowBuilds:
+  esbuild: true
