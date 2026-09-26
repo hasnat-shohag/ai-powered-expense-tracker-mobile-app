@@ -4,6 +4,10 @@ node_modules/
 
 # Build output
 dist/
+# Exception: @expense/shared ships its compiled output. It is loaded at runtime by
+# the Node backend on Vercel and bundled by Metro for the EAS build; both build from
+# committed git state, so this dist must be tracked. Rebuild + recommit when src changes.
+!packages/shared/dist/
 .turbo/
 .vercel/
 *.tsbuildinfo

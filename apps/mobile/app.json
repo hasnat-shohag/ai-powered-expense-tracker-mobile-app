@@ -10,8 +10,9 @@
     "android": {
       "package": "com.personal.expensetracker",
       "permissions": [
-        "RECORD_AUDIO",
-        "CAMERA"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
@@ -19,11 +20,21 @@
       "expo-speech-recognition",
       "expo-secure-store",
       "expo-image-picker",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.9.24"
+          }
+        }
+      ]
     ],
     "extra": {
-      "eas": {},
-      "apiBaseUrl": "https://REPLACE-WITH-YOUR-VERCEL-DEPLOYMENT.vercel.app"
+      "eas": {
+        "projectId": "17385998-e204-486e-ae6c-02c8e8001c33"
+      },
+      "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app"
     }
   }
 }

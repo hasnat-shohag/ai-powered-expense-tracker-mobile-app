@@ -15,10 +15,12 @@
     "apk:production": "npx --yes eas-cli build --profile production --platform android"
   },
   "dependencies": {
+    "@babel/runtime": "7.29.7",
     "@expense/shared": "workspace:*",
     "@expo-google-fonts/noto-sans-bengali": "^0.4.4",
     "@expo-google-fonts/roboto": "^0.4.3",
     "expo": "~52.0.0",
+    "expo-build-properties": "~0.13.3",
     "expo-constants": "~17.0.8",
     "expo-file-system": "~18.0.0",
     "expo-font": "~13.0.4",
