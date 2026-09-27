@@ -21,7 +21,7 @@ const TZ = "Asia/Dhaka";
  * to the DB here — the user confirms the draft first.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAuth(req, res)) return;
+  if (!(await requireAuth(req, res))) return;
   if (req.method !== "POST") {
     res.status(405).json({ error: "method not allowed" });
     return;

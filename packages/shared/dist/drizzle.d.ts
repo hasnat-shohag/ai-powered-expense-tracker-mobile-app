@@ -4,6 +4,12 @@
  * The mobile app mirrors this table in local SQLite. All timestamps are stored
  * in UTC and rendered in device-local time only at display. `updated_at` drives
  * last-write-wins during sync; `deleted_at` is a soft-delete tombstone.
+ *
+ * `owner_id` is the tenant boundary: the verified Clerk user id (JWT `sub`),
+ * stamped server-side on every write and filtered on every read. It never
+ * crosses the wire — the mobile mirror has no owner column — so a client cannot
+ * express or spoof ownership. Existing rows must be backfilled before this
+ * column is enforced NOT NULL against a live database (see the deploy plan).
  */
 export declare const expenses: import("drizzle-orm/pg-core").PgTableWithColumns<{
     name: "expenses";
@@ -22,6 +28,23 @@ export declare const expenses: import("drizzle-orm/pg-core").PgTableWithColumns<
             isAutoincrement: false;
             hasRuntimeDefault: false;
             enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        ownerId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "owner_id";
+            tableName: "expenses";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
             baseColumn: never;
             identity: undefined;
             generated: undefined;

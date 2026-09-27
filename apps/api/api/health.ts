@@ -5,7 +5,7 @@ import { getDb } from "../lib/db.js";
 
 /** GET /api/health — auth + DB reachability probe. */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAuth(req, res)) return;
+  if (!(await requireAuth(req, res))) return;
   try {
     await getDb().execute(sql`select 1`);
     res.status(200).json({ ok: true, db: "up", time: new Date().toISOString() });

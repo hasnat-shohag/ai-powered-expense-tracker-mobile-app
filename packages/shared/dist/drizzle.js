@@ -1,14 +1,22 @@
-import { pgTable, uuid, text, numeric, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, numeric, timestamp, index, } from "drizzle-orm/pg-core";
 /**
  * Canonical `expenses` table (Neon Postgres).
  *
  * The mobile app mirrors this table in local SQLite. All timestamps are stored
  * in UTC and rendered in device-local time only at display. `updated_at` drives
  * last-write-wins during sync; `deleted_at` is a soft-delete tombstone.
+ *
+ * `owner_id` is the tenant boundary: the verified Clerk user id (JWT `sub`),
+ * stamped server-side on every write and filtered on every read. It never
+ * crosses the wire — the mobile mirror has no owner column — so a client cannot
+ * express or spoof ownership. Existing rows must be backfilled before this
+ * column is enforced NOT NULL against a live database (see the deploy plan).
  */
 export const expenses = pgTable("expenses", {
     // Client-generated uuidv7 so offline rows have a stable id before they sync.
     id: uuid("id").primaryKey(),
+    // Verified Clerk `sub` of the row's owner. Server-derived, never client-sent.
+    ownerId: text("owner_id").notNull(),
     // Rows produced by a single parse/receipt share one group_id.
     groupId: uuid("group_id").notNull(),
     amount: numeric("amount", { precision: 14, scale: 2 }).notNull(),
@@ -33,5 +41,9 @@ export const expenses = pgTable("expenses", {
         .notNull()
         .defaultNow(),
     deletedAt: timestamp("deleted_at", { withTimezone: true, mode: "date" }),
-});
+}, (table) => ({
+    // Owner-scoped read path: `where owner_id = ? and updated_at > ?`.
+    ownerIdx: index("expenses_owner_idx").on(table.ownerId),
+    ownerUpdatedIdx: index("expenses_owner_updated_idx").on(table.ownerId, table.updatedAt),
+}));
 //# sourceMappingURL=drizzle.js.map

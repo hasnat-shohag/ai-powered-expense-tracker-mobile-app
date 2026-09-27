@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { and, gt, sql } from "drizzle-orm";
+import { and, eq, gt, sql } from "drizzle-orm";
 import {
   syncRequestSchema,
   expenseSchema,
@@ -22,7 +22,8 @@ const { expenses } = dbSchema;
  * retry.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAuth(req, res)) return;
+  const auth = await requireAuth(req, res);
+  if (!auth) return;
   if (req.method !== "POST") {
     res.status(405).json({ error: "method not allowed" });
     return;
@@ -39,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     // ---- Push: apply each op with an updated_at-guarded upsert. ----
     for (const { op, expense } of parsed.data.ops) {
-      const row = toRow(expense, op === "delete");
+      const row = toRow(expense, op === "delete", auth.ownerId);
       await db
         .insert(expenses)
         .values(row)
@@ -60,17 +61,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             updatedAt: row.updatedAt,
             deletedAt: row.deletedAt,
           },
-          // Last-write-wins: only overwrite when the incoming row is newer.
-          setWhere: sql`${expenses.updatedAt} <= ${row.updatedAt}`,
+          // Last-write-wins, owner-guarded: only the owner may overwrite, and
+          // only with a newer row. A guessed foreign `id` is a silent no-op.
+          setWhere: and(
+            eq(expenses.ownerId, auth.ownerId),
+            sql`${expenses.updatedAt} <= ${row.updatedAt}`,
+          ),
         });
     }
 
-    // ---- Pull: rows changed since the cursor (tombstones included). ----
+    // ---- Pull: this owner's rows changed since the cursor (tombstones incl). ----
     const since = parsed.data.since ? new Date(parsed.data.since) : null;
     const changedRows = await db
       .select()
       .from(expenses)
-      .where(since ? and(gt(expenses.updatedAt, since)) : undefined);
+      .where(
+        and(
+          eq(expenses.ownerId, auth.ownerId),
+          since ? gt(expenses.updatedAt, since) : undefined,
+        ),
+      );
 
     const changed = changedRows.map(fromRow);
     const cursor = changed.reduce(
@@ -85,10 +95,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-/** Wire Expense → DB insert values. */
-function toRow(e: Expense, isDelete: boolean) {
+/** Wire Expense → DB insert values, owner stamped server-side. */
+function toRow(e: Expense, isDelete: boolean, ownerId: string) {
   return {
     id: e.id,
+    ownerId,
     groupId: e.groupId,
     amount: e.amount.toFixed(2),
     currency: e.currency,

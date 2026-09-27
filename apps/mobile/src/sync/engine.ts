@@ -10,7 +10,7 @@ import {
   SYNC_CURSOR_KEY,
 } from "../db";
 import { isApiConfigured } from "../config";
-import { hasToken } from "../auth/token";
+import { hasSession } from "../auth/session";
 
 /** Outcome of a sync pass. */
 export interface SyncResult {
@@ -40,7 +40,7 @@ export async function isOnline(): Promise<boolean> {
  */
 export async function syncNow(): Promise<SyncResult> {
   if (syncing) return { pushed: 0, pulled: 0, skipped: "busy" };
-  if (!isApiConfigured() || !(await hasToken())) {
+  if (!isApiConfigured() || !(await hasSession())) {
     return { pushed: 0, pulled: 0, skipped: "unconfigured" };
   }
   if (!(await isOnline())) return { pushed: 0, pulled: 0, skipped: "offline" };

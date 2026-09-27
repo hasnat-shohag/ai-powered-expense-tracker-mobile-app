@@ -39,7 +39,8 @@
       "eas": {
         "projectId": "17385998-e204-486e-ae6c-02c8e8001c33"
       },
-      "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app"
+      "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app",
+      "clerkPublishableKey": "pk_test_ZW5vdWdoLWtpbmdmaXNoLTQwMzAuY2xlcmsuYWNjb3VudHMuZGV2JA"
     }
   }
 }

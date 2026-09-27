@@ -17,3 +17,13 @@ export const API_BASE_URL: string =
 export function isApiConfigured(): boolean {
   return API_BASE_URL.length > 0 && !API_BASE_URL.includes("REPLACE-WITH-YOUR");
 }
+
+/**
+ * Clerk publishable key. This is a public value (safe in the JS bundle) —
+ * unlike the secret key, which lives only in the backend env. Set via
+ * EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in dev or app.json → expo.extra.
+ */
+export const CLERK_PUBLISHABLE_KEY: string =
+  (process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string | undefined) ||
+  (Constants.expoConfig?.extra?.clerkPublishableKey as string | undefined) ||
+  "";

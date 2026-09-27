@@ -9,7 +9,7 @@ import {
   type SyncResponse,
 } from "@expense/shared";
 import { API_BASE_URL, isApiConfigured } from "../config";
-import { getToken } from "../auth/token";
+import { getSessionToken } from "../auth/session";
 
 /** A request failed. `status` is the HTTP code (0 = network/offline). */
 export class ApiError extends Error {
@@ -34,8 +34,8 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   if (!isApiConfigured()) {
     throw new ApiError("Backend URL is not configured.", 0);
   }
-  const token = await getToken();
-  if (!token) throw new AuthError("No API token set.");
+  const token = await getSessionToken();
+  if (!token) throw new AuthError("Not signed in.");
 
   let res: Response;
   try {
@@ -72,8 +72,8 @@ export async function checkHealth(): Promise<{ ok: boolean; db: string }> {
   if (!isApiConfigured()) {
     throw new ApiError("Backend URL is not configured.", 0);
   }
-  const token = await getToken();
-  if (!token) throw new AuthError("No API token set.");
+  const token = await getSessionToken();
+  if (!token) throw new AuthError("Not signed in.");
 
   let res: Response;
   try {
