@@ -47,8 +47,10 @@ export async function syncNow(): Promise<SyncResult> {
 
   syncing = true;
   try {
-    const outbox = await listOutbox();
-    const since = await getMeta(SYNC_CURSOR_KEY);
+    const [outbox, since] = await Promise.all([
+      listOutbox(),
+      getMeta(SYNC_CURSOR_KEY),
+    ]);
     const req: SyncRequest = { since, ops: outbox.map((e) => e.push) };
 
     const res = await syncWithServer(req);

@@ -34,44 +34,49 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const nowIso = new Date().toISOString();
-  const groups: ParsedGroup[] = [];
 
   try {
-    for (const capture of parsed.data.captures) {
-      const groupId = uuidv7();
+    // Captures are independent; process them concurrently. Within a capture the
+    // R2 upload and the LLM call are also independent (parseExpenses takes the
+    // base64 directly and never reads receiptKey), so run them in parallel too.
+    // Promise.all preserves order, so groups still mirror the request order.
+    const groups: ParsedGroup[] = await Promise.all(
+      parsed.data.captures.map(async (capture): Promise<ParsedGroup> => {
+        const groupId = uuidv7();
 
-      let receiptKey: string | null = null;
-      if (capture.source === "image" && capture.imageBase64) {
-        receiptKey = await uploadReceipt(groupId, capture.imageBase64);
-      }
+        const [receiptKey, items] = await Promise.all([
+          capture.source === "image" && capture.imageBase64
+            ? uploadReceipt(groupId, capture.imageBase64)
+            : Promise.resolve<string | null>(null),
+          parseExpenses({
+            text: capture.text,
+            imageBase64: capture.imageBase64,
+            nowIso,
+            tz: TZ,
+          }),
+        ]);
 
-      const items = await parseExpenses({
-        text: capture.text,
-        imageBase64: capture.imageBase64,
-        nowIso,
-        tz: TZ,
-      });
+        const expenses: Expense[] = items.map((it) => ({
+          id: uuidv7(),
+          groupId,
+          amount: it.amount,
+          currency: it.currency,
+          category: it.category,
+          merchant: it.merchant,
+          description: it.description,
+          paymentMethod: it.paymentMethod,
+          source: capture.source,
+          rawInput: capture.text ?? "",
+          receiptKey,
+          spentAt: it.spentAt,
+          createdAt: nowIso,
+          updatedAt: nowIso,
+          deletedAt: null,
+        }));
 
-      const expenses: Expense[] = items.map((it) => ({
-        id: uuidv7(),
-        groupId,
-        amount: it.amount,
-        currency: it.currency,
-        category: it.category,
-        merchant: it.merchant,
-        description: it.description,
-        paymentMethod: it.paymentMethod,
-        source: capture.source,
-        rawInput: capture.text ?? "",
-        receiptKey,
-        spentAt: it.spentAt,
-        createdAt: nowIso,
-        updatedAt: nowIso,
-        deletedAt: null,
-      }));
-
-      groups.push({ clientId: capture.clientId, groupId, receiptKey, expenses });
-    }
+        return { clientId: capture.clientId, groupId, receiptKey, expenses };
+      }),
+    );
 
     const body: ParseResponse = { groups };
     res.status(200).json(body);

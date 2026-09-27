@@ -87,7 +87,6 @@ export function SignInScreen() {
         callbackUrl = capturedUrl ?? (await pollFor(() => capturedUrl, 3000));
       }
       if (!callbackUrl) {
-        console.log("[oauth] no redirect url; browser=", res.type);
         setError(`Sign-in did not complete — browser=${res.type}`);
         return;
       }
@@ -111,11 +110,6 @@ export function SignInScreen() {
       if (sessionId) {
         await setActive({ session: sessionId });
       } else {
-        console.log(
-          "[oauth] no session:",
-          "signIn=", signIn.status ?? "-",
-          "signUp=", signUp.status ?? "-",
-        );
         setError(
           `Sign-in did not complete — signIn=${signIn.status ?? "-"} signUp=${signUp.status ?? "-"}`,
         );
@@ -125,7 +119,6 @@ export function SignInScreen() {
         (e as { errors?: { message?: string }[] })?.errors?.[0]?.message ||
         (e as Error)?.message ||
         "unknown error";
-      console.log("[oauth] error:", msg, "\nSTACK:", (e as Error)?.stack);
       setError(`Could not sign in — ${msg}`);
     } finally {
       sub.remove();

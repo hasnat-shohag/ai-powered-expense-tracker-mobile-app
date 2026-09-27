@@ -175,13 +175,25 @@ export async function categoryBreakdown(
 export async function applyServerRows(rows: Expense[]): Promise<void> {
   if (rows.length === 0) return;
   const db = await getDb();
+
+  // Fetch all local updated_at timestamps in one query instead of a point
+  // read per row (N+1). Compare last-write-wins in memory, then write only the
+  // rows that are actually newer.
+  const placeholders = rows.map(() => "?").join(",");
+  const localRows = await db.getAllAsync<{ id: string; updated_at: string }>(
+    `SELECT id, updated_at FROM expenses WHERE id IN (${placeholders})`,
+    rows.map((e) => e.id),
+  );
+  const localById = new Map(localRows.map((r) => [r.id, r.updated_at]));
+
+  const toWrite = rows.filter((e) => {
+    const localUpdatedAt = localById.get(e.id);
+    return !(localUpdatedAt !== undefined && localUpdatedAt >= e.updatedAt);
+  });
+  if (toWrite.length === 0) return;
+
   await db.withTransactionAsync(async () => {
-    for (const e of rows) {
-      const local = await db.getFirstAsync<{ updated_at: string }>(
-        "SELECT updated_at FROM expenses WHERE id = ?",
-        [e.id],
-      );
-      if (local && local.updated_at >= e.updatedAt) continue;
+    for (const e of toWrite) {
       await db.runAsync(INSERT_SQL, expenseToBindings(e));
     }
   });
