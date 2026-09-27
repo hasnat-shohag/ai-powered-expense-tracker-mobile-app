@@ -35,7 +35,11 @@ export async function requireAuth(
   let sub: string;
   try {
     ({ sub } = await verifySessionToken(token));
-  } catch {
+  } catch (e) {
+    // Surface the verification failure reason in the function log — the client
+    // only ever sees a generic 401, so this is the one place to diagnose a
+    // token/instance/JWT-key mismatch from the deployed runtime.
+    console.error("[auth] token verification failed:", (e as Error)?.message);
     res.status(401).json({ error: "unauthorized" });
     return null;
   }
