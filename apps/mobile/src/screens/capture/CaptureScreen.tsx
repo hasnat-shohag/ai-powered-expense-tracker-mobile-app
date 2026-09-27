@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -15,17 +15,18 @@ import {
   captureReceiptFromLibrary,
   captureReceiptPhoto,
   captureText,
-  captureVoiceTranscript,
+  deleteCaptureFile,
   requestVoicePermission,
   startVoiceCapture,
   stopVoiceCapture,
   useVoiceEnd,
+  useVoiceError,
   useVoiceResult,
 } from "../../capture";
-import { pendingCount } from "../../db";
+import { listPendingCaptures, removePendingCaptures, type PendingCapture } from "../../db";
 import { ApiError } from "../../api/client";
-import { colors, radius, space, type } from "../../theme";
-import { CameraIcon, ImageIcon, MicIcon } from "../../ui/icons";
+import { colors, radius, shadow, space, type } from "../../theme";
+import { CameraIcon, ImageIcon, MicIcon, TextIcon, TrashIcon } from "../../ui/icons";
 import { GhostButton, PrimaryButton, TextField, TopBar } from "../../ui/controls";
 
 /**
@@ -35,6 +36,13 @@ import { GhostButton, PrimaryButton, TextField, TopBar } from "../../ui/controls
  * review step needs the network, and a failure there leaves every capture
  * queued so a retry is safe.
  */
+/** Source glyph shown on a queued capture's tile. */
+function SourceIcon({ source }: { source: PendingCapture["source"] }) {
+  if (source === "voice") return <MicIcon size={18} color={colors.ink} />;
+  if (source === "image") return <ImageIcon size={18} color={colors.ink} />;
+  return <TextIcon size={18} color={colors.ink} />;
+}
+
 export function CaptureScreen({
   onDraftReady,
   onClose,
@@ -44,17 +52,55 @@ export function CaptureScreen({
 }) {
   const insets = useSafeAreaInsets();
   const [text, setText] = useState("");
-  const [pending, setPending] = useState(0);
+  const [captures, setCaptures] = useState<PendingCapture[]>([]);
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const pending = captures.length;
+  // Continuous recognition fires one final "result" per speech segment; keep the
+  // committed finals so a multi-part utterance ("lunch 320 at Star Kabab cash")
+  // is not overwritten by the last segment. `lastShownRef` is the latest text
+  // displayed (committed + interim) so we can still capture something if only
+  // interim results ever arrive. Capture happens on the `end` event, not on the
+  // stop tap: the recognizer emits its most accurate final result slightly
+  // AFTER stop(), so capturing synchronously on tap would save the interim.
+  const committedRef = useRef("");
+  const lastShownRef = useRef("");
   const [reviewing, setReviewing] = useState(false);
 
-  const refresh = useCallback(async () => setPending(await pendingCount()), []);
+  const refresh = useCallback(async () => setCaptures(await listPendingCaptures()), []);
   useEffect(() => {
     void refresh();
   }, [refresh]);
-  useVoiceResult((t) => setTranscript(t));
-  useVoiceEnd(() => setListening(false));
+  useVoiceResult((t, isFinal) => {
+    const said = t.trim();
+    if (isFinal) {
+      committedRef.current = committedRef.current ? `${committedRef.current} ${said}` : said;
+    }
+    const shown = isFinal
+      ? committedRef.current
+      : committedRef.current
+        ? `${committedRef.current} ${t}`
+        : t;
+    lastShownRef.current = shown;
+    setTranscript(shown);
+  });
+  useVoiceEnd(() => {
+    setListening(false);
+    const said = (committedRef.current || lastShownRef.current).trim();
+    committedRef.current = "";
+    lastShownRef.current = "";
+    setTranscript("");
+    // Preview the transcript into the "Type it" field rather than queuing it
+    // raw: the recognizer mishears amounts and merchant names, so the user
+    // gets to correct it and add it like any typed capture.
+    if (said) setText((prev) => (prev.trim() ? `${prev.trim()} ${said}` : said));
+  });
+  useVoiceError((code, message) => {
+    setListening(false);
+    // "no-speech" just means silence — not worth an alert.
+    if (code === "no-speech") return;
+    Alert.alert("Voice unavailable", `${message} (${code})`);
+  });
 
   const addText = async () => {
     const raw = text.trim();
@@ -66,14 +112,10 @@ export function CaptureScreen({
 
   const toggleVoice = async () => {
     if (listening) {
+      // Stop only. The final transcript arrives on the `end` event, which does
+      // the capture — see useVoiceEnd above.
       stopVoiceCapture();
       setListening(false);
-      const said = transcript.trim();
-      if (said) {
-        await captureVoiceTranscript(said);
-        void refresh();
-      }
-      setTranscript("");
       return;
     }
     const ok = await requestVoicePermission();
@@ -81,6 +123,8 @@ export function CaptureScreen({
       Alert.alert("Microphone needed", "Allow microphone access to capture by voice.");
       return;
     }
+    committedRef.current = "";
+    lastShownRef.current = "";
     setTranscript("");
     setListening(true);
     startVoiceCapture();
@@ -95,6 +139,12 @@ export function CaptureScreen({
     } catch (e) {
       Alert.alert("Couldn't add image", String(e instanceof Error ? e.message : e));
     }
+  };
+
+  const removeCapture = async (c: PendingCapture) => {
+    await removePendingCaptures([c.id]);
+    if (c.imagePath) await deleteCaptureFile(c.imagePath);
+    void refresh();
   };
 
   const review = async () => {
@@ -164,6 +214,45 @@ export function CaptureScreen({
               <Text style={styles.imgLabel}>Library</Text>
             </Pressable>
           </View>
+
+          <View style={styles.queue}>
+            <Text style={styles.queueHead}>
+              In queue{pending > 0 ? ` · ${pending}` : ""}
+            </Text>
+            {pending === 0 ? (
+              <Text style={styles.queueEmpty}>
+                Nothing queued yet. Type, speak, or snap a receipt above — each
+                one lands here so you can check it before Review.
+              </Text>
+            ) : (
+              <View style={styles.queueCard}>
+                {captures.map((c, i) => (
+                  <View
+                    key={c.id}
+                    style={[styles.qRow, i > 0 && styles.qRowDivider]}
+                  >
+                    <View style={styles.qTile}>
+                      <SourceIcon source={c.source} />
+                    </View>
+                    <Text style={styles.qText} numberOfLines={2}>
+                      {c.source === "image"
+                        ? "Receipt photo"
+                        : c.rawText || "(empty)"}
+                    </Text>
+                    <Pressable
+                      onPress={() => removeCapture(c)}
+                      hitSlop={10}
+                      android_ripple={{ color: colors.line, borderless: true }}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Remove capture ${i + 1}`}
+                    >
+                      <TrashIcon color="#B42318" />
+                    </Pressable>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
         </ScrollView>
         <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
           <PrimaryButton
@@ -217,6 +306,45 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imgLabel: { fontFamily: type.body.fontFamily, fontSize: 14, color: colors.ink },
+  queue: { marginTop: space.gap, gap: space.gapTight },
+  queueHead: { ...type.title, color: colors.ink },
+  queueEmpty: {
+    fontFamily: type.caption.fontFamily,
+    fontSize: 13,
+    lineHeight: 19,
+    color: colors.muted,
+  },
+  queueCard: {
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radius.md,
+    backgroundColor: colors.ground,
+    overflow: "hidden",
+    ...shadow.card,
+  },
+  qRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.gap,
+    paddingVertical: 12,
+    paddingHorizontal: space.padCard,
+  },
+  qRowDivider: { borderTopWidth: 1, borderTopColor: colors.line },
+  qTile: {
+    width: 34,
+    height: 34,
+    borderRadius: radius.full,
+    backgroundColor: colors.surfaceSunken,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  qText: {
+    flex: 1,
+    fontFamily: type.body.fontFamily,
+    fontSize: 14,
+    lineHeight: 20,
+    color: colors.ink,
+  },
   footer: {
     paddingHorizontal: space.inset,
     paddingTop: 12,
