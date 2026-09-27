@@ -13,7 +13,7 @@ import { isApiConfigured } from "../config";
 import { hasSession } from "../auth/session";
 
 /** Outcome of a sync pass. */
-export interface SyncResult {
+interface SyncResult {
   pushed: number;
   pulled: number;
   skipped?: "offline" | "unconfigured" | "busy";
@@ -22,7 +22,7 @@ export interface SyncResult {
 let syncing = false;
 
 /** True when the device reports an internet-reachable connection. */
-export async function isOnline(): Promise<boolean> {
+async function isOnline(): Promise<boolean> {
   try {
     const state = await Network.getNetworkStateAsync();
     return Boolean(state.isConnected && state.isInternetReachable !== false);

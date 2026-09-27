@@ -72,7 +72,6 @@ export function EditExpenseScreen({
       },
     ]);
   };
-// APPEND_EDIT
   return (
     <View style={styles.screen}>
       <View style={{ paddingTop: insets.top }} />

@@ -61,6 +61,3 @@ export const expenses = pgTable(
     ),
   }),
 );
-
-export type ExpenseRow = typeof expenses.$inferSelect;
-export type NewExpenseRow = typeof expenses.$inferInsert;

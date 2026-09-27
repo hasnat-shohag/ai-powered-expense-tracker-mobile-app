@@ -53,8 +53,6 @@ function toSlices(
   }));
 }
 
-// PLACEHOLDER_APPEND
-
 /**
  * The Home screen ("The Calm Ledger"): the month total leads, a donut + legend
  * explain its shape, category chips filter the ledger, and a single blue FAB

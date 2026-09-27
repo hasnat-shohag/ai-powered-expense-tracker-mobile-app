@@ -37,7 +37,6 @@ export declare const parsedExpenseSchema: z.ZodObject<{
     description?: string | undefined;
     paymentMethod?: string | null | undefined;
 }>;
-export type ParsedExpense = z.infer<typeof parsedExpenseSchema>;
 /** LLM parse output: always an array (a receipt with N line items → N rows). */
 export declare const parseResultSchema: z.ZodArray<z.ZodObject<{
     amount: z.ZodNumber;

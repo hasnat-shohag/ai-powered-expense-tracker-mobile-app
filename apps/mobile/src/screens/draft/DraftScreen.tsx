@@ -65,7 +65,6 @@ export function DraftScreen({
       Alert.alert("Couldn't save", String(e instanceof Error ? e.message : e));
     }
   };
-// APPEND_DRAFT
   const empty = items.length === 0;
 
   return (
@@ -123,7 +122,6 @@ export function DraftScreen({
     </View>
   );
 }
-// APPEND_DRAFT_STYLES
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ground },
   flex: { flex: 1 },

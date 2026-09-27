@@ -28,7 +28,7 @@ interface OutboxRow {
 }
 
 /** A drained outbox entry: the local row id plus the push op for /sync. */
-export interface OutboxEntry {
+interface OutboxEntry {
   rowId: string;
   push: SyncPushOp;
 }
@@ -54,13 +54,4 @@ export async function removeOutbox(rowIds: string[]): Promise<void> {
     `DELETE FROM outbox WHERE id IN (${placeholders})`,
     rowIds,
   );
-}
-
-/** Count of unsynced mutations (drives a "pending sync" indicator). */
-export async function outboxCount(): Promise<number> {
-  const db = await getDb();
-  const row = await db.getFirstAsync<{ n: number }>(
-    "SELECT COUNT(*) AS n FROM outbox",
-  );
-  return row?.n ?? 0;
 }

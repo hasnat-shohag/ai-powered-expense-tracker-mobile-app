@@ -53,7 +53,6 @@ export function CaptureScreen({
   useEffect(() => {
     void refresh();
   }, [refresh]);
-// APPEND_CAPTURE
   useVoiceResult((t) => setTranscript(t));
   useVoiceEnd(() => setListening(false));
 
@@ -113,7 +112,6 @@ export function CaptureScreen({
       setReviewing(false);
     }
   };
-// APPEND_CAPTURE_2
   return (
     <View style={styles.screen}>
       <View style={{ paddingTop: insets.top }} />
@@ -179,7 +177,6 @@ export function CaptureScreen({
     </View>
   );
 }
-// APPEND_CAPTURE_STYLES
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ground },
   flex: { flex: 1 },

@@ -9,7 +9,7 @@ import { getDb, getMeta, setMeta } from "../db";
  */
 
 /** app_meta key holding the Clerk user id the local data currently belongs to. */
-export const ACTIVE_USER_KEY = "auth.active_user_id";
+const ACTIVE_USER_KEY = "auth.active_user_id";
 
 /** Delete every local row (expenses, outbox, pending captures, and meta). */
 export async function wipeLocalData(): Promise<void> {

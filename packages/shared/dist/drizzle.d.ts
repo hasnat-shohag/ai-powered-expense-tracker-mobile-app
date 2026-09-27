@@ -290,6 +290,4 @@ export declare const expenses: import("drizzle-orm/pg-core").PgTableWithColumns<
     };
     dialect: "pg";
 }>;
-export type ExpenseRow = typeof expenses.$inferSelect;
-export type NewExpenseRow = typeof expenses.$inferInsert;
 //# sourceMappingURL=drizzle.d.ts.map

@@ -24,7 +24,6 @@ export const parsedExpenseSchema = z.object({
   paymentMethod: z.string().trim().min(1).nullable().default(null),
   spentAt: z.string().datetime({ offset: true }),
 });
-export type ParsedExpense = z.infer<typeof parsedExpenseSchema>;
 
 /** LLM parse output: always an array (a receipt with N line items → N rows). */
 export const parseResultSchema = z.array(parsedExpenseSchema);

@@ -73,7 +73,7 @@ export async function createExpenses(rows: Expense[]): Promise<void> {
 }
 
 /** Fetch one expense by id (including a tombstoned row), or null. */
-export async function getExpense(id: string): Promise<Expense | null> {
+async function getExpense(id: string): Promise<Expense | null> {
   const db = await getDb();
   const row = await db.getFirstAsync<ExpenseRow>(
     `SELECT ${EXPENSE_COLUMNS} FROM expenses WHERE id = ?`,

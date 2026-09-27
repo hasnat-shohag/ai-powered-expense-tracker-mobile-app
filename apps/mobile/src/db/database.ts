@@ -41,8 +41,3 @@ async function migrate(db: SQLite.SQLiteDatabase): Promise<void> {
     await db.execAsync(`PRAGMA user_version = ${version + 1};`);
   }
 }
-
-/** Test/hard-reset hook: drop the cached handle so the next getDb re-opens. */
-export function resetDbHandle(): void {
-  dbPromise = null;
-}
