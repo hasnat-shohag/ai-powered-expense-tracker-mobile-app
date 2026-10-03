@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -26,7 +27,7 @@ import {
 import { listPendingCaptures, removePendingCaptures, type PendingCapture } from "../../db";
 import { ApiError } from "../../api/client";
 import { colors, radius, shadow, space, type } from "../../theme";
-import { CameraIcon, ImageIcon, MicIcon, TextIcon, TrashIcon } from "../../ui/icons";
+import { CameraIcon, ImageIcon, MicIcon, TextIcon, TrashIcon, SendIcon } from "../../ui/icons";
 import { GhostButton, PrimaryButton, TextField, TopBar } from "../../ui/controls";
 
 /**
@@ -174,45 +175,67 @@ export function CaptureScreen({
           contentContainerStyle={[styles.body, { paddingBottom: 24 }]}
           keyboardShouldPersistTaps="handled"
         >
-          <TextField
-            label="Type it"
-            value={text}
-            onChangeText={setText}
-            placeholder="e.g. lunch 320 at Star Kabab, cash"
-            multiline
-            autoFocus
-          />
-          <GhostButton label="Add to queue" onPress={addText} />
+          <View style={[styles.composer, listening && styles.composerListening]}>
+            <TextInput
+              style={[styles.composerInput, listening && { display: 'none' }]}
+              value={text}
+              onChangeText={setText}
+              placeholder="e.g. lunch 320 at Star Kabab, cash"
+              placeholderTextColor={colors.muted}
+              multiline
+              autoFocus
+              selectionColor={colors.actionBlue}
+            />
+            {listening && (
+              <View style={styles.composerInput}>
+                <Text style={styles.composerTranscript}>
+                  {transcript || "Listening…"}
+                </Text>
+              </View>
+            )}
+            
+            <View style={styles.composerToolbar}>
+              <View style={styles.composerRow}>
+                <Pressable
+                  style={styles.composerIconBtn}
+                  onPress={toggleVoice}
+                  hitSlop={8}
+                >
+                  <MicIcon color={listening ? colors.actionBlue : colors.ink} size={22} />
+                </Pressable>
+                <Pressable
+                  style={styles.composerIconBtn}
+                  onPress={() => addImage(true)}
+                  hitSlop={8}
+                >
+                  <CameraIcon color={colors.ink} size={22} />
+                </Pressable>
+                <Pressable
+                  style={styles.composerIconBtn}
+                  onPress={() => addImage(false)}
+                  hitSlop={8}
+                >
+                  <ImageIcon color={colors.ink} size={22} />
+                </Pressable>
+              </View>
 
-          <Pressable
-            style={[styles.voice, listening && styles.voiceOn]}
-            onPress={toggleVoice}
-            android_ripple={{ color: colors.line }}
-            accessibilityRole="button"
-            accessibilityLabel={listening ? "Stop recording" : "Speak an expense"}
-          >
-            <MicIcon color={listening ? colors.ground : colors.ink} />
-            <Text style={[styles.voiceLabel, listening && styles.voiceLabelOn]}>
-              {listening ? "Listening… tap to stop" : "Speak an expense"}
-            </Text>
-          </Pressable>
-          {listening && transcript ? (
-            <Text style={styles.transcript}>{transcript}</Text>
-          ) : null}
-
-          <View style={styles.imgRow}>
-            <Pressable style={styles.imgBtn} onPress={() => addImage(true)}
-              android_ripple={{ color: colors.line }} accessibilityRole="button"
-              accessibilityLabel="Photograph a receipt">
-              <CameraIcon color={colors.ink} />
-              <Text style={styles.imgLabel}>Photo</Text>
-            </Pressable>
-            <Pressable style={styles.imgBtn} onPress={() => addImage(false)}
-              android_ripple={{ color: colors.line }} accessibilityRole="button"
-              accessibilityLabel="Pick a receipt from the library">
-              <ImageIcon color={colors.ink} />
-              <Text style={styles.imgLabel}>Library</Text>
-            </Pressable>
+              {(text.trim().length > 0 || listening) && (
+                <Pressable
+                  style={[
+                    styles.composerSendBtn,
+                    listening && styles.composerSendBtnStop
+                  ]}
+                  onPress={listening ? toggleVoice : addText}
+                  hitSlop={8}
+                >
+                  {listening ? (
+                    <Text style={styles.composerStopText}>Stop</Text>
+                  ) : (
+                    <SendIcon color={colors.ground} size={16} />
+                  )}
+                </Pressable>
+              )}
+            </View>
           </View>
 
           <View style={styles.queue}>
@@ -270,42 +293,70 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ground },
   flex: { flex: 1 },
   body: { padding: space.inset, gap: space.gap },
-  voice: {
-    marginTop: 6,
-    height: 56,
+  composer: {
     borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.surfaceSunken,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
     overflow: "hidden",
   },
-  voiceOn: { backgroundColor: colors.actionBlue, borderColor: colors.actionBlue },
-  voiceLabel: { fontFamily: type.body.fontFamily, fontSize: 14, color: colors.ink },
-  voiceLabelOn: { color: colors.ground },
-  transcript: {
-    fontFamily: type.caption.fontFamily,
-    fontSize: 13,
-    color: colors.muted,
+  composerListening: {
+    borderColor: colors.actionBlue,
+  },
+  composerInput: {
+    minHeight: 96,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontFamily: type.body.fontFamily,
+    fontSize: 15,
+    color: colors.ink,
+    textAlignVertical: "top",
+  },
+  composerTranscript: {
+    fontFamily: type.body.fontFamily,
+    fontSize: 15,
+    color: colors.ink,
     fontStyle: "italic",
   },
-  imgRow: { flexDirection: "row", gap: space.gap, marginTop: 6 },
-  imgBtn: {
-    flex: 1,
-    height: 56,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.line,
+  composerToolbar: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 9,
-    overflow: "hidden",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    paddingBottom: 8,
   },
-  imgLabel: { fontFamily: type.body.fontFamily, fontSize: 14, color: colors.ink },
+  composerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  composerIconBtn: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: radius.full,
+  },
+  composerSendBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.actionBlue,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 4,
+  },
+  composerSendBtnStop: {
+    width: 'auto',
+    paddingHorizontal: 12,
+    borderRadius: 16,
+  },
+  composerStopText: {
+    fontFamily: type.body.fontFamily,
+    fontSize: 13,
+    color: colors.ground,
+    fontWeight: "bold",
+  },
   queue: { marginTop: space.gap, gap: space.gapTight },
   queueHead: { ...type.title, color: colors.ink },
   queueEmpty: {
