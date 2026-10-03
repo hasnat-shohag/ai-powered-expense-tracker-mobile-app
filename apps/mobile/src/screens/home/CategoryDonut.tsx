@@ -2,33 +2,38 @@ import { useEffect, useMemo, useRef } from "react";
 import { Animated } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { colors } from "../../theme";
+import type { DonutSegment } from "./slices";
+
+export type { DonutSegment };
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 const R = 15.9155; // circumference = 2πR = 100, so dash units read as percentages
 const CENTER = 21;
 const STROKE = 6;
-
-export interface DonutSegment {
-  color: string;
-  /** Share of the ring, 0–100. */
-  pct: number;
-}
+/** The size STROKE was drawn against; other sizes scale the stroke to match. */
+const BASE_SIZE = 92;
 
 /**
  * Category Donut (signature): an SVG ring on a #F3F4F6 track, one arc per
- * category in its ink, stroke-width 6. Segments sweep clockwise from 0 over
- * 600ms, staggered 60ms per segment; reduce-motion renders the final ring.
+ * category in its ink. Segments sweep clockwise from 0 over 600ms, staggered
+ * 60ms per segment; reduce-motion renders the final ring.
+ *
+ * `size` is driven by the legend's height, so the ring grows with the card
+ * instead of floating in it. Stroke width is scaled inversely — the ring gains
+ * diameter and arc resolution, never weight.
  */
 export function CategoryDonut({
   segments,
-  size = 92,
+  size = BASE_SIZE,
   reduceMotion,
 }: {
   segments: DonutSegment[];
   size?: number;
   reduceMotion: boolean;
 }) {
+  const stroke = STROKE * (BASE_SIZE / size);
+
   // Cumulative start angle per segment (clockwise from 12 o'clock).
   const arcs = useMemo(() => {
     let cum = 0;
@@ -70,7 +75,7 @@ export function CategoryDonut({
         r={R}
         fill="none"
         stroke={colors.fillTrack}
-        strokeWidth={STROKE}
+        strokeWidth={stroke}
       />
       {arcs.map((a, i) => (
         <AnimatedCircle
@@ -80,7 +85,7 @@ export function CategoryDonut({
           r={R}
           fill="none"
           stroke={a.color}
-          strokeWidth={STROKE}
+          strokeWidth={stroke}
           strokeLinecap="butt"
           strokeDasharray={[a.pct, 100 - a.pct]}
           strokeDashoffset={offsets[i]}

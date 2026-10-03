@@ -16,8 +16,13 @@ colors:
   transport-tint: "#DCE9FB"
   transport-ink: "#2C5FA8"
   groceries-tint: "#E3F2E1"
+  groceries-ink: "#2F7A3E"
   health-tint: "#F3E1F3"
   health-ink: "#8A3E8A"
+  unclassified-tint: "#EEF2F6"
+  unclassified-ink: "#64748B"
+  other-tint: "#F1F5F9"
+  other-ink: "#94A3B8"
 typography:
   display:
     fontFamily: "Roboto, 'Noto Sans Bengali', system-ui, sans-serif"
@@ -86,6 +91,13 @@ components:
     backgroundColor: "{colors.surface-sunken}"
     rounded: "{rounded.lg}"
     padding: "16px"
+  summary-legend-row:
+    minHeight: "17px"
+    typography: "{typography.label}"
+  category-donut:
+    strokeWidth: "6"
+    ringMin: "72px"
+    ringMax: "128px"
   category-tile:
     rounded: "{rounded.full}"
     size: "38px"
@@ -109,7 +121,8 @@ The confirmed anti-reference is the crowded finance dashboard: no stacked KPI ti
 - White ground (#FFFFFF), near-black ink (#111827), a single action blue (#2563EB) reserved for the add gesture
 - One dominant 42px number over a dense field of 12–15px UI text; no mid-range headline
 - Flat, hairline-separated surfaces; the only pronounced shadow is the FAB's colored lift
-- Four flat category pairs — a pale tint fill behind a saturated ink stroke/dot
+- Four documented category pairs — a pale tint fill behind a saturated ink stroke/dot
+- Categories outside those four share one neutral slate; the legend, not the ring, says which is which
 - Circular icon tiles, pill chips and FAB, 12/16px card corners
 - Bilingual Roboto + Noto Sans Bengali; taka (৳) is the currency
 
@@ -130,6 +143,10 @@ Each expense category is a pale tint behind a saturated ink (used for the icon s
 - **Groceries** — tint #E3F2E1 / ink #2F7A3E (green, = Positive Green)
 - **Health** — tint #F3E1F3 / ink #8A3E8A (purple)
 
+Two further pairs cover what the four do not, and both are deliberately colorless:
+- **Unclassified** (any category outside the four above) — tint #EEF2F6 / ink #64748B (slate). The parser emits free-form category text, so a month routinely carries labels the four do not name.
+- **Other** (the legend's aggregated tail, see Layout) — tint #F1F5F9 / ink #94A3B8. A step lighter than Unclassified, so the bucket never reads as one more category.
+
 ### Neutral
 - **Ground** (#FFFFFF): The page and the list-card background.
 - **Ink** (#111827): Primary text — the month total, merchant names, amounts, the selected chip.
@@ -143,6 +160,8 @@ Each expense category is a pale tint behind a saturated ink (used for the icon s
 **The Action-Blue Rule.** Blue #2563EB is for the add action only. If a surface has more than one blue element, or blue on anything that isn't the primary capture gesture, it is wrong.
 
 **The Category-Pair Rule.** A category is always a pale tint fill under a saturated ink mark — never a solid saturated fill behind white. The tint carries the icon tile; the ink carries the stroke, dot, and donut arc.
+
+**The Neutral-Fallback Rule.** A category the four documented pairs do not name takes the Unclassified slate — never one of the four inks. The fallback must not impersonate a category: an unnamed label painted in Food amber does not read as "unclassified", it reads as *Food*, and four such categories collapse the ring into one arc that reports a single false total. One shared neutral is honest about what the ring knows; the legend, which has room for the names, does the rest. The same pair function backs the legend dot and the expense-row tile, so one category keeps one appearance everywhere on the screen — never a per-month or per-rank color.
 
 ## Typography
 
@@ -169,6 +188,10 @@ Each expense category is a pale tint behind a saturated ink (used for the icon s
 Single-column, native-first. The canonical canvas is 412×915 (Android, portrait); the responsive variant reflows the same column fluidly to wider viewports without adding chrome.
 
 The content column is inset **20px** on the left and right and **17px** from the top. The vertical rhythm is a loose, optically-tuned scale rather than a strict 8pt grid: tight pairs (2px, 7px) bind a label to its value, ~13–16px pads card interiors, 20px separates the donut from its legend, and ~22–24px opens between major blocks (total → summary card → chips → list). The FAB floats 20px from the right edge and 28px from the bottom.
+
+**Named Rule — The Bounded-Legend Rule.** The summary card has a hard vertical ceiling that does not move with the data. The legend shows at most **six rows**: the five largest categories by spend, then one grey **"Other (n)"** row carrying the sum of everything below them. The ring always sums to 100% of the month, so aggregating the tail loses no money — it only stops the card from growing. A twelve-category month costs exactly the same screen height as a three-category one: at six rows the card measures **320×181dp**, roughly a fifth of an 806dp-tall screen. Nothing about a donut justifies taking more.
+
+The ring is not a fixed size. It is sized *from* the legend — `clamp(legendHeight, 72, 128)` — so a short legend gives a compact ring and a full one gives the largest ring the card can hold, capped at **128px** so the ring never outweighs the month total it explains. Stroke width scales inversely with diameter (6px at the 92px base), so growing the ring buys arc resolution, never ring weight.
 
 **Named Rule — The Status-Bar Inset Rule.** The content top inset is **17px**, deliberately less than a bare-mock value. In the shipped React Native app the content sits inside a SafeAreaView below the Android status bar (~24dp); the system inset supplies the remainder so the total lands at the comp's optical position. Treat 17px as correct for the in-app render — it is a layout rule, not a defect, and it presumes the status-bar inset is present above it.
 
@@ -200,29 +223,39 @@ A page of soft rectangles and true circles. Cards use gently rounded corners —
 
 ### Cards / Containers
 - **List card** — **Corner:** 12px. **Background:** white. **Border:** 1px #E5E7EB. **Shadow:** card hairline lift. Holds the expense rows; rows are divided by a 1px #E5E7EB top border (not their own boxes). Top margin 10px from the header.
-- **Summary card** — **Corner:** 16px. **Background:** sunken #FAFAFA. **Border:** 1px #E5E7EB. **Shadow:** none. **Padding:** 16px. Holds the donut (left) and legend (right) with a 20px gap.
+- **Summary card** — **Corner:** 16px. **Background:** sunken #FAFAFA. **Border:** 1px #E5E7EB. **Shadow:** none. **Padding:** 16px. Holds the donut (left) and legend (right) with a 20px gap. Height is set by the legend and capped at six rows (see The Bounded-Legend Rule); the ring sizes itself from that height.
 
 ### Expense Row (signature)
 A three-part row, padding `13px 14px`, 13px internal gaps: a **circular category tile** (38px, category tint fill, category-ink 19px stroke-line SVG icon) · a **middle block** (merchant name, body 14px/500, truncating with ellipsis; date+category sub-line, caption 12px muted) · a **right-aligned amount** (body 14px/500, tabular-nums).
 
 ### Category Donut (signature)
-An SVG ring on a #F3F4F6 track, stroke-width 6, with one arc per category drawn in that category's ink. Paired with a legend of 9px color dots, category names, and right-aligned tabular amounts. **Motion:** segments sweep clockwise from 0 over 600ms, staggered 60ms per segment.
+An SVG ring on a #F3F4F6 track, stroke-width 6 at a 92px base, with one arc per category drawn in that category's ink. Paired with a legend of 9px color dots, category names, and right-aligned tabular amounts. **Motion:** segments sweep clockwise from 0 over 600ms, staggered 60ms per segment.
+
+**Sizing.** The ring is rendered from the legend's height rather than a fixed dimension — 72px floor, 128px ceiling — and the stroke scales inversely with diameter, so the ring keeps its 6px weight at any size and gains only diameter and arc resolution. For a ring this small, that is the honest way to spend spare room: a thicker stroke would read as a heavier chart, not a bigger one.
+
+**Legend.** Each row is the card's filter affordance — a nine-pixel dot and a six-pixel arc are not touch targets, but a text row is. Selecting a row dims to the same #F3F4F6 track fill the chips use, on a symmetric horizontal padding so selection causes no layout shift, and filters the ledger below. The **"Other (n)"** row is read-only on purpose: it is a bucket, not a category, and tapping it could not filter to anything real. Row height is pinned (17px line box, 9px gap) so the card's height is a computed value rather than a guess.
 
 ### Month Total (signature)
-The lead figure: `৳ 24,850` at 42px/700, letter-spacing −0.02em, ink. Above it a 13px muted month label; below it a 12.5px green delta with an up-arrow. **Motion:** the total counts up 0→value on mount over 450ms (M3 standard-decelerate, once).
+The lead figure: `৳ 24,850` at 42px/700, letter-spacing −0.02em, ink. Above it a 13px muted month label; below it a 12.5px green delta with an up-arrow. **Motion:** none — the figure renders at its true value from the first frame.
+
+**Named Rule — The Honest-Number Rule.** The month total is never counted up, revealed, or animated in any way. Any entrance that begins from a placeholder displays a wrong number for as long as the animation lasts — and longer than the animation, because the frame work that delays it is exactly what a mount is busy doing. The total is the one figure on this screen whose entire job is to be correct, so it is the one figure that never gets an entrance. This also has no fallback audience: the screen has no month switcher, so a count-up would fire only on a cold start, and its single occasion would be the one where it misreports ৳ 0. Motion on this screen belongs to the donut sweep and the row stagger, which carry no values.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** reserve Action Blue (#2563EB) for the single add gesture and its shadow — nothing else on the screen is blue.
 - **Do** build every category as a pale tint fill under a saturated ink mark, using the four documented pairs.
+- **Do** give a category outside those four the Unclassified slate, and check that a chart never paints two different categories the same ink.
+- **Do** keep the summary card bounded — six legend rows, tail aggregated into "Other (n)" — and let the ring size itself from the legend.
 - **Do** render currency and Bangla through Noto Sans Bengali in the stack, and set all amounts in tabular-nums.
 - **Do** keep exactly one large number (42px total) and hold everything else in the 12–15px band.
 - **Do** separate surfaces with 1px #E5E7EB hairlines first; reach for shadow only for the FAB.
-- **Do** honor reduce-motion: disable the count-up and donut sweep and render the final state.
+- **Do** honor reduce-motion: disable the donut sweep and the row stagger and render the final state.
 
 ### Don't:
 - **Don't** introduce a second accent color or tint anything decoratively — the palette is near-monochrome plus blue plus four category inks.
+- **Don't** let a category fall back to one of the four documented inks. An unnamed label in Food amber reads as Food, and four of them merge into a single false arc.
+- **Don't** let the chart grow with the data. A donut that takes more screen for twelve categories than for three is spending the user's viewport on nothing.
 - **Don't** add heavy or stacked elevation; the page is flat with hairlines and two restrained shadows.
 - **Don't** insert a mid-size headline between the 42px total and the 15px section label.
 - **Don't** use filled glyph icons or emoji — icons are 19px stroke-line SVGs at 1.8 stroke-width.

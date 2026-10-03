@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-25T00:00:00.000Z",
+  "generatedAt": "2026-10-03T17:32:53Z",
   "title": "Design System: Expense Tracker — Home",
   "extensions": {
     "colorMeta": {
@@ -243,6 +243,81 @@
           "#D397D3",
           "#F3E1F3"
         ]
+      },
+      "groceries-ink": {
+        "role": "tertiary",
+        "displayName": "Groceries Ink",
+        "canonical": "#2F7A3E",
+        "tonalRamp": [
+          "#173D1F",
+          "#1F5329",
+          "#276634",
+          "#2F7A3E",
+          "#3F9E52",
+          "#5FBE72",
+          "#93D6A0",
+          "#E3F2E1"
+        ]
+      },
+      "unclassified-ink": {
+        "role": "tertiary",
+        "displayName": "Unclassified Slate",
+        "canonical": "#64748B",
+        "tonalRamp": [
+          "#2B3644",
+          "#3D4A5B",
+          "#4F5E71",
+          "#64748B",
+          "#8494A6",
+          "#A6B2C0",
+          "#C9D1DA",
+          "#EEF2F6"
+        ]
+      },
+      "unclassified-tint": {
+        "role": "tertiary",
+        "displayName": "Unclassified Tint",
+        "canonical": "#EEF2F6",
+        "tonalRamp": [
+          "#2B3644",
+          "#3D4A5B",
+          "#4F5E71",
+          "#64748B",
+          "#8494A6",
+          "#A6B2C0",
+          "#C9D1DA",
+          "#EEF2F6"
+        ]
+      },
+      "other-ink": {
+        "role": "tertiary",
+        "displayName": "Other Bucket Ink",
+        "canonical": "#94A3B8",
+        "tonalRamp": [
+          "#3F4A58",
+          "#556273",
+          "#6E7C8C",
+          "#8494A6",
+          "#94A3B8",
+          "#B2BDC8",
+          "#D3DAE2",
+          "#F1F5F9"
+        ]
+      },
+      "other-tint": {
+        "role": "tertiary",
+        "displayName": "Other Bucket Tint",
+        "canonical": "#F1F5F9",
+        "tonalRamp": [
+          "#3F4A58",
+          "#556273",
+          "#6E7C8C",
+          "#8494A6",
+          "#94A3B8",
+          "#B2BDC8",
+          "#D3DAE2",
+          "#F1F5F9"
+        ]
       }
     },
     "typographyMeta": {
@@ -280,11 +355,6 @@
       }
     ],
     "motion": [
-      {
-        "name": "total-count-up",
-        "value": "0->value, 450ms, M3 standard-decelerate, once",
-        "purpose": "Month total counts up on mount."
-      },
       {
         "name": "donut-sweep",
         "value": "clockwise from 0, 600ms, 60ms stagger per segment",
@@ -359,27 +429,28 @@
       "name": "Summary Card (Donut + Legend)",
       "kind": "card",
       "refersTo": "summary-card",
-      "description": "Sunken grey card pairing the category donut with its labelled legend.",
-      "html": "<div class=\"ds-summary\"><svg class=\"ds-donut\" viewBox=\"0 0 42 42\"><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#F3F4F6\" stroke-width=\"6\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#B4741B\" stroke-width=\"6\" stroke-dasharray=\"42 58\" stroke-dashoffset=\"25\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#2C5FA8\" stroke-width=\"6\" stroke-dasharray=\"24 76\" stroke-dashoffset=\"83\"/></svg><div class=\"ds-legend\"><div><i style=\"background:#B4741B\"></i>Food<b>৳ 10,400</b></div><div><i style=\"background:#2C5FA8\"></i>Transport<b>৳ 6,000</b></div></div></div>",
-      "css": ".ds-summary { display:flex; align-items:center; gap:20px; background:#FAFAFA; border:1px solid #E5E7EB; border-radius:16px; padding:16px; font-family:Roboto,'Noto Sans Bengali',system-ui,sans-serif; } .ds-donut { width:92px; height:92px; flex:0 0 auto; } .ds-legend { display:flex; flex-direction:column; gap:9px; flex:1; } .ds-legend div { display:flex; align-items:center; gap:9px; font-size:12.5px; color:#111827; } .ds-legend i { width:9px; height:9px; border-radius:3px; flex:0 0 auto; } .ds-legend b { margin-left:auto; font-weight:500; font-variant-numeric:tabular-nums; }"
+      "description": "Sunken grey card pairing the category donut with its labelled legend. Bounded at six legend rows — the tail aggregates into one grey \"Other (n)\" row — and the ring sizes itself from the legend's height (72–128px) rather than sitting at a fixed size.",
+      "html": "<div class=\"ds-summary\"><svg class=\"ds-donut\" viewBox=\"0 0 42 42\"><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#F3F4F6\" stroke-width=\"6\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#B4741B\" stroke-width=\"6\" stroke-dasharray=\"42 58\" stroke-dashoffset=\"25\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#2C5FA8\" stroke-width=\"6\" stroke-dasharray=\"24 76\" stroke-dashoffset=\"83\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#2F7A3E\" stroke-width=\"6\" stroke-dasharray=\"18 82\" stroke-dashoffset=\"107\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#8A3E8A\" stroke-width=\"6\" stroke-dasharray=\"10 90\" stroke-dashoffset=\"125\"/><circle cx=\"21\" cy=\"21\" r=\"15.9\" fill=\"none\" stroke=\"#64748B\" stroke-width=\"6\" stroke-dasharray=\"6 94\" stroke-dashoffset=\"135\"/></svg><div class=\"ds-legend\"><div class=\"ds-on\"><i style=\"background:#B4741B\"></i>Food<b>৳ 10,400</b></div><div><i style=\"background:#2C5FA8\"></i>Transport<b>৳ 6,000</b></div><div><i style=\"background:#2F7A3E\"></i>Groceries<b>৳ 4,200</b></div><div><i style=\"background:#8A3E8A\"></i>Health<b>৳ 2,600</b></div><div><i style=\"background:#64748B\"></i>Clothing<b>৳ 1,900</b></div><div class=\"ds-other\"><i style=\"background:#94A3B8\"></i>Other (3)<b>৳ 900</b></div></div></div>",
+      "css": ".ds-summary { display:flex; align-items:center; gap:20px; background:#FAFAFA; border:1px solid #E5E7EB; border-radius:16px; padding:16px; font-family:Roboto,'Noto Sans Bengali',system-ui,sans-serif; } .ds-donut { width:128px; height:128px; flex:0 0 auto; } .ds-legend { display:flex; flex-direction:column; gap:9px; flex:1; } .ds-legend div { display:flex; align-items:center; gap:9px; min-height:17px; padding:0 8px; margin:0 -8px; border-radius:12px; font-size:12.5px; line-height:17px; color:#111827; transition:background 150ms; } .ds-legend div:hover { background:#F3F4F6; } .ds-legend .ds-on { background:#F3F4F6; font-weight:700; } .ds-legend .ds-other { opacity:.75; } .ds-legend i { width:9px; height:9px; border-radius:3px; flex:0 0 auto; } .ds-legend b { margin-left:auto; font-weight:500; font-variant-numeric:tabular-nums; }"
     },
     {
       "name": "Month Total",
       "kind": "custom",
       "refersTo": "display",
-      "description": "The lead figure: month label, large taka total, and green up-trend delta.",
+      "description": "The lead figure: month label, large taka total, and green up-trend delta. Renders at its true value — never counted up.",
       "html": "<div class=\"ds-total-block\"><div class=\"ds-month\">September 2026</div><div class=\"ds-total\">৳ 24,850</div><div class=\"ds-delta\"><svg viewBox=\"0 0 24 24\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"#2F7A3E\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 19V5M5 12l7-7 7 7\"/></svg>12% <em>vs August</em></div></div>",
       "css": ".ds-total-block { font-family:Roboto,'Noto Sans Bengali',system-ui,sans-serif; } .ds-month { font-size:13px; color:#6B7280; font-weight:500; } .ds-total { font-size:42px; font-weight:700; letter-spacing:-.02em; color:#111827; margin-top:2px; } .ds-delta { display:flex; align-items:center; gap:5px; margin-top:7px; font-size:12.5px; color:#2F7A3E; font-weight:500; } .ds-delta em { font-style:normal; color:#6B7280; font-weight:400; }"
     }
   ],
   "narrative": {
     "northStar": "The Calm Ledger",
-    "overview": "This is the category-standard expense tracker executed impeccably: the number first, the detail beneath, nothing shouting. The whole surface is a quiet white page where one large taka figure carries the month, a donut and legend explain its shape, and a single blue pill offers the only loud gesture — add another expense. It refuses the busy dashboard and the novelty metaphor. There is no invented chrome, no decorative color, no ornament. Calm and correct is the entire point. Density is deliberately low at the top and rises smoothly into a dense, scannable ledger of small UI text. The material is Material Design 3 for Android, played straight: soft white cards, hairline dividers, circular icon tiles, and pill-shaped controls. It is bilingual by construction — Roboto carries the Latin text, Noto Sans Bengali carries the taka sign (৳, U+09F3) and any Bangla. The confirmed anti-reference is the crowded finance dashboard.",
+    "overview": "This is the category-standard expense tracker executed impeccably: the number first, the detail beneath, nothing shouting. The whole surface is a quiet white page where one large taka figure carries the month, a donut and legend explain its shape, and a single blue pill offers the only loud gesture — add another expense. It refuses the busy dashboard and the novelty metaphor. There is no invented chrome, no decorative color, no ornament. Calm and correct is the entire point.\n\nDensity is deliberately low at the top (one dominant number, generous breathing room) and rises smoothly into a dense, scannable ledger of small UI text. The material is Material Design 3 for Android, played straight: soft white cards, hairline dividers, circular icon tiles, and pill-shaped controls. It is bilingual by construction — Roboto carries the Latin text, Noto Sans Bengali carries the taka sign (৳, U+09F3) and any Bangla — so a Dhaka user reads native currency without a font fallback.\n\nThe confirmed anti-reference is the crowded finance dashboard: no stacked KPI tiles, no gauge clutter, no second accent competing with the action blue.",
     "keyCharacteristics": [
       "White ground (#FFFFFF), near-black ink (#111827), a single action blue (#2563EB) reserved for the add gesture",
-      "One dominant 42px number over a dense field of 12-15px UI text; no mid-range headline",
+      "One dominant 42px number over a dense field of 12–15px UI text; no mid-range headline",
       "Flat, hairline-separated surfaces; the only pronounced shadow is the FAB's colored lift",
-      "Four flat category pairs — a pale tint fill behind a saturated ink stroke/dot",
+      "Four documented category pairs — a pale tint fill behind a saturated ink stroke/dot",
+      "Categories outside those four share one neutral slate; the legend, not the ring, says which is which",
       "Circular icon tiles, pill chips and FAB, 12/16px card corners",
       "Bilingual Roboto + Noto Sans Bengali; taka (৳) is the currency"
     ],
@@ -395,8 +466,13 @@
         "section": "colors"
       },
       {
+        "name": "The Neutral-Fallback Rule",
+        "body": "A category the four documented pairs do not name takes the Unclassified slate — never one of the four inks. The fallback must not impersonate a category: an unnamed label painted in Food amber does not read as \"unclassified\", it reads as *Food*, and four such categories collapse the ring into one arc that reports a single false total. One shared neutral is honest about what the ring knows; the legend, which has room for the names, does the rest. The same pair function backs the legend dot and the expense-row tile, so one category keeps one appearance everywhere on the screen — never a per-month or per-rank color.",
+        "section": "colors"
+      },
+      {
         "name": "The One-Big-Number Rule",
-        "body": "Exactly one element is large: the month total at 42px. Everything else lives in the 12-15px band. Never introduce a mid-size headline between the total and the labels — the gap is what makes the number read as the answer.",
+        "body": "Exactly one element is large: the month total at 42px. Everything else lives in the 12–15px band. Never introduce a mid-size headline between the total and the labels — the gap is what makes the number read as the answer.",
         "section": "typography"
       },
       {
@@ -405,26 +481,40 @@
         "section": "typography"
       },
       {
+        "name": "The Bounded-Legend Rule",
+        "body": "The summary card has a hard vertical ceiling that does not move with the data. The legend shows at most **six rows**: the five largest categories by spend, then one grey **\"Other (n)\"** row carrying the sum of everything below them. The ring always sums to 100% of the month, so aggregating the tail loses no money — it only stops the card from growing. A twelve-category month costs exactly the same screen height as a three-category one: at six rows the card measures **320×181dp**, roughly a fifth of an 806dp-tall screen. Nothing about a donut justifies taking more.",
+        "section": "layout"
+      },
+      {
         "name": "The Status-Bar Inset Rule",
-        "body": "The content top inset is 17px, deliberately less than a bare-mock value. In the shipped React Native app the content sits inside a SafeAreaView below the Android status bar (~24dp); the system inset supplies the remainder so the total lands at the comp's optical position. Treat 17px as correct for the in-app render — it is a layout rule, not a defect.",
+        "body": "The content top inset is **17px**, deliberately less than a bare-mock value. In the shipped React Native app the content sits inside a SafeAreaView below the Android status bar (~24dp); the system inset supplies the remainder so the total lands at the comp's optical position. Treat 17px as correct for the in-app render — it is a layout rule, not a defect, and it presumes the status-bar inset is present above it.",
         "section": "layout"
       },
       {
         "name": "The Hairline-First Rule",
         "body": "Surfaces separate by a 1px #E5E7EB hairline (and, for the summary card, a #FAFAFA sunken fill) before they ever reach for a shadow. The only real shadow on the page belongs to the FAB.",
-        "section": "elevation"
+        "section": "elevation & depth"
+      },
+      {
+        "name": "The Honest-Number Rule",
+        "body": "The month total is never counted up, revealed, or animated in any way. Any entrance that begins from a placeholder displays a wrong number for as long as the animation lasts — and longer than the animation, because the frame work that delays it is exactly what a mount is busy doing. The total is the one figure on this screen whose entire job is to be correct, so it is the one figure that never gets an entrance. This also has no fallback audience: the screen has no month switcher, so a count-up would fire only on a cold start, and its single occasion would be the one where it misreports ৳ 0. Motion on this screen belongs to the donut sweep and the row stagger, which carry no values.",
+        "section": "components"
       }
     ],
     "dos": [
       "Do reserve Action Blue (#2563EB) for the single add gesture and its shadow — nothing else on the screen is blue.",
       "Do build every category as a pale tint fill under a saturated ink mark, using the four documented pairs.",
+      "Do give a category outside those four the Unclassified slate, and check that a chart never paints two different categories the same ink.",
+      "Do keep the summary card bounded — six legend rows, tail aggregated into \"Other (n)\" — and let the ring size itself from the legend.",
       "Do render currency and Bangla through Noto Sans Bengali in the stack, and set all amounts in tabular-nums.",
-      "Do keep exactly one large number (42px total) and hold everything else in the 12-15px band.",
+      "Do keep exactly one large number (42px total) and hold everything else in the 12–15px band.",
       "Do separate surfaces with 1px #E5E7EB hairlines first; reach for shadow only for the FAB.",
-      "Do honor reduce-motion: disable the count-up and donut sweep and render the final state."
+      "Do honor reduce-motion: disable the donut sweep and the row stagger and render the final state."
     ],
     "donts": [
       "Don't introduce a second accent color or tint anything decoratively — the palette is near-monochrome plus blue plus four category inks.",
+      "Don't let a category fall back to one of the four documented inks. An unnamed label in Food amber reads as Food, and four of them merge into a single false arc.",
+      "Don't let the chart grow with the data. A donut that takes more screen for twelve categories than for three is spending the user's viewport on nothing.",
       "Don't add heavy or stacked elevation; the page is flat with hairlines and two restrained shadows.",
       "Don't insert a mid-size headline between the 42px total and the 15px section label.",
       "Don't use filled glyph icons or emoji — icons are 19px stroke-line SVGs at 1.8 stroke-width.",
