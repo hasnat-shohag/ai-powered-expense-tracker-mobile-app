@@ -18,6 +18,7 @@ export {
   addPendingCapture,
   listPendingCaptures,
   removePendingCaptures,
+  updatePendingCaptureText,
   pendingCount,
   type PendingCapture,
 } from "./pending";

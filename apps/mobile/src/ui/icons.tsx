@@ -184,4 +184,13 @@ export function SendIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
   );
 }
 
+/** Checkmark glyph for confirming an edit. */
+export function CheckIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M20 6L9 17l-5-5" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
 

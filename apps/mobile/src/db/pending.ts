@@ -76,3 +76,12 @@ export async function pendingCount(): Promise<number> {
   );
   return row?.n ?? 0;
 }
+
+/** Update the raw text of a queued capture. */
+export async function updatePendingCaptureText(id: string, newText: string): Promise<void> {
+  const db = await getDb();
+  await db.runAsync(
+    "UPDATE pending_captures SET raw_text = ? WHERE id = ?",
+    [newText, id]
+  );
+}

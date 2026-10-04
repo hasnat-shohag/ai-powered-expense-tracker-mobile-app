@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -24,10 +25,10 @@ import {
   useVoiceError,
   useVoiceResult,
 } from "../../capture";
-import { listPendingCaptures, removePendingCaptures, type PendingCapture } from "../../db";
+import { listPendingCaptures, removePendingCaptures, updatePendingCaptureText, type PendingCapture } from "../../db";
 import { ApiError } from "../../api/client";
 import { colors, radius, shadow, space, type } from "../../theme";
-import { CameraIcon, ImageIcon, MicIcon, TextIcon, TrashIcon, SendIcon } from "../../ui/icons";
+import { CameraIcon, ImageIcon, MicIcon, TextIcon, TrashIcon, SendIcon, CheckIcon } from "../../ui/icons";
 import { GhostButton, PrimaryButton, TextField, TopBar } from "../../ui/controls";
 
 /**
@@ -42,6 +43,76 @@ function SourceIcon({ source }: { source: PendingCapture["source"] }) {
   if (source === "voice") return <MicIcon size={18} color={colors.ink} />;
   if (source === "image") return <ImageIcon size={18} color={colors.ink} />;
   return <TextIcon size={18} color={colors.ink} />;
+}
+
+function QueuedCaptureRow({
+  c,
+  isFirst,
+  onRemove,
+  onUpdateText,
+}: {
+  c: PendingCapture;
+  isFirst: boolean;
+  onRemove: (c: PendingCapture) => void;
+  onUpdateText: (id: string, text: string) => void;
+}) {
+  const [val, setVal] = useState(c.rawText || "");
+  const [focused, setFocused] = useState(false);
+
+  const handleBlur = () => {
+    setFocused(false);
+    onUpdateText(c.id, val);
+  };
+
+  const handleSave = () => {
+    Keyboard.dismiss();
+  };
+
+  return (
+    <View style={[styles.qRow, !isFirst && styles.qRowDivider]}>
+      <View style={styles.qTile}>
+        <SourceIcon source={c.source} />
+      </View>
+      {c.source === "image" ? (
+        <Text style={styles.qText} numberOfLines={2}>
+          Receipt photo
+        </Text>
+      ) : (
+        <TextInput
+          style={styles.qInput}
+          value={val}
+          onChangeText={setVal}
+          onFocus={() => setFocused(true)}
+          onBlur={handleBlur}
+          multiline
+          placeholder="(empty)"
+          placeholderTextColor={colors.muted}
+          selectionColor={colors.actionBlue}
+        />
+      )}
+      {focused ? (
+        <Pressable
+          onPress={handleSave}
+          hitSlop={10}
+          android_ripple={{ color: colors.line, borderless: true }}
+          accessibilityRole="button"
+          accessibilityLabel="Save changes"
+        >
+          <CheckIcon color={colors.actionBlue} />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => onRemove(c)}
+          hitSlop={10}
+          android_ripple={{ color: colors.line, borderless: true }}
+          accessibilityRole="button"
+          accessibilityLabel="Remove capture"
+        >
+          <TrashIcon color="#B42318" />
+        </Pressable>
+      )}
+    </View>
+  );
 }
 
 export function CaptureScreen({
@@ -148,6 +219,12 @@ export function CaptureScreen({
     void refresh();
   };
 
+  const updateCaptureText = async (id: string, newText: string) => {
+    if (!newText.trim()) return; // avoid saving completely empty strings unless intended.
+    await updatePendingCaptureText(id, newText.trim());
+    void refresh();
+  };
+
   const review = async () => {
     setReviewing(true);
     try {
@@ -250,28 +327,13 @@ export function CaptureScreen({
             ) : (
               <View style={styles.queueCard}>
                 {captures.map((c, i) => (
-                  <View
+                  <QueuedCaptureRow
                     key={c.id}
-                    style={[styles.qRow, i > 0 && styles.qRowDivider]}
-                  >
-                    <View style={styles.qTile}>
-                      <SourceIcon source={c.source} />
-                    </View>
-                    <Text style={styles.qText} numberOfLines={2}>
-                      {c.source === "image"
-                        ? "Receipt photo"
-                        : c.rawText || "(empty)"}
-                    </Text>
-                    <Pressable
-                      onPress={() => removeCapture(c)}
-                      hitSlop={10}
-                      android_ripple={{ color: colors.line, borderless: true }}
-                      accessibilityRole="button"
-                      accessibilityLabel={`Remove capture ${i + 1}`}
-                    >
-                      <TrashIcon color="#B42318" />
-                    </Pressable>
-                  </View>
+                    c={c}
+                    isFirst={i === 0}
+                    onRemove={removeCapture}
+                    onUpdateText={updateCaptureText}
+                  />
                 ))}
               </View>
             )}
@@ -395,6 +457,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: colors.ink,
+  },
+  qInput: {
+    flex: 1,
+    fontFamily: type.body.fontFamily,
+    fontSize: 14,
+    color: colors.ink,
+    padding: 0,
+    margin: 0,
+    minHeight: 20,
+    textAlignVertical: "center",
   },
   footer: {
     paddingHorizontal: space.inset,
