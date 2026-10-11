@@ -142,6 +142,15 @@ export function MicIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
   );
 }
 
+/** Text-lines glyph for a typed capture in the queue. */
+export function TextIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M5 7h14M5 12h14M5 17h9" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
 /** Small trash glyph for the delete affordance. */
 export function TrashIcon({ size = 18, color, strokeWidth = 1.8 }: IconProps) {
   return (

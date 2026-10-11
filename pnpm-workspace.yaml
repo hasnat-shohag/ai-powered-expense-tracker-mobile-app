@@ -6,5 +6,14 @@ packages:
 # ...) from the project root during the EAS bundle. Expo's documented setup for pnpm.
 nodeLinker: hoisted
 
+# esbuild must build (used by vitest/tsx). The Clerk transitive deps below don't
+# need their postinstall/native builds for our server-side JWT verify or the
+# mobile bundle, so they're denied — acknowledged either way so `pnpm install`
+# doesn't error on unreviewed build scripts.
 allowBuilds:
+  '@clerk/shared': false
+  browser-tabs-lock: false
+  bufferutil: false
+  core-js: false
   esbuild: true
+  utf-8-validate: false

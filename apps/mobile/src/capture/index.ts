@@ -12,4 +12,5 @@ export {
   stopVoiceCapture,
   useVoiceResult,
   useVoiceEnd,
+  useVoiceError,
 } from "./voice";

@@ -10,10 +10,10 @@ import {
   SYNC_CURSOR_KEY,
 } from "../db";
 import { isApiConfigured } from "../config";
-import { hasToken } from "../auth/token";
+import { hasSession } from "../auth/session";
 
 /** Outcome of a sync pass. */
-export interface SyncResult {
+interface SyncResult {
   pushed: number;
   pulled: number;
   skipped?: "offline" | "unconfigured" | "busy";
@@ -22,7 +22,7 @@ export interface SyncResult {
 let syncing = false;
 
 /** True when the device reports an internet-reachable connection. */
-export async function isOnline(): Promise<boolean> {
+async function isOnline(): Promise<boolean> {
   try {
     const state = await Network.getNetworkStateAsync();
     return Boolean(state.isConnected && state.isInternetReachable !== false);
@@ -40,15 +40,17 @@ export async function isOnline(): Promise<boolean> {
  */
 export async function syncNow(): Promise<SyncResult> {
   if (syncing) return { pushed: 0, pulled: 0, skipped: "busy" };
-  if (!isApiConfigured() || !(await hasToken())) {
+  if (!isApiConfigured() || !(await hasSession())) {
     return { pushed: 0, pulled: 0, skipped: "unconfigured" };
   }
   if (!(await isOnline())) return { pushed: 0, pulled: 0, skipped: "offline" };
 
   syncing = true;
   try {
-    const outbox = await listOutbox();
-    const since = await getMeta(SYNC_CURSOR_KEY);
+    const [outbox, since] = await Promise.all([
+      listOutbox(),
+      getMeta(SYNC_CURSOR_KEY),
+    ]);
     const req: SyncRequest = { since, ops: outbox.map((e) => e.push) };
 
     const res = await syncWithServer(req);

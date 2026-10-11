@@ -7,7 +7,6 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "vercel dev",
     "build": "tsc -p tsconfig.json --noEmit",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -17,6 +16,7 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
+    "@clerk/backend": "1.21.4",
     "@expense/shared": "workspace:*",
     "@neondatabase/serverless": "^0.10.4",
     "drizzle-orm": "^0.38.4",
@@ -27,6 +27,7 @@
     "@aws-sdk/client-s3": "^3.738.0",
     "@vercel/node": "^5.0.2",
     "drizzle-kit": "^0.30.2",
+    "typescript": "^5.9.3",
     "vitest": "^3.0.5"
   }
 }

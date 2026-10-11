@@ -66,9 +66,6 @@ export function ExpenseForm({
   );
 }
 
-/** Parse a partially-typed amount to a non-negative number (0 on garbage). */
-export { parseAmount } from "../../lib/amount";
-
 const styles = StyleSheet.create({
   form: { gap: space.gap },
   dateRow: {

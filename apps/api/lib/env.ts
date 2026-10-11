@@ -10,7 +10,18 @@ const envSchema = z.object({
   OPENAI_BASE_URL: z.string().url(),
   OPENAI_API_KEY: z.string().min(1),
   OPENAI_MODEL: z.string().min(1),
-  API_BEARER_TOKEN: z.string().min(1),
+  // Clerk backend verification. CLERK_JWT_KEY is the PEM public key used for
+  // networkless JWT verification (no per-request JWKS fetch — matters on cold
+  // starts); optional so a fetch-based fallback still works without it.
+  CLERK_SECRET_KEY: z.string().min(1),
+  CLERK_JWT_KEY: z.string().min(1).optional(),
+  // Allowlist backstop to the Clerk dashboard restriction: comma-separated
+  // Clerk user ids permitted to use the API. Empty/unset = allow any signed-in
+  // user (for when sign-up opens later).
+  ALLOWED_CLERK_USER_IDS: z.string().optional(),
+  // Legacy shared secret — no longer honored by requireAuth. Kept optional only
+  // as a possible future admin/cron hook; not wired into any endpoint.
+  API_BEARER_TOKEN: z.string().min(1).optional(),
   R2_ACCOUNT_ID: z.string().min(1),
   R2_BUCKET: z.string().min(1),
   R2_ACCESS_KEY_ID: z.string().min(1),

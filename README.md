@@ -13,22 +13,52 @@ A personal, offline-first expense tracker for Android. Capture expenses by **tex
 
 ## Architecture
 
-```
-┌─────────────────────────┐         ┌──────────────────────────┐         ┌──────────┐
-│  Expo (React Native)     │  HTTPS  │  Vercel serverless (Node) │         │  Neon    │
-│  apps/mobile             │ ──────► │  apps/api                 │ ──────► │ Postgres │
-│                          │  Bearer │                           │ Drizzle │          │
-│  - SQLite (source of     │  token  │  - POST /parse (LLM)      │         └──────────┘
-│    truth for UI)         │         │  - POST /sync (push/pull) │
-│  - Outbox + pending queue│         │  - Zod validation         │         ┌──────────┐
-│  - FileSystem (images)   │         │  - R2 upload (proxy)      │ ──────► │ Cloudflare│
-│  - On-device STT         │         │  - LLM (OpenAI-compatible)│         │    R2     │
-└─────────────────────────┘         └──────────────────────────┘         └──────────┘
+```mermaid
+flowchart LR
+    subgraph device["Expo React Native — apps/mobile"]
+        direction TB
+        signin["Clerk sign-in (Google)<br/>wipe-on-account-switch"]
+        cap["Capture<br/>text · voice (on-device STT) · image"]
+        pend[("pending_captures<br/>local SQLite")]
+        drain["Drain"]
+        draft["Editable draft<br/>(LLM never trusted blindly)"]
+        store[("expenses mirror + outbox<br/>local SQLite = UI source of truth")]
+        sync["Sync engine<br/>push outbox + pull-by-cursor · LWW"]
+        cap --> pend --> drain --> draft --> store --> sync
+    end
+
+    subgraph api["Vercel serverless (Node) — apps/api"]
+        direction TB
+        auth["requireAuth<br/>verify Clerk JWT → owner_id · allowlist"]
+        parse["POST /parse<br/>Zod · LLM · R2 upload"]
+        syncep["POST /sync<br/>owner-scoped push/pull · LWW"]
+        health["GET /health"]
+        parse --- auth
+        syncep --- auth
+    end
+
+    subgraph ext["External services (backend-only secrets)"]
+        direction TB
+        clerk["Clerk<br/>identity provider"]
+        neon[("Neon Postgres<br/>expenses, owner_id-scoped")]
+        r2[("Cloudflare R2<br/>receipt images")]
+        llm["LLM<br/>OpenAI-compatible, multimodal"]
+    end
+
+    signin -.->|OAuth| clerk
+    drain  -->|HTTPS · Bearer JWT| parse
+    sync   -->|HTTPS · Bearer JWT| syncep
+    auth   -.->|verify JWT| clerk
+    parse  --> r2
+    parse  --> llm
+    syncep --> neon
 ```
 
 - **Local SQLite is the source of truth for the UI.** The app always reads/writes locally and stays instant and offline.
-- The backend holds every secret (Neon URL, LLM key, R2 credentials) and is the only thing that talks to third parties.
-- Sync reconciles local SQLite with Neon in the background.
+- The backend holds every secret (Neon URL, LLM key, R2 credentials, Clerk keys) and is the only thing that talks to third parties.
+- **Auth is per-user Clerk SSO.** Every request carries a Clerk session JWT; the backend verifies it, resolves the caller's Clerk user id, and uses that as `owner_id` — the tenant boundary stamped on every write and filtered on every read. A backend allowlist (`ALLOWED_CLERK_USER_IDS`) backs up the Clerk dashboard restriction.
+- Sync reconciles local SQLite with Neon in the background, owner-scoped and last-write-wins.
+
 
 ## Tech Stack
 
@@ -43,7 +73,7 @@ A personal, offline-first expense tracker for Android. Capture expenses by **tex
 | Validation | Zod (shared schema, single source of truth) |
 | Local store | Expo SQLite + Expo FileSystem |
 | Speech-to-text | On-device (`expo-speech-recognition`), default `bn-BD` |
-| Auth | Static bearer token (Expo SecureStore ↔ Vercel env) |
+| Auth | Clerk SSO (Google) — session JWT verified backend-side; `owner_id` multi-tenant scoping + user allowlist |
 | Testing | Vitest, React Native Testing Library, Maestro |
 | Distribution | EAS internal build, side-loaded APK |
 
@@ -56,6 +86,7 @@ Neon Postgres, defined in `packages/shared` via Drizzle. Local SQLite mirrors th
 | Column | Type | Notes |
 |---|---|---|
 | `id` | uuid (PK) | uuidv7, client-generated so offline rows have a stable id |
+| `owner_id` | text | Verified Clerk user id (JWT `sub`). **Neon only** — server-stamped on every write, filtered on every read; never crosses the wire, so the local mirror has no owner column |
 | `group_id` | uuid | Rows from one parse/receipt share this |
 | `amount` | numeric | |
 | `currency` | text | Default `BDT`, no FX conversion |
@@ -124,9 +155,11 @@ List, edit, and delete all operate on local SQLite immediately and enqueue to th
 
 ## Security
 
-- No third-party secret ever ships in the app. Neon URL, LLM key, and R2 credentials live only in Vercel env.
-- The backend is a **public HTTPS endpoint**, so it is protected by a **static bearer token**: stored in Expo SecureStore on the device, set as a Vercel env var, and checked on every request. Any request missing/invalid is rejected. Token is rotatable.
-- This is acceptable for a single-user, side-loaded app (low blast radius). If the token were to be a concern, upgrade to real auth later.
+- No third-party secret ever ships in the app. Neon URL, LLM key, R2 credentials, and the Clerk secret key live only in Vercel env.
+- **Per-user auth via Clerk SSO.** Sign-in is Google OAuth through Clerk on the device; every backend request carries the Clerk **session JWT** as `Authorization: Bearer <token>`. The backend verifies the JWT and resolves the caller's Clerk user id — a request with a missing/invalid token is rejected `401`.
+- **Multi-tenant isolation by `owner_id`.** The verified Clerk user id is the tenant key: server-stamped on every write and filtered on every read, so a client can neither express nor spoof ownership. A guessed foreign row `id` is a silent no-op (the LWW upsert is owner-guarded).
+- **Two-layer allowlist.** While `ALLOWED_CLERK_USER_IDS` is set, only listed users are admitted (`403` otherwise) — this backs up the Clerk dashboard restriction so the private phase can't leak API cost even if the dashboard config drifts. Empty/unset admits any signed-in user (for when sign-up opens).
+- **On-device tenant boundary.** The local SQLite mirror has no owner column, so switching accounts (or signing out) wipes all local data before the next user's first sync.
 - Receipt images are uploaded through the backend (proxy), never with client-side R2 keys.
 
 ## Design
@@ -150,8 +183,8 @@ expense-tracker-app/
 │  │  │  ├─ screens/     # capture, draft, list, edit
 │  │  │  ├─ db/          # Expo SQLite: schema, migrations, queries
 │  │  │  ├─ sync/        # outbox, pull/push, triggers
-│  │  │  ├─ capture/     # text, voice (STT), image compression
-│  │  │  └─ design/      # tokens + components from /impeccable
+│  │  │  ├─ auth/        # Clerk session + wipe-on-account-switch
+│  │  │  └─ capture/     # text, voice (STT), image compression
 │  │  └─ app.json
 │  └─ api/               # Vercel serverless
 │     ├─ api/parse.ts    # LLM parse + R2 upload
@@ -174,7 +207,9 @@ DATABASE_URL=            # Neon Postgres connection string (pooled)
 OPENAI_BASE_URL=         # OpenAI-compatible endpoint
 OPENAI_API_KEY=          # LLM key (must be a multimodal model)
 OPENAI_MODEL=            # e.g. a vision-capable model id
-API_BEARER_TOKEN=        # shared secret checked on every request
+CLERK_SECRET_KEY=        # Clerk backend key (verifies session JWTs)
+CLERK_JWT_KEY=           # optional PEM public key for networkless JWT verification
+ALLOWED_CLERK_USER_IDS=  # optional CSV of permitted Clerk user ids (empty = any signed-in user)
 R2_ACCOUNT_ID=
 R2_BUCKET=
 R2_ACCESS_KEY_ID=
@@ -182,10 +217,11 @@ R2_SECRET_ACCESS_KEY=
 R2_PUBLIC_BASE_URL=      # optional, for serving stored receipts
 ```
 
-**Mobile (`apps/mobile`):**
+**Mobile (`apps/mobile`, `app.json` → `expo.extra`):**
 ```
-EXPO_PUBLIC_API_URL=     # deployed Vercel backend URL
-# API_BEARER_TOKEN is entered once in-app and stored in SecureStore, not in env
+apiBaseUrl=              # deployed Vercel backend URL
+clerkPublishableKey=     # Clerk publishable key (client-side SSO)
+# The session JWT is obtained via Clerk sign-in at runtime; no static token is stored.
 ```
 
 ## Testing (full pyramid)
