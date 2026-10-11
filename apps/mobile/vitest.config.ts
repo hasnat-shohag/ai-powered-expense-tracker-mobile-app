@@ -10,7 +10,11 @@ import { defineConfig } from "vitest/config";
  */
 export default defineConfig({
   test: {
-    include: ["src/format.test.ts", "src/lib/amount.test.ts"],
+    include: [
+      "src/format.test.ts",
+      "src/lib/amount.test.ts",
+      "src/screens/home/slices.test.ts",
+    ],
     environment: "node",
   },
 });
