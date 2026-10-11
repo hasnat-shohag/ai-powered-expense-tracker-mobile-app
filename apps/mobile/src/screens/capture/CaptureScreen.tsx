@@ -264,11 +264,11 @@ export function CaptureScreen({
               selectionColor={colors.actionBlue}
             />
             {listening && (
-              <View style={styles.composerInput}>
+              <ScrollView style={styles.composerInput}>
                 <Text style={styles.composerTranscript}>
                   {transcript || "Listening…"}
                 </Text>
-              </View>
+              </ScrollView>
             )}
             
             <View style={styles.composerToolbar}>
@@ -366,7 +366,8 @@ const styles = StyleSheet.create({
     borderColor: colors.actionBlue,
   },
   composerInput: {
-    minHeight: 96,
+    minHeight: 48,
+    maxHeight: 120,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontFamily: type.body.fontFamily,
