@@ -5,18 +5,42 @@
     "scheme": "expensetracker",
     "version": "0.1.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "android": {
       "package": "com.personal.expensetracker",
-      "permissions": ["RECORD_AUDIO", "CAMERA"]
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2563EB"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "plugins": [
       "expo-sqlite",
-      "expo-speech-recognition"
+      "expo-speech-recognition",
+      "expo-secure-store",
+      "expo-image-picker",
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.9.24"
+          }
+        }
+      ]
     ],
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "17385998-e204-486e-ae6c-02c8e8001c33"
+      },
+      "apiBaseUrl": "https://ai-powered-expense-tracker-mobile-a.vercel.app",
+      "clerkPublishableKey": "pk_test_ZW5vdWdoLWtpbmdmaXNoLTQwMzAuY2xlcmsuYWNjb3VudHMuZGV2JA"
     }
   }
 }

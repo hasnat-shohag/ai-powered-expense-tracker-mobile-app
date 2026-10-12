@@ -1,0 +1,18 @@
+# Offline capture: a typed capture is queued while the device has no network.
+# No Save step — parsing needs the backend; this asserts the capture survives
+# offline (the "Review N" affordance reflects the queued count).
+#
+# Put the device in airplane mode before running, or wrap with a Maestro
+# network condition on CI. This flow only asserts local queueing.
+appId: com.personal.expensetracker
+---
+- launchApp:
+    clearState: false
+- tapOn: "Add expense"
+- assertVisible: "Type it"
+- inputText: "cha 20 taka"
+- tapOn: "Add to queue"
+
+# The queue count is surfaced on the Review affordance even with no network.
+- assertVisible:
+    text: "Review.*"

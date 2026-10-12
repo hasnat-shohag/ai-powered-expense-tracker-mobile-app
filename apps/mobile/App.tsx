@@ -1,28 +1,163 @@
+import { useCallback, useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  useAuth,
+} from "@clerk/clerk-expo";
+import type { Expense } from "@expense/shared";
+import { useAppFonts } from "./src/theme/fonts";
+import { colors } from "./src/theme";
+import { HomeScreen } from "./src/screens/home/HomeScreen";
+import { CaptureScreen } from "./src/screens/capture/CaptureScreen";
+import { DraftScreen } from "./src/screens/draft/DraftScreen";
+import { EditExpenseScreen } from "./src/screens/edit/EditExpenseScreen";
+import { SettingsScreen } from "./src/screens/settings/SettingsScreen";
+import { AccountScreen } from "./src/screens/account/AccountScreen";
+import { SubscriptionScreen } from "./src/screens/subscription/SubscriptionScreen";
+import { HistoryScreen } from "./src/screens/history/HistoryScreen";
+import { InsightsScreen } from "./src/screens/insights/InsightsScreen";
+import { SignInScreen } from "./src/screens/auth/SignInScreen";
+import type { Draft } from "./src/drain";
+import { CLERK_PUBLISHABLE_KEY } from "./src/config";
+import { tokenCache } from "./src/auth/clerk";
+import { setTokenGetter } from "./src/auth/session";
+import { reconcileActiveUser } from "./src/auth/wipe";
+import { requestSync } from "./src/sync/engine";
+
+/** The app is a small stack: Home is the root; other screens push over it. */
+type Route =
+  | { name: "home" }
+  | { name: "capture" }
+  | { name: "draft"; draft: Draft }
+  | { name: "edit"; expense: Expense }
+  | { name: "settings" }
+  | { name: "account" }
+  | { name: "subscription" }
+  | { name: "history" }
+  | { name: "insights" };
 
 /**
- * Placeholder shell. Real screens (Capture, Draft review, List, Edit) are built
- * in Phases 7–12, after the `/impeccable` design phase (Phase 6) sets the visual
- * direction, design system, and approved mockups.
+ * Root: load fonts, then wrap everything in ClerkProvider. AuthBridge exposes
+ * the Clerk token to the plain-function API layer; the signed-in app shell and
+ * the sign-in screen are gated by Clerk's <SignedIn>/<SignedOut>.
  */
 export function App() {
+  const [fontsLoaded, fontError] = useAppFonts();
+
+  if (!fontsLoaded && !fontError) {
+    return <View style={styles.splash} />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Expense Tracker</Text>
-      <Text style={styles.subtitle}>Scaffold ready — UI awaits the design phase.</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      tokenCache={tokenCache}
+    >
+      <AuthBridge />
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <SignedIn>
+          <AppShell />
+        </SignedIn>
+        <SignedOut>
+          <SignInScreen />
+        </SignedOut>
+      </SafeAreaProvider>
+    </ClerkProvider>
+  );
+}
+
+/** Feeds Clerk's hook-based token to the non-component API layer. */
+function AuthBridge() {
+  const { getToken } = useAuth();
+  useEffect(() => {
+    setTokenGetter(() => getToken());
+    return () => setTokenGetter(null);
+  }, [getToken]);
+  return null;
+}
+
+/**
+ * The signed-in app: the same hand-rolled four-route stack as before. On the
+ * active user resolving, reconcile local data (wipe on account switch) and
+ * kick a sync; a wipe bumps the reload token so the ledger refreshes.
+ */
+function AppShell() {
+  const { userId } = useAuth();
+  const [route, setRoute] = useState<Route>({ name: "home" });
+  const [reloadToken, setReloadToken] = useState(0);
+
+  const goHome = useCallback(() => {
+    setReloadToken((n) => n + 1);
+    setRoute({ name: "home" });
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+    void reconcileActiveUser(userId).then((wiped) => {
+      if (wiped) setReloadToken((n) => n + 1);
+      requestSync(0);
+    });
+  }, [userId]);
+
+  return (
+    <>
+      {route.name === "home" && (
+        <HomeScreen
+          reloadToken={reloadToken}
+          onAddExpense={() => setRoute({ name: "capture" })}
+          onEditExpense={(expense) => setRoute({ name: "edit", expense })}
+          onOpenSettings={() => setRoute({ name: "settings" })}
+          onOpenHistory={() => setRoute({ name: "history" })}
+          onOpenInsights={() => setRoute({ name: "insights" })}
+        />
+      )}
+      {route.name === "capture" && (
+        <CaptureScreen
+          onClose={() => setRoute({ name: "home" })}
+          onDraftReady={(draft) => setRoute({ name: "draft", draft })}
+        />
+      )}
+      {route.name === "draft" && (
+        <DraftScreen
+          draft={route.draft}
+          onCancel={() => setRoute({ name: "home" })}
+          onSaved={goHome}
+        />
+      )}
+      {route.name === "edit" && (
+        <EditExpenseScreen expense={route.expense} onClose={goHome} />
+      )}
+      {route.name === "settings" && (
+        <SettingsScreen
+          onClose={() => setRoute({ name: "home" })}
+          onOpenAccount={() => setRoute({ name: "account" })}
+          onOpenSubscription={() => setRoute({ name: "subscription" })}
+        />
+      )}
+      {route.name === "account" && (
+        <AccountScreen onClose={() => setRoute({ name: "settings" })} />
+      )}
+      {route.name === "subscription" && (
+        <SubscriptionScreen onClose={() => setRoute({ name: "settings" })} />
+      )}
+      {route.name === "history" && (
+        <HistoryScreen
+          onEditExpense={(expense) => setRoute({ name: "edit", expense })}
+          onClose={() => setRoute({ name: "home" })}
+        />
+      )}
+      {route.name === "insights" && (
+        <InsightsScreen onClose={() => setRoute({ name: "home" })} />
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: { fontSize: 22, fontWeight: "600" },
-  subtitle: { marginTop: 8, opacity: 0.6, textAlign: "center" },
+  splash: { flex: 1, backgroundColor: colors.ground },
 });

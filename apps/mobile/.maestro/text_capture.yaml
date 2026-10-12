@@ -1,0 +1,30 @@
+# Text capture → parse → save → appears on Home.
+# Requires a live backend and a token entered in Settings (parse hits /api/parse).
+appId: com.personal.expensetracker
+---
+- launchApp:
+    clearState: false
+- assertVisible: "Add expense"
+- tapOn: "Add expense"
+
+- assertVisible: "Type it"
+- tapOn:
+    id: ".*Type it.*"
+    optional: true
+- inputText: "lunch 320 at Star Kabab, cash"
+- tapOn: "Add to queue"
+
+# One "Review N" gesture drains the queue through /parse.
+- tapOn:
+    text: "Review.*"
+- assertVisible:
+    text: "Save.*"
+    timeout: 20000
+- tapOn:
+    text: "Save.*"
+
+# Back on Home, the parsed row is in the ledger.
+- assertVisible: "Add expense"
+- assertVisible:
+    text: "Star Kabab"
+    timeout: 10000

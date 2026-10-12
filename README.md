@@ -182,7 +182,7 @@ The UI is designed to a **world-class** bar using the **`/impeccable`** skill, n
 - Run `/impeccable` to establish the visual direction (a chosen "world" / aesthetic), the design system (type scale, color, spacing, motion, component specs), and approved mockups **before** the screens are coded.
 - The three capture surfaces (text, voice, image) and the draft-review list are the highest-craft screens — capture must feel instant and delightful; the draft list must make correcting the LLM effortless.
 - Dark + light themes, accessible contrast, and consistent motion are requirements, not extras.
-- Screens to design: Capture, Draft review (editable list), Expense list (+ month total + per-category breakdown), Edit/delete row, and empty/loading/error/offline states.
+- Screens to design: Capture, Draft review (editable list), Expense list (+ month total + per-category breakdown), Edit/delete row, Account/profile, Subscription/plan, History (search + filters), Insights (analytics), and empty/loading/error/offline states.
 
 Design artifacts (mockups, `DESIGN.md`, tokens) are produced by the impeccable flow and then implemented in `apps/mobile`.
 
