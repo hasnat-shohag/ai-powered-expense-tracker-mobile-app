@@ -43,7 +43,7 @@ A personal, offline-first expense tracker for Android. Capture expenses by **tex
 | Validation | Zod (shared schema, single source of truth) |
 | Local store | Expo SQLite + Expo FileSystem |
 | Speech-to-text | On-device (`expo-speech-recognition`), default `bn-BD` |
-| Auth | Static bearer token (Expo SecureStore ↔ Vercel env) |
+| Auth | Clerk (per-user, Google OAuth); session JWT verified on every request |
 | Testing | Vitest, React Native Testing Library, Maestro |
 | Distribution | EAS internal build, side-loaded APK |
 
@@ -56,6 +56,7 @@ Neon Postgres, defined in `packages/shared` via Drizzle. Local SQLite mirrors th
 | Column | Type | Notes |
 |---|---|---|
 | `id` | uuid (PK) | uuidv7, client-generated so offline rows have a stable id |
+| `owner_id` | text | **Server-only tenant boundary** — the verified Clerk user id. Stamped server-side, filtered on every read; never on the wire, never in mobile SQLite |
 | `group_id` | uuid | Rows from one parse/receipt share this |
 | `amount` | numeric | |
 | `currency` | text | Default `BDT`, no FX conversion |
@@ -70,6 +71,33 @@ Neon Postgres, defined in `packages/shared` via Drizzle. Local SQLite mirrors th
 | `created_at` | timestamptz | Stored UTC |
 | `updated_at` | timestamptz | Stored UTC, drives last-write-wins |
 | `deleted_at` | timestamptz NULL | Soft-delete tombstone |
+
+### `users` (Neon)
+
+One row per authenticated Clerk user, provisioned lazily on the first authenticated request (no webhook). The primary key **is** the Clerk `sub`, so it equals `expenses.owner_id`.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | text (PK) | Clerk user id (`sub`) — same value as `expenses.owner_id` |
+| `email` | text | Seeded from Clerk on first sight |
+| `display_name` | text | Editable via `PATCH /me` |
+| `image_url` | text NULL | Avatar from Clerk |
+| `timezone` | text | IANA tz, default `Asia/Dhaka`; used for analytics bucketing |
+| `created_at` / `updated_at` / `last_seen_at` | timestamptz | `last_seen_at` bumped every request |
+
+### `subscriptions` (Neon)
+
+Current subscription state, 1:1 with a user (`user_id` unique). **Modeled only this pass** — no payment provider; plan changes are admin-granted.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | uuid (PK) | |
+| `user_id` | text UNIQUE | → `users.id` |
+| `plan` | text | `free` \| `pro` (drives entitlements, resolved in code) |
+| `status` | text | `active` \| `trialing` \| `past_due` \| `canceled` |
+| `current_period_start` / `current_period_end` | timestamptz NULL | Shaped for a future billing provider |
+| `cancel_at_period_end` | boolean | |
+| `created_at` / `updated_at` | timestamptz | |
 
 ### Local-only tables (Expo SQLite)
 
@@ -122,11 +150,29 @@ Saved rows are written to **local SQLite** (source of truth) and create-ops are 
 
 List, edit, and delete all operate on local SQLite immediately and enqueue to the `outbox`. Edits/deletes made offline sync when the network returns.
 
+## API
+
+All endpoints require a Clerk session JWT as `Authorization: Bearer <token>`; the backend verifies it and derives `owner_id` from the `sub`. Reads and writes are owner-scoped.
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/health` | Auth + DB reachability probe |
+| POST | `/api/parse` | LLM parse of raw captures → draft rows (+ R2 upload) |
+| POST | `/api/sync` | Push outbox ops + pull owner's changed rows (LWW, soft-delete) |
+| GET | `/api/me` | Provision (lazy) + return profile, subscription, entitlements |
+| PATCH | `/api/me` | Update `displayName` / `timezone` |
+| GET | `/api/subscription` | Current subscription + entitlements |
+| POST | `/api/subscription` | Change plan — **admin-only** (model-only billing, no payments) |
+| GET | `/api/expenses` | Owner-scoped, filterable, keyset-paginated list |
+| GET | `/api/expenses/summary` | Totals + per-category / per-payment-method / daily analytics (user's tz) |
+
+The expense list/summary are additive read surfaces for a richer UI; mobile SQLite stays the UI source of truth and all mutations flow through `/sync`.
+
 ## Security
 
-- No third-party secret ever ships in the app. Neon URL, LLM key, and R2 credentials live only in Vercel env.
-- The backend is a **public HTTPS endpoint**, so it is protected by a **static bearer token**: stored in Expo SecureStore on the device, set as a Vercel env var, and checked on every request. Any request missing/invalid is rejected. Token is rotatable.
-- This is acceptable for a single-user, side-loaded app (low blast radius). If the token were to be a concern, upgrade to real auth later.
+- No third-party secret ever ships in the app. Neon URL, LLM key, R2 credentials, and the Clerk secret live only in Vercel env.
+- **Per-user auth via Clerk.** Every request carries a Clerk session JWT, verified server-side (networklessly when `CLERK_JWT_KEY` is set). A backend allowlist (`ALLOWED_CLERK_USER_IDS`) backstops the Clerk dashboard sign-up restriction; `ADMIN_CLERK_USER_IDS` gates plan changes.
+- **Tenant isolation:** `owner_id` is server-derived from the verified `sub`, never sent by the client. Every expense read and write is filtered by it, so one user can never see or overwrite another's rows.
 - Receipt images are uploaded through the backend (proxy), never with client-side R2 keys.
 
 ## Design
@@ -174,7 +220,10 @@ DATABASE_URL=            # Neon Postgres connection string (pooled)
 OPENAI_BASE_URL=         # OpenAI-compatible endpoint
 OPENAI_API_KEY=          # LLM key (must be a multimodal model)
 OPENAI_MODEL=            # e.g. a vision-capable model id
-API_BEARER_TOKEN=        # shared secret checked on every request
+CLERK_SECRET_KEY=        # Clerk backend secret (required)
+CLERK_JWT_KEY=           # Clerk PEM public key (optional, networkless verify)
+ALLOWED_CLERK_USER_IDS=  # optional CSV allowlist (empty = any signed-in user)
+ADMIN_CLERK_USER_IDS=    # optional CSV — admins who may change plans
 R2_ACCOUNT_ID=
 R2_BUCKET=
 R2_ACCESS_KEY_ID=
@@ -185,7 +234,7 @@ R2_PUBLIC_BASE_URL=      # optional, for serving stored receipts
 **Mobile (`apps/mobile`):**
 ```
 EXPO_PUBLIC_API_URL=     # deployed Vercel backend URL
-# API_BEARER_TOKEN is entered once in-app and stored in SecureStore, not in env
+# Clerk publishable key is set in app.json extra; users sign in via Google OAuth
 ```
 
 ## Testing (full pyramid)

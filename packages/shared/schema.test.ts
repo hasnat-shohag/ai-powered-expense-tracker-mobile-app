@@ -3,6 +3,12 @@ import {
   parseResultSchema,
   syncRequestSchema,
   expenseSchema,
+  subscriptionSchema,
+  updateProfileRequestSchema,
+  changePlanRequestSchema,
+  expenseQuerySchema,
+  entitlementsFor,
+  PLAN_ENTITLEMENTS,
 } from "./src/index.js";
 
 describe("parseResultSchema", () => {
@@ -54,5 +60,45 @@ describe("expenseSchema", () => {
     expect(out.currency).toBe("BDT");
     expect(out.deletedAt).toBeNull();
     expect(out.receiptKey).toBeNull();
+  });
+});
+
+describe("account schemas", () => {
+  it("subscription applies nullable period + cancel defaults", () => {
+    const out = subscriptionSchema.parse({ plan: "free", status: "active" });
+    expect(out.currentPeriodStart).toBeNull();
+    expect(out.cancelAtPeriodEnd).toBe(false);
+  });
+
+  it("updateProfileRequest rejects an empty patch", () => {
+    expect(updateProfileRequestSchema.safeParse({}).success).toBe(false);
+    expect(updateProfileRequestSchema.safeParse({ timezone: "UTC" }).success).toBe(
+      true,
+    );
+  });
+
+  it("changePlanRequest only accepts known plans", () => {
+    expect(changePlanRequestSchema.safeParse({ plan: "pro" }).success).toBe(true);
+    expect(changePlanRequestSchema.safeParse({ plan: "team" }).success).toBe(false);
+  });
+
+  it("entitlements resolve for every plan", () => {
+    for (const plan of ["free", "pro"] as const) {
+      expect(entitlementsFor(plan)).toBe(PLAN_ENTITLEMENTS[plan]);
+      expect(entitlementsFor(plan).analytics).toBe(true);
+    }
+  });
+});
+
+describe("expenseQuerySchema", () => {
+  it("defaults limit and coerces it from a string", () => {
+    expect(expenseQuerySchema.parse({}).limit).toBe(50);
+    expect(expenseQuerySchema.parse({ limit: "10" }).limit).toBe(10);
+  });
+
+  it("rejects an out-of-range limit and a malformed month", () => {
+    expect(expenseQuerySchema.safeParse({ limit: "999" }).success).toBe(false);
+    expect(expenseQuerySchema.safeParse({ month: "2026-13-01" }).success).toBe(false);
+    expect(expenseQuerySchema.safeParse({ month: "2026-10" }).success).toBe(true);
   });
 });

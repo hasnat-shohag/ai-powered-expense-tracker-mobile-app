@@ -1,0 +1,39 @@
+{
+  "title": "Choose the home screen",
+  "question": "Three compositions of the same canon world for the Home surface at 412×915. Same palette, same type, same facts in all three. Pick the one that should become the build's first viewport.",
+  "options": [
+    {
+      "id": "canon-summary",
+      "label": "The Summary",
+      "kicker": "COMPOSITION 1",
+      "lineage": "category-standard tracker home",
+      "thesis": "The month total owns the top of the screen at 42px, a donut carries the category split, and six recent rows sit in a soft white card. The category convention, drawn correctly: the number first, the detail beneath, one floating add pill.",
+      "materials": ["42px month total", "92px donut with four-tint legend", "soft white card of recent rows", "floating blue add pill"],
+      "viewport": "Big number, donut, chips, six rows, one pill. The calmest of the three and the least dense — the month's shape is legible before any single expense is.",
+      "risk": "The donut is a second reading of the same four numbers the legend already lists, and only six rows fit, so the ledger the app exists to keep is mostly below the fold.",
+      "comp": ".impeccable/mocks/home/canon.png"
+    },
+    {
+      "id": "capture-first",
+      "label": "Capture First",
+      "kicker": "COMPOSITION 2",
+      "lineage": "capture-led home with a stacked split bar",
+      "thesis": "The bordered ask field is the largest element on the screen — Bengali prompt, two keys, camera in blue — so the first thing the eye lands on is the thing you type into. The month becomes a compact card under it with a nine-pixel stacked bar doing the work the donut did.",
+      "materials": ["bordered ask field with Bengali ghost prompt", "muted mic key and blue camera key", "9px stacked category bar", "66px bottom navigation bar"],
+      "viewport": "Ask field, month card with split bar and inline legend, one chip row, then day-grouped rows under a fixed bottom nav. Capture, then the month, then the days.",
+      "risk": "The month totals sit below the capture field, so a user opening the app to check a number reads the ask prompt first. Bottom nav costs 66px of an 915px screen.",
+      "comp": ".impeccable/mocks/home/home-capture-first.png"
+    },
+    {
+      "id": "ledger-first",
+      "label": "Ledger First",
+      "kicker": "COMPOSITION 3",
+      "lineage": "dense day-grouped ledger with inline chip amounts",
+      "thesis": "Everything above the rows is compressed into one header block so the ledger starts high and runs edge to edge. Category chips carry their amounts inline instead of in a legend, and eight-pixel colour squares replace icon tiles to buy density.",
+      "materials": ["chip amounts inline, no legend", "amber offline strip", "8px square category marks", "54px rounded-square FAB"],
+      "viewport": "Header, amber sync strip, five day groups with subtotals, ten rows, FAB. The most expenses visible at once and the only composition that shows the offline state in the first viewport.",
+      "risk": "The busiest screen. Colour squares carry category by hue alone with no glyph, and the amber strip takes prime space whether or not the user is offline.",
+      "comp": ".impeccable/mocks/home/home-ledger-first.png"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ beforeAll(() => {
   process.env.OPENAI_API_KEY = "k";
   process.env.OPENAI_MODEL = "vision-model";
   process.env.API_BEARER_TOKEN = "t";
+  process.env.CLERK_SECRET_KEY = "sk_test";
   process.env.R2_ACCOUNT_ID = "acct";
   process.env.R2_BUCKET = "bucket";
   process.env.R2_ACCESS_KEY_ID = "ak";
