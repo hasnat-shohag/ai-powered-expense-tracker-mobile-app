@@ -41,14 +41,37 @@ export const categoryPairs = {
 
 export type CategoryName = keyof typeof categoryPairs;
 
-/** Fallback pair (Food amber) for uncategorized or unknown categories. */
+/**
+ * Unclassified pair. The LLM emits free-form category text, so a month
+ * routinely carries categories outside the documented four. Those used to fall
+ * back to the Food amber — which does not mean "unclassified", it means
+ * *Food*, so the ring showed four separate categories as one amber arc that
+ * read as a single Food total.
+ *
+ * The fix is a neutral, not a hue. The four core inks already occupy amber,
+ * blue, green and purple; any fifth hue either collides with one of them
+ * (teal reads as Groceries green) or introduces an alarm colour into a ledger
+ * whose only loud colour is the add gesture. Unclassified categories share one
+ * slate ink instead, and the legend carries which is which — the same division
+ * of labour the card already uses for every other value.
+ */
+export const unclassifiedPair: CategoryPair = { tint: "#EEF2F6", ink: "#64748B" };
+
+/**
+ * Neutral grey pair for the legend's aggregated "Other" bucket. A step lighter
+ * than `unclassifiedPair` so the bucket never reads as one more category.
+ */
+export const otherPair: CategoryPair = { tint: "#F1F5F9", ink: "#94A3B8" };
+
+/** Fallback pair for a row with no category at all (distinct from unknown). */
 export const catchAllPair: CategoryPair = categoryPairs.Food;
 
 export function pairFor(category: string | null | undefined): CategoryPair {
-  if (category && category in categoryPairs) {
+  if (!category) return catchAllPair;
+  if (category in categoryPairs) {
     return categoryPairs[category as CategoryName];
   }
-  return catchAllPair;
+  return unclassifiedPair;
 }
 
 /** Font family names as registered by useFonts in theme/fonts.ts. */

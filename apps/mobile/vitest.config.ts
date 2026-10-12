@@ -14,6 +14,7 @@ export default defineConfig({
       "src/format.test.ts",
       "src/lib/amount.test.ts",
       "src/db/searchSql.test.ts",
+      "src/screens/home/slices.test.ts",
     ],
     environment: "node",
   },

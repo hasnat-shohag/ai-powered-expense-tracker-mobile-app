@@ -1,56 +1,41 @@
-import { useEffect, useRef, useState } from "react";
-import { Animated, Easing, StyleSheet, Text, View } from "react-native";
-import { colors, space, tabular, type } from "../../theme";
+import { StyleSheet, Text, View } from "react-native";
+import { colors, tabular, type } from "../../theme";
 import { formatTaka } from "../../format";
 import { ArrowUpIcon } from "../../ui/icons";
 
 /**
  * The lead figure (Month Total signature). A muted month label, the one large
- * 42px taka number, and a green up-trend delta beneath. The total counts up
- * 0→value on mount over 450ms (M3 standard-decelerate, once); reduce-motion
- * renders the final value directly.
+ * 42px taka number, and a green up-trend delta beneath.
+ *
+ * The total renders directly and is never animated. A count-up used to run
+ * 0→value over 450ms on mount, and it reported a false ৳ 0 for the whole of
+ * the mount stall: its initial state was 0, and the JS thread is busy reading
+ * SQLite and rendering the ledger at exactly that moment, so the frames that
+ * would have advanced it were late. The donut beside it kept sweeping the
+ * whole time — it animates on the UI thread — which made the screen look alive
+ * around a number that was simply wrong.
+ *
+ * A cold start is also the only time that animation ever ran: this screen has
+ * no month switcher, so the one occasion for the count-up was the one where it
+ * lied. A ledger's answer is not a flourish; the figure is correct from the
+ * first frame.
  */
 export function MonthTotal({
   label,
   total,
   deltaPct,
   deltaLabel,
-  reduceMotion,
 }: {
   label: string;
   total: number;
   deltaPct: number | null;
   deltaLabel: string;
-  reduceMotion: boolean;
 }) {
-  const [shown, setShown] = useState(reduceMotion ? total : 0);
-  const progress = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setShown(total);
-      return;
-    }
-    progress.setValue(0);
-    const id = progress.addListener(({ value }) => setShown(value * total));
-    const anim = Animated.timing(progress, {
-      toValue: 1,
-      duration: 450,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: false,
-    });
-    anim.start();
-    return () => {
-      anim.stop();
-      progress.removeListener(id);
-    };
-  }, [total, reduceMotion, progress]);
-
   return (
     <View>
       <Text style={styles.month}>{label}</Text>
       <Text style={styles.total} numberOfLines={1}>
-        {formatTaka(shown)}
+        {formatTaka(total)}
       </Text>
       {deltaPct != null && (
         <View style={styles.delta}>

@@ -20,10 +20,11 @@ import {
   type MonthKey,
 } from "../../db";
 import { requestSync, startNetworkSyncTrigger, syncNow } from "../../sync/engine";
-import { colors, pairFor, space, type } from "../../theme";
+import { colors, space, type } from "../../theme";
 import { formatMonthLabel } from "../../format";
 import { MonthTotal } from "./MonthTotal";
 import { SummaryCard, type CategorySlice } from "./SummaryCard";
+import { buildSlices, filterCategories } from "./slices";
 import { CategoryChips } from "./CategoryChips";
 import { RecentCard } from "./RecentCard";
 import { Fab } from "./Fab";
@@ -35,22 +36,11 @@ const ALL = "All";
 interface HomeData {
   total: number;
   prevTotal: number;
+  /** Display slices: top five + aggregated Other past the legend ceiling. */
   slices: CategorySlice[];
+  /** Real category names, largest first — drives the filter chips. */
+  categories: string[];
   expenses: Expense[];
-}
-
-/** Build the donut/legend slices from a per-category breakdown. */
-function toSlices(
-  breakdown: { category: string; total: number }[],
-  total: number,
-): CategorySlice[] {
-  if (total <= 0) return [];
-  return breakdown.map((b) => ({
-    name: b.category,
-    total: b.total,
-    color: pairFor(b.category).ink,
-    pct: (b.total / total) * 100,
-  }));
 }
 
 /**
@@ -91,7 +81,13 @@ export function HomeScreen({
       categoryBreakdown(month),
       listExpenses({ month }),
     ]);
-    setData({ total, prevTotal, slices: toSlices(breakdown, total), expenses });
+    setData({
+      total,
+      prevTotal,
+      slices: buildSlices(breakdown, total),
+      categories: filterCategories(breakdown),
+      expenses,
+    });
   }, [month.year, month.month]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -140,7 +136,7 @@ export function HomeScreen({
       ? Math.round(((data.total - data.prevTotal) / data.prevTotal) * 100)
       : null;
 
-  const chips = [ALL, ...data.slices.map((s) => s.name)];
+  const chips = [ALL, ...data.categories];
   const filtered =
     selected === ALL
       ? data.expenses
@@ -165,7 +161,6 @@ export function HomeScreen({
           total={data.total}
           deltaPct={deltaPct}
           deltaLabel={`vs ${formatMonthLabel(prev.year, prev.month).split(" ")[0]}`}
-          reduceMotion={reduceMotion}
         />
 
         {empty ? (

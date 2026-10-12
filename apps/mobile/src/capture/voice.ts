@@ -54,7 +54,11 @@ export function startVoiceCapture(locale: string = DEFAULT_LOCALE): void {
     lang: locale,
     interimResults: true,
     continuous: true,
-    requiresOnDeviceRecognition: true,
+    // Do NOT force on-device recognition: the offline bn-BD model is absent on
+    // most Android devices, so requiring it made the recognizer error out
+    // immediately with an empty transcript. false lets the platform use its
+    // network recognizer and fall back to on-device only when available.
+    requiresOnDeviceRecognition: false,
   });
 }
 
@@ -77,3 +81,17 @@ export const useVoiceResult = speech
 export const useVoiceEnd = speech
   ? (handler: () => void) => speech!.useSpeechRecognitionEvent("end", handler)
   : (_handler: () => void) => {};
+
+/**
+ * Subscribe to recognition errors. Without this every failure (no network
+ * recognizer, unsupported locale, no speech, permission) was silent: the
+ * button showed "Listening…" then reverted with nothing captured. Surfaces
+ * the platform error code + message so the caller can show it. No-op hook when
+ * voice unavailable.
+ */
+export const useVoiceError = speech
+  ? (handler: (code: string, message: string) => void) =>
+      speech!.useSpeechRecognitionEvent("error", (e) =>
+        handler(e.error, e.message ?? e.error),
+      )
+  : (_handler: (code: string, message: string) => void) => {};

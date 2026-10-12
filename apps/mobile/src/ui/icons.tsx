@@ -142,6 +142,15 @@ export function MicIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
   );
 }
 
+/** Text-lines glyph for a typed capture in the queue. */
+export function TextIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M5 7h14M5 12h14M5 17h9" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
 /** Small trash glyph for the delete affordance. */
 export function TrashIcon({ size = 18, color, strokeWidth = 1.8 }: IconProps) {
   return (
@@ -165,4 +174,23 @@ export function GearIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
     </Svg>
   );
 }
+
+/** Send/paper plane glyph for submitting a typed expense. */
+export function SendIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
+/** Checkmark glyph for confirming an edit. */
+export function CheckIcon({ size = 20, color, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path d="M20 6L9 17l-5-5" stroke={color} strokeWidth={strokeWidth} {...base} />
+    </Svg>
+  );
+}
+
 
